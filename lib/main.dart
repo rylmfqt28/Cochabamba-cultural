@@ -1,4 +1,5 @@
 import 'package:cochabambacultural/ui/screen/welcome_screen.dart';
+import 'package:cochabambacultural/user/ui/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'welcome_screen',
       routes: {
         'welcome_screen': (_) => const WelcomeScreen(),
+        'login_screen': (_) => const LoginScreen(),
       },
     );
   }
