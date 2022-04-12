@@ -8,7 +8,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.white,
+        color: const Color(0xffffffff),
         child: Stack(
           children: [
             Center(
@@ -28,7 +28,7 @@ class WelcomeScreen extends StatelessWidget {
                     'BIENVENIDO',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color(0xff1bba6e),
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
                     ),
@@ -43,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                     'Encuentra diferentes eventos culturales que se llevan a cabo en Cochabamba y mantente informado sobre tus eventos favoritos.',
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Color(0xff212121),
                       fontSize: 20,
                       fontWeight: FontWeight.normal,
                     ),
@@ -59,7 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                       'Comenzar',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Color(0xffffffff),
                         fontSize: 24,
                         fontWeight: FontWeight.normal,
                       ),
