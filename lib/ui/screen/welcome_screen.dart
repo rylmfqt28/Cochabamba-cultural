@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:cochabambacultural/ui/widgets/general_button.dart';
+import 'package:cochabambacultural/ui/widgets/logo_app.dart';
+
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 
@@ -21,14 +22,9 @@ class WelcomeScreen extends StatelessWidget {
                 child: ListView(
               children: [
                 SizedBox(height: responsive.dp(3)),
-                SvgPicture.asset(
-                  'assets/Logo-app.svg',
-                  height: responsive.hp(38),
-                  width: responsive.wp(55),
-                  //height: 300,
-                  //width: 300,
-                  alignment: Alignment.topCenter,
-                ),
+                LogoApp(
+                    heightLogo: responsive.hp(38),
+                    widthLogo: responsive.wp(55)),
                 SizedBox(height: responsive.hp(8)),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
@@ -79,4 +75,3 @@ class WelcomeScreen extends StatelessWidget {
     );
   }
 }
-//79729024
