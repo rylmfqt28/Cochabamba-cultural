@@ -4,9 +4,17 @@ import 'package:cochabambacultural/utils/app_colors.dart';
 class GeneralButton extends StatelessWidget {
   final String labelButton;
   final Function onPressed;
+  final double textSize;
+  final double heightButton;
+  final double widthButton;
 
   const GeneralButton(
-      {Key? key, required this.labelButton, required this.onPressed})
+      {Key? key,
+      required this.labelButton,
+      required this.onPressed,
+      required this.textSize,
+      required this.heightButton,
+      required this.widthButton})
       : super(key: key);
 
   @override
@@ -18,13 +26,14 @@ class GeneralButton extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: colorApp.primaryBackground,
-          fontSize: 24,
+          fontSize: textSize,
           fontWeight: FontWeight.normal,
         ),
       ),
       color: colorApp.primaryFont,
-      height: 50,
-      minWidth: 90,
+      height: heightButton,
+      minWidth: widthButton,
+      //minWidth: 90,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30.0),
       ),

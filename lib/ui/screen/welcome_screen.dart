@@ -57,15 +57,18 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 50,
+                SizedBox(
+                  height: responsive.hp(7),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0),
                   child: GeneralButton(
                     labelButton: 'Comenzar',
+                    textSize: responsive.dp(2.7),
                     onPressed: () =>
                         Navigator.pushNamed(context, 'login_screen'),
+                    heightButton: responsive.hp(6.3),
+                    widthButton: responsive.hp(30),
                   ),
                 ),
               ],
