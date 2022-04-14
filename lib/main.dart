@@ -1,3 +1,5 @@
+import 'package:cochabambacultural/ui/screen/welcome_screen.dart';
+import 'package:cochabambacultural/user/ui/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,26 +13,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Cochabamba Cultural',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Cochabamba Cultural',
-          style: TextStyle(fontSize: 30),
-        ),
-      ),
+      initialRoute: 'welcome_screen',
+      routes: {
+        'welcome_screen': (_) => const WelcomeScreen(),
+        'login_screen': (_) => const LoginScreen(),
+      },
     );
   }
 }
