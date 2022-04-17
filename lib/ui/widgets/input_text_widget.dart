@@ -8,6 +8,8 @@ class InputTextWidget extends StatelessWidget {
   final TextInputType keyboardType;
   final bool inputPassword;
   final double fontSizeInput;
+  final String? Function(String? text)? inputValidation;
+  final void Function(String text) onChangeInput;
 
   const InputTextWidget(
       {Key? key,
@@ -17,14 +19,18 @@ class InputTextWidget extends StatelessWidget {
       required this.colorHint,
       this.keyboardType = TextInputType.text,
       required this.inputPassword,
-      required this.fontSizeInput})
+      required this.fontSizeInput,
+      required this.inputValidation,
+      required this.onChangeInput})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: inputValidation,
       keyboardType: keyboardType,
       obscureText: inputPassword,
+      onChanged: onChangeInput,
       style: TextStyle(fontSize: fontSizeInput),
       decoration: InputDecoration(
         hintText: hintInput,
