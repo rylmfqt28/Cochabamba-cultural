@@ -66,10 +66,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                           InputTextWidget(
                             labelInput: "* Nombre",
                             hintInput: "Ingrese su nombre",
-                            colorLabel: colorApp.primaryFont,
-                            colorHint: colorApp.placeHolder,
                             inputPassword: false,
-                            fontSizeInput: responsive.dp(1.9),
                             inputValidation: (value) {
                               if (value!.isEmpty) {
                                 return 'El campo Nombre es obligatorio';
@@ -87,11 +84,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                           InputTextWidget(
                             labelInput: "* Correo",
                             hintInput: "Ingrese su correo",
-                            colorLabel: colorApp.primaryFont,
-                            colorHint: colorApp.placeHolder,
                             keyboardType: TextInputType.emailAddress,
                             inputPassword: false,
-                            fontSizeInput: responsive.dp(1.9),
                             inputValidation: (value) {
                               if (value!.isEmpty) {
                                 return 'El campo Correo es obligatorio';
@@ -109,10 +103,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                           InputTextWidget(
                             labelInput: "* Contraseña",
                             hintInput: "Ingrese su constraseña",
-                            colorLabel: colorApp.primaryFont,
-                            colorHint: colorApp.placeHolder,
                             inputPassword: true,
-                            fontSizeInput: responsive.dp(1.9),
                             inputValidation: (value) {
                               if (value!.isEmpty) {
                                 return 'El campo Contraseña es obligatorio';
@@ -130,10 +121,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                           InputTextWidget(
                             labelInput: "* Confirmar contraseña",
                             hintInput: "Ingrese nuevamente su contraseña",
-                            colorLabel: colorApp.primaryFont,
-                            colorHint: colorApp.placeHolder,
                             inputPassword: true,
-                            fontSizeInput: responsive.dp(1.9),
                             inputValidation: (value) {
                               if (value!.isEmpty) {
                                 return 'El campo Confirmar contraseña es obligatorio';
@@ -152,7 +140,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             labelButton: 'Registrar',
                             textSize: responsive.dp(2.7),
                             onPressed: () {
-                              //print('Registrar');
                               if (_keyForm.currentState!.validate()) {
                                 print('Validado');
                               } else {
