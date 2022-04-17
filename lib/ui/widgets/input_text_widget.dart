@@ -7,6 +7,7 @@ class InputTextWidget extends StatelessWidget {
   final Color colorHint;
   final TextInputType keyboardType;
   final bool inputPassword;
+  final double fontSizeInput;
 
   const InputTextWidget(
       {Key? key,
@@ -15,7 +16,8 @@ class InputTextWidget extends StatelessWidget {
       required this.colorLabel,
       required this.colorHint,
       this.keyboardType = TextInputType.text,
-      required this.inputPassword})
+      required this.inputPassword,
+      required this.fontSizeInput})
       : super(key: key);
 
   @override
@@ -23,8 +25,9 @@ class InputTextWidget extends StatelessWidget {
     return TextFormField(
       keyboardType: keyboardType,
       obscureText: inputPassword,
+      style: TextStyle(fontSize: fontSizeInput),
       decoration: InputDecoration(
-        hintText: "Mostrar aqui",
+        hintText: hintInput,
         hintStyle: TextStyle(color: colorHint, fontWeight: FontWeight.w500),
         labelText: labelInput,
         labelStyle: TextStyle(color: colorHint),
