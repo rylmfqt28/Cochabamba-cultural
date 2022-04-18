@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cochabambacultural/ui/widgets/input_text_widget.dart';
 import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
+import 'package:cochabambacultural/ui/widgets/text_span_widget.dart';
 
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
@@ -140,30 +141,14 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             },
                           ),
                           SizedBox(height: responsive.dp(3)),
-                          Text.rich(
-                            TextSpan(
-                                text: "¿Ya tienes una cuenta?\n",
-                                style: TextStyle(
-                                  color: colorApp.secundaryFont,
-                                  fontSize: responsive.dp(1.9),
-                                ),
-                                children: [
-                                  const TextSpan(text: ""),
-                                  TextSpan(
-                                      text: "Iniciar sesión",
-                                      style: TextStyle(
-                                          color: colorApp.primaryFont,
-                                          fontSize: responsive.dp(1.9),
-                                          decoration: TextDecoration.underline),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Navigator.pushNamed(
-                                              context, 'login_screen');
-                                        }),
-                                  const TextSpan(text: " "),
-                                ]),
-                            textAlign: TextAlign.center,
-                          ),
+                          TextSpanWidget(
+                              normalText: '¿Ya tienes una cuenta?\n',
+                              spanText: 'Iniciar sesión',
+                              eventOnTap: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushNamed(context, 'login_screen');
+                                },
+                              align: TextAlign.center),
                         ],
                       ),
                     ],
