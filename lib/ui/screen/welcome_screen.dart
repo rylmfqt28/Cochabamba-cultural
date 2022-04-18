@@ -55,10 +55,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
                 GeneralButton(
                   labelButton: 'Comenzar',
-                  textSize: responsive.dp(2.7),
                   onPressed: () => Navigator.pushNamed(context, 'login_screen'),
-                  heightButton: responsive.hp(6.3),
-                  widthButton: responsive.hp(30),
                 ),
               ],
             ),

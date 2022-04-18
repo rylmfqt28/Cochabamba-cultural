@@ -37,11 +37,8 @@ class LoginScreen extends StatelessWidget {
                 ),
                 GeneralButton(
                   labelButton: 'Registrarse',
-                  textSize: responsive.dp(2.7),
                   onPressed: () =>
                       Navigator.pushNamed(context, 'user_register_screen'),
-                  heightButton: responsive.hp(6.3),
-                  widthButton: responsive.hp(30),
                 ),
               ],
             ),

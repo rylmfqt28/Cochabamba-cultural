@@ -138,7 +138,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                           SizedBox(height: responsive.hp(7)),
                           GeneralButton(
                             labelButton: 'Registrar',
-                            textSize: responsive.dp(2.7),
                             onPressed: () {
                               if (_keyForm.currentState!.validate()) {
                                 print('Validado');
@@ -146,8 +145,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 print('No validado');
                               }
                             },
-                            heightButton: responsive.hp(6.3),
-                            widthButton: responsive.hp(30),
                           ),
                           SizedBox(height: responsive.dp(3)),
                           Text.rich(
@@ -158,8 +155,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                   fontSize: responsive.dp(1.9),
                                 ),
                                 children: [
+                                  const TextSpan(text: ""),
                                   TextSpan(
-                                      text: "Inicia sesión",
+                                      text: "Iniciar sesión",
                                       style: TextStyle(
                                           color: colorApp.primaryFont,
                                           fontSize: responsive.dp(1.9),
@@ -168,7 +166,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                         ..onTap = () {
                                           Navigator.pushNamed(
                                               context, 'login_screen');
-                                        })
+                                        }),
+                                  const TextSpan(text: " "),
                                 ]),
                             textAlign: TextAlign.center,
                           ),
