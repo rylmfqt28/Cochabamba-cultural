@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/logo_app.dart';
+import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
@@ -24,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
           children: [
             ListView(
               children: [
-                SizedBox(height: responsive.dp(3)),
+                SizedBox(height: responsive.hp(3.5)),
                 LogoApp(
                     heightLogo: responsive.isTablet ? 300 : responsive.hp(38),
                     widthLogo: responsive.isTablet ? 300 : responsive.wp(55)),
@@ -41,15 +42,11 @@ class WelcomeScreen extends StatelessWidget {
                 SizedBox(
                   height: responsive.hp(2),
                 ),
-                Text(
-                  'Encuentra diferentes eventos culturales que\nse llevan a cabo en Cochabamba y mantente\ninformado sobre tus eventos favoritos.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: colorApp.secundaryFont,
-                    fontSize: responsive.dp(1.9),
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
+                const TextFormatWidget(
+                    valueText:
+                        'Encuentra diferentes eventos culturales que\nse llevan a cabo en Cochabamba y mantente\ninformado sobre tus eventos favoritos.',
+                    align: TextAlign.center,
+                    typeText: 'Normal'),
                 SizedBox(
                   height: responsive.hp(7),
                 ),

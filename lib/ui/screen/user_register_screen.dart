@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/ui/widgets/input_text_widget.dart';
 import 'package:cochabambacultural/ui/widgets/general_button.dart';
+import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
@@ -44,24 +45,16 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                       ListView(
                         children: [
                           SizedBox(height: responsive.hp(3)),
-                          Text(
-                            'Registrarse',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: colorApp.secundaryFont,
-                              fontSize: responsive.dp(3),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          const TextFormatWidget(
+                              valueText: 'Registrarse',
+                              align: TextAlign.center,
+                              typeText: 'Title'),
                           SizedBox(height: responsive.hp(2)),
-                          Text(
-                            "Los campos con un (*) son obligatorios",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              color: colorApp.secundaryFont,
-                              fontSize: responsive.dp(1.9),
-                            ),
-                          ),
+                          const TextFormatWidget(
+                              valueText:
+                                  'Los campos con un (*) son obligatorios',
+                              align: TextAlign.left,
+                              typeText: "Normal"),
                           SizedBox(height: responsive.hp(4)),
                           InputTextWidget(
                             labelInput: "* Nombre",
