@@ -56,7 +56,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                   'Los campos con un (*) son obligatorios',
                               align: TextAlign.left,
                               typeText: "Normal"),
-                          SizedBox(height: responsive.hp(4)),
+                          SizedBox(height: responsive.hp(3)),
                           InputTextWidget(
                             labelInput: "* Nombre",
                             hintInput: "Ingrese su nombre",
@@ -74,7 +74,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               _name = value;
                             },
                           ),
-                          SizedBox(height: responsive.hp(3)),
+                          SizedBox(height: responsive.hp(2.2)),
                           InputTextWidget(
                             labelInput: "* Correo",
                             hintInput: "Ingrese su correo",
@@ -93,7 +93,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               _email = value;
                             },
                           ),
-                          SizedBox(height: responsive.hp(3)),
+                          SizedBox(height: responsive.hp(2.2)),
                           InputTextWidget(
                             labelInput: "* Contraseña",
                             hintInput: "Ingrese su constraseña",
@@ -111,7 +111,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               _password = value;
                             },
                           ),
-                          SizedBox(height: responsive.hp(3)),
+                          SizedBox(height: responsive.hp(2.2)),
                           InputTextWidget(
                             labelInput: "* Confirmar contraseña",
                             hintInput: "Ingrese nuevamente su contraseña",
