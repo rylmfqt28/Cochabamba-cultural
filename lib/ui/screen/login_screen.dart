@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           align: TextAlign.right),
                       SizedBox(height: responsive.hp(5)),
                       GeneralButton(
-                        labelButton: 'Registrarse',
+                        labelButton: 'Iniciar sesión',
                         onPressed: () {
                           if (_keyForm.currentState!.validate()) {
                             print('Validado');

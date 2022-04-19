@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "226836022816",
+    "project_id": "cochabamba-cultural",
+    "storage_bucket": "cochabamba-cultural.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226836022816:android:06ccf0b868ba665b1bde45",
+        "android_client_info": {
+          "package_name": "com.rylmarquispe.cochabambacultural"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226836022816-qfphb526cngm1gvm2qnakbnurb8js7cu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rylmarquispe.cochabambacultural",
+            "certificate_hash": "d1204e47a3d28b641e6b5d19058fd19e8cc649cc"
+          }
+        },
+        {
+          "client_id": "226836022816-587tj4os6baeefjs4cmll7hogep0toh5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2ij-EhKpcZimIJrGISTzvl6f3e2RCUvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226836022816-587tj4os6baeefjs4cmll7hogep0toh5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
