@@ -1,1 +1,91 @@
-/* Pantalla que se  uestra cuando el usaurio inicio sesion*/
+import 'package:flutter/material.dart';
+
+import 'package:cochabambacultural/utils/app_colors.dart';
+import 'package:cochabambacultural/utils/responsive.dart';
+
+import 'package:cochabambacultural/ui/widgets/general_button.dart';
+import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
+
+import 'package:cochabambacultural/user/model/user_model.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class UserHomeScreen extends StatefulWidget {
+  const UserHomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<UserHomeScreen> createState() => _UserHomeScreenState();
+}
+
+class _UserHomeScreenState extends State<UserHomeScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel userSignin = UserModel();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      userSignin = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Responsive responsive = Responsive.of(context);
+    final colorApp = AppColors();
+
+    return Scaffold(
+      backgroundColor: colorApp.primaryBackground,
+      body: Center(
+        child: Container(
+            constraints: BoxConstraints(
+              maxWidth: responsive.isTablet ? 430 : 360,
+            ),
+            child: Stack(
+              children: [
+                ListView(
+                  children: [
+                    SizedBox(height: responsive.hp(8)),
+                    Text(
+                      'BIENVENIDO',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: colorApp.primaryFont,
+                        fontSize: responsive.dp(3.9),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: responsive.hp(5)),
+                    TextFormatWidget(
+                        valueText: "Nombre: ${userSignin.name}",
+                        align: TextAlign.left,
+                        typeText: "Normal"),
+                    SizedBox(height: responsive.hp(3)),
+                    TextFormatWidget(
+                        valueText: "Correo: ${userSignin.email}",
+                        align: TextAlign.left,
+                        typeText: "Normal"),
+                    SizedBox(height: responsive.hp(5)),
+                    GeneralButton(
+                      labelButton: 'Salir',
+                      onPressed: () => logout(context),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+      ),
+    );
+  }
+
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushNamed(context, 'login_screen');
+  }
+}

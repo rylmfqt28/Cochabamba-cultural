@@ -6,8 +6,13 @@ import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/text_span_widget.dart';
 
+import 'package:cochabambacultural/user/model/user_model.dart';
+
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserRegisterScreen extends StatefulWidget {
   const UserRegisterScreen({Key? key}) : super(key: key);
@@ -17,6 +22,8 @@ class UserRegisterScreen extends StatefulWidget {
 }
 
 class _UserRegisterScreenState extends State<UserRegisterScreen> {
+  final _auth = FirebaseAuth.instance;
+
   final GlobalKey<FormState> _keyForm = GlobalKey();
   String _name = '';
   String _email = '';
@@ -135,6 +142,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             onPressed: () {
                               if (_keyForm.currentState!.validate()) {
                                 print('Validado');
+                                signUp();
                               } else {
                                 print('No validado');
                               }
@@ -156,5 +164,36 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                 )),
           )),
     );
+  }
+
+  void signUp() async {
+    try {
+      await _auth
+          .createUserWithEmailAndPassword(email: _email, password: _password)
+          .then((value) => {registerUserToFirestore()})
+          .catchError((e) {
+        print(e!.message);
+      });
+    } catch (error) {
+      print("");
+    }
+  }
+
+  registerUserToFirestore() async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = _auth.currentUser;
+
+    UserModel userModel = UserModel();
+    userModel.uid = user!.uid;
+    userModel.name = _name;
+    userModel.email = user.email;
+
+    await firebaseFirestore
+        .collection("users")
+        .doc(user.uid)
+        .set(userModel.toMap());
+    print("Account created successfully :");
+
+    Navigator.pushNamed(context, 'user_home_screen');
   }
 }
