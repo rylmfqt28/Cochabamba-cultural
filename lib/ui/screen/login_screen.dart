@@ -10,6 +10,8 @@ import 'package:cochabambacultural/ui/widgets/logo_app.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -19,6 +21,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _keyForm = GlobalKey();
+
+  final _auth = FirebaseAuth.instance;
+
   String _email = '';
   String _password = '';
 
@@ -106,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           if (_keyForm.currentState!.validate()) {
                             print('Validado');
+                            signIn(_email, _password);
                           } else {
                             print('No validado');
                           }
@@ -130,5 +136,42 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void signIn(String email, String password) async {
+    try {
+      await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((uid) => {
+                print("Login Successful"),
+                Navigator.pushNamed(context, 'user_home_screen')
+              });
+    } on FirebaseAuthException catch (error) {
+      switch (error.code) {
+        case "invalid-email":
+          print("Formato de correo no valido");
+          break;
+        case "wrong-password":
+          // credenciales no validas o usuario no existe
+          print("Contraseña incorrecta");
+          break;
+        case "user-not-found":
+          // credenciales no validas o usuario no existe
+          print("El usuario no existe");
+          break;
+        case "user-disabled":
+          //Usuario deshabilitado
+          print("Usuario dado de baja");
+          break;
+        case "too-many-requests":
+          print("Demasiadas solicitudes");
+          break;
+        case "operation-not-allowed":
+          print("Operacion no permitida");
+          break;
+        default:
+          print("Error no identificado");
+      }
+    }
   }
 }
