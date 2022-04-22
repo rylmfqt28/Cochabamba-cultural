@@ -91,9 +91,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               if (value!.isEmpty) {
                                 return 'El campo Correo es obligatorio';
                               }
-                              // if (!value.contains("@")) {
-                              //   return 'Formato de correo no valido';
-                              // }
                               if (!RegExp(
                                       "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                                   .hasMatch(value)) {
