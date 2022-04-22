@@ -91,7 +91,12 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                               if (value!.isEmpty) {
                                 return 'El campo Correo es obligatorio';
                               }
-                              if (!value.contains("@")) {
+                              // if (!value.contains("@")) {
+                              //   return 'Formato de correo no valido';
+                              // }
+                              if (!RegExp(
+                                      "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                  .hasMatch(value)) {
                                 return 'Formato de correo no valido';
                               }
                               return null;
@@ -128,7 +133,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 return 'El campo Confirmar contraseña es obligatorio';
                               }
                               if (value != _password) {
-                                return 'La contraseña no coincide';
+                                return 'Las contraseñas no coinciden';
                               }
                               return null;
                             },
@@ -141,10 +146,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             labelButton: 'Registrar',
                             onPressed: () {
                               if (_keyForm.currentState!.validate()) {
-                                print('Validado');
                                 signUp();
-                              } else {
-                                print('No validado');
                               }
                             },
                           ),
@@ -174,8 +176,17 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
           .catchError((e) {
         print(e!.message);
       });
-    } catch (error) {
-      print("");
+    } on FirebaseAuthException catch (error) {
+      switch (error.code) {
+        case "too-many-requests":
+          print("Demasiadas solicitudes");
+          break;
+        case "operation-not-allowed":
+          print("Operacion no permitida");
+          break;
+        default:
+          print("Error no identificado");
+      }
     }
   }
 
@@ -192,8 +203,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
         .collection("users")
         .doc(user.uid)
         .set(userModel.toMap());
-    print("Account created successfully :");
-
     Navigator.pushNamed(context, 'user_home_screen');
   }
 }

@@ -72,7 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (value!.isEmpty) {
                             return 'El campo Correo es obligatorio';
                           }
-                          if (!value.contains("@")) {
+                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                              .hasMatch(value)) {
                             return 'Formato de correo no valido';
                           }
                           return null;
@@ -88,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         inputPassword: true,
                         inputValidation: (value) {
                           if (value!.isEmpty) {
-                            return 'El campo Contraseña es obligatorio';
+                            return 'Ingrese su contraseña';
                           }
                           return null;
                         },
@@ -110,10 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelButton: 'Iniciar sesión',
                         onPressed: () {
                           if (_keyForm.currentState!.validate()) {
-                            print('Validado');
                             signIn(_email, _password);
-                          } else {
-                            print('No validado');
                           }
                         },
                       ),
@@ -142,10 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await _auth
           .signInWithEmailAndPassword(email: email, password: password)
-          .then((uid) => {
-                print("Login Successful"),
-                Navigator.pushNamed(context, 'user_home_screen')
-              });
+          .then((uid) => {Navigator.pushNamed(context, 'user_home_screen')});
     } on FirebaseAuthException catch (error) {
       switch (error.code) {
         case "invalid-email":
