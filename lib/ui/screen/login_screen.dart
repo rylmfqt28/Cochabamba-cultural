@@ -52,17 +52,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: responsive.hp(3),
                       ),
-                      const TextFormatWidget(
-                          valueText: 'Inicio de Sesión',
-                          align: TextAlign.center,
-                          typeText: 'Title'),
-                      SizedBox(height: responsive.hp(2)),
                       LogoApp(
                           heightLogo:
-                              responsive.isTablet ? 300 : responsive.hp(30),
+                              responsive.isTablet ? 300 : responsive.hp(24),
                           widthLogo:
-                              responsive.isTablet ? 300 : responsive.wp(47)),
+                              responsive.isTablet ? 300 : responsive.wp(41)),
                       SizedBox(height: responsive.hp(3)),
+                      const TextFormatWidget(
+                          valueText: 'Inicio de Sesión',
+                          align: TextAlign.left,
+                          typeText: 'Title'),
+                      SizedBox(height: responsive.hp(2)),
                       InputTextWidget(
                         labelInput: "Correo",
                         hintInput: "Ingrese su correo",
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           _email = value;
                         },
                       ),
-                      SizedBox(height: responsive.hp(2.2)),
+                      SizedBox(height: responsive.hp(2)),
                       InputTextWidget(
                         labelInput: "Contraseña",
                         hintInput: "Ingrese su constraseña",

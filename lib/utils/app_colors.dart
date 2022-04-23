@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class AppColors {
-  final Color _primaryBackground = const Color(0xffffffff);
+  final Color _primaryBackground = const Color(0xfff4f4f4);
   //final Color _secundaryBackground = const Color(0xff222831);
 
   final Color _primaryFont = const Color(0xff1bba6e);
