@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: responsive.hp(5)),
                       GeneralButton(
                         labelButton: 'Iniciar sesión',
-                        onPressed: () {
+                        onPressed: () async {
                           if (_keyForm.currentState!.validate()) {
                             signIn(_email, _password);
                           }
@@ -135,33 +135,33 @@ class _LoginScreenState extends State<LoginScreen> {
   void signIn(String email, String password) async {
     try {
       await _auth
-          .signInWithEmailAndPassword(email: email, password: password)
+          .signInWithEmailAndPassword(email: email.trim(), password: password)
           .then((uid) => {Navigator.pushNamed(context, 'user_home_screen')});
     } on FirebaseAuthException catch (error) {
       switch (error.code) {
         case "invalid-email":
-          print("Formato de correo no valido");
+          _showError("Formato de correo no valido");
           break;
         case "wrong-password":
           // credenciales no validas o usuario no existe
-          print("Contraseña incorrecta");
+          _showError("Correo o contraseña incorrecta");
           break;
         case "user-not-found":
           // credenciales no validas o usuario no existe
-          print("El usuario no existe");
+          _showError("El usuario no se encuentra registrado");
           break;
         case "user-disabled":
           //Usuario deshabilitado
-          print("Usuario dado de baja");
+          _showError("Usuario dado de baja");
           break;
         case "too-many-requests":
-          print("Demasiadas solicitudes");
+          _showError("Demasiadas solicitudes");
           break;
         case "operation-not-allowed":
-          print("Operacion no permitida");
+          _showError("Operacion no permitida");
           break;
         default:
-          print("Error no identificado");
+          _showError("Error no identificado");
       }
     }
   }
@@ -182,5 +182,18 @@ class _LoginScreenState extends State<LoginScreen> {
               labelButtonModal: 'Enviar',
               onPressed: () => {},
             )));
+  }
+
+  _showError(String message) {
+    final dynamic snackBar = SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Text(message),
+        backgroundColor: Colors.red,
+        action: SnackBarAction(
+          label: "Cerrar",
+          textColor: Colors.white,
+          onPressed: () {},
+        ));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
