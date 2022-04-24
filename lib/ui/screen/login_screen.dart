@@ -6,6 +6,7 @@ import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/text_span_widget.dart';
 import 'package:cochabambacultural/ui/widgets/logo_app.dart';
+import 'package:cochabambacultural/ui/widgets/dialog_widget.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
@@ -103,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           spanText: '¿Olvidaste tu contraseña?',
                           eventOnTap: TapGestureRecognizer()
                             ..onTap = () {
-                              print('Abrir modal Recuperar contraseña');
+                              _showDialog(context);
                             },
                           align: TextAlign.right),
                       SizedBox(height: responsive.hp(5)),
@@ -168,5 +169,23 @@ class _LoginScreenState extends State<LoginScreen> {
           print("Error no identificado");
       }
     }
+  }
+
+  _showDialog(BuildContext contextM) {
+    return showDialog(
+        context: contextM,
+        builder: (contextM) => Dialog(
+            backgroundColor: const Color(0xffffffff),
+            insetPadding: const EdgeInsets.all(15),
+            child: DialogWidget(
+              titleText: 'Restablecer contraseña',
+              subTitle:
+                  'Ingrese su correo y se le enviara un mensaje para reestablecer su contraseña.',
+              labelInputDialog: 'Correo',
+              hintInputDialog: 'Ingrese su correo',
+              keyboardType: TextInputType.emailAddress,
+              labelButtonModal: 'Enviar',
+              onPressed: () => {},
+            )));
   }
 }
