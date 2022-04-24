@@ -5,6 +5,7 @@ import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 
 import 'package:cochabambacultural/utils/responsive.dart';
+import 'package:cochabambacultural/utils/validation.dart';
 
 class DialogWidget extends StatelessWidget {
   final String titleText;
@@ -30,6 +31,8 @@ class DialogWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
     final GlobalKey<FormState> _keyFormDialog = GlobalKey();
+
+    Validation validation = Validation();
 
     String _sendEmail = '';
 
@@ -67,17 +70,8 @@ class DialogWidget extends StatelessWidget {
                       hintInput: hintInputDialog,
                       keyboardType: keyboardType,
                       inputPassword: false,
-                      inputValidation: (value) {
-                        if (value!.isEmpty) {
-                          return 'El campo $labelInputDialog es obligatorio';
-                        }
-                        /** ver q hacer aqui */
-                        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                            .hasMatch(value)) {
-                          return 'Formato de correo no valido';
-                        }
-                        return null;
-                      },
+                      inputValidation: (value) =>
+                          validation.validationField(value, 'email'),
                       onChangeInput: (value) {
                         _sendEmail = value;
                       },

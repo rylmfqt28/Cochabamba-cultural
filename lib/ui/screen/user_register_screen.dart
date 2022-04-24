@@ -10,6 +10,7 @@ import 'package:cochabambacultural/user/model/user_model.dart';
 
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
+import 'package:cochabambacultural/utils/validation.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -29,6 +30,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
   String _email = '';
   String _password = '';
   String _confirmPassword = '';
+
+  Validation validation = Validation();
 
   @override
   Widget build(BuildContext context) {
@@ -68,15 +71,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             labelInput: "* Nombre",
                             hintInput: "Ingrese su nombre",
                             inputPassword: false,
-                            inputValidation: (value) {
-                              if (value!.isEmpty) {
-                                return 'El campo Nombre es obligatorio';
-                              }
-                              if (value.length < 3 || value.length > 60) {
-                                return 'El campo Nombre requiere el ingreso de entre 3 a 60 caracteres';
-                              }
-                              return null;
-                            },
+                            inputValidation: (value) =>
+                                validation.validationField(value, "userName"),
                             onChangeInput: (value) {
                               _name = value;
                             },
@@ -87,17 +83,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             hintInput: "Ingrese su correo",
                             keyboardType: TextInputType.emailAddress,
                             inputPassword: false,
-                            inputValidation: (value) {
-                              if (value!.isEmpty) {
-                                return 'El campo Correo es obligatorio';
-                              }
-                              if (!RegExp(
-                                      "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                                  .hasMatch(value)) {
-                                return 'Formato de correo no valido';
-                              }
-                              return null;
-                            },
+                            inputValidation: (value) =>
+                                validation.validationField(value, 'email'),
                             onChangeInput: (value) {
                               _email = value;
                             },
@@ -107,15 +94,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             labelInput: "* Contraseña",
                             hintInput: "Ingrese su constraseña",
                             inputPassword: true,
-                            inputValidation: (value) {
-                              if (value!.isEmpty) {
-                                return 'El campo Contraseña es obligatorio';
-                              }
-                              if (value.length < 3 || value.length > 60) {
-                                return 'El campo Contraseña requiere el ingreso de entre 8 a 15 caracteres';
-                              }
-                              return null;
-                            },
+                            inputValidation: (value) =>
+                                validation.validationField(value, "passwordR"),
                             onChangeInput: (value) {
                               _password = value;
                             },
@@ -125,15 +105,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             labelInput: "* Confirmar contraseña",
                             hintInput: "Ingrese nuevamente su contraseña",
                             inputPassword: true,
-                            inputValidation: (value) {
-                              if (value!.isEmpty) {
-                                return 'El campo Confirmar contraseña es obligatorio';
-                              }
-                              if (value != _password) {
-                                return 'Las contraseñas no coinciden';
-                              }
-                              return null;
-                            },
+                            inputValidation: (value) =>
+                                validation.validationField(
+                                    value, "confirmPassword", _password),
                             onChangeInput: (value) {
                               _confirmPassword = value;
                             },

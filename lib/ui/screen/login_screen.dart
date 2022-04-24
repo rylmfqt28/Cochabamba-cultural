@@ -10,6 +10,7 @@ import 'package:cochabambacultural/ui/widgets/dialog_widget.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
+import 'package:cochabambacultural/utils/validation.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -32,6 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
+
+    Validation validation = Validation();
 
     return Scaffold(
       backgroundColor: colorApp.primaryBackground,
@@ -69,16 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintInput: "Ingrese su correo",
                         keyboardType: TextInputType.emailAddress,
                         inputPassword: false,
-                        inputValidation: (value) {
-                          if (value!.isEmpty) {
-                            return 'El campo Correo es obligatorio';
-                          }
-                          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                              .hasMatch(value)) {
-                            return 'Formato de correo no valido';
-                          }
-                          return null;
-                        },
+                        inputValidation: (value) =>
+                            validation.validationField(value, 'email'),
                         onChangeInput: (value) {
                           _email = value;
                         },
