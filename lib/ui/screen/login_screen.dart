@@ -32,11 +32,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final colorApp = AppColors();
+    final AppColors colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
 
     Validation validation = Validation();
-    //SnackMessages messages = SnackMessages();
 
     return Scaffold(
       backgroundColor: colorApp.primaryBackground,
@@ -144,7 +143,6 @@ class _LoginScreenState extends State<LoginScreen> {
     } on FirebaseAuthException catch (error) {
       switch (error.code) {
         case "invalid-email":
-          _showError("Formato de correo no valido");
           ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
               "El correo ingresado no es valido.", const Color(0xffF0627C)));
           break;
@@ -183,10 +181,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  _showDialog(BuildContext contextM) {
+  _showDialog(BuildContext context) {
     return showDialog(
-        context: contextM,
-        builder: (contextM) => Dialog(
+        context: context,
+        builder: (context) => Dialog(
             backgroundColor: const Color(0xffffffff),
             insetPadding: const EdgeInsets.all(15),
             child: DialogWidget(
@@ -199,18 +197,5 @@ class _LoginScreenState extends State<LoginScreen> {
               labelButtonModal: 'Enviar',
               onPressed: () => {},
             )));
-  }
-
-  _showError(String message) {
-    final dynamic snackBar = SnackBar(
-        duration: const Duration(seconds: 10),
-        content: Text(message),
-        backgroundColor: Colors.red,
-        action: SnackBarAction(
-          label: "Cerrar",
-          textColor: Colors.white,
-          onPressed: () {},
-        ));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
