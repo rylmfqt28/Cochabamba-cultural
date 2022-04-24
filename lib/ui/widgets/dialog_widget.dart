@@ -7,6 +7,8 @@ import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/validation.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class DialogWidget extends StatelessWidget {
   final String titleText;
   final String subTitle;
@@ -82,13 +84,14 @@ class DialogWidget extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                     child: GeneralButton(
                       labelButton: labelButtonModal,
-                      onPressed: () {
+                      onPressed: () async {
                         /***ver q se hace aqui */
                         if (_keyFormDialog.currentState!.validate()) {
-                          print("Enviar mensaje a $_sendEmail");
-                          //cerrar dialog
-                          Navigator.of(context, rootNavigator: true)
-                              .pop('dialog');
+                          //print("Enviar mensaje a $_sendEmail");
+                          await _resetPassword(_sendEmail.trim()).then(
+                              (value) =>
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop('dialog'));
                         }
                       },
                     ),
@@ -100,5 +103,15 @@ class DialogWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _resetPassword(String userEmail) async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: userEmail)
+          .then((value) => print("mensaje enviado"));
+    } on FirebaseAuthException catch (error) {
+      print(error);
+    }
   }
 }
