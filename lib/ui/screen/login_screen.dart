@@ -7,6 +7,7 @@ import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/text_span_widget.dart';
 import 'package:cochabambacultural/ui/widgets/logo_app.dart';
 import 'package:cochabambacultural/ui/widgets/dialog_widget.dart';
+import 'package:cochabambacultural/utils/snack_messages.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
@@ -35,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final Responsive responsive = Responsive.of(context);
 
     Validation validation = Validation();
+    //SnackMessages messages = SnackMessages();
 
     return Scaffold(
       backgroundColor: colorApp.primaryBackground,
@@ -133,6 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void signIn(String email, String password) async {
+    SnackMessages messages = SnackMessages();
+
     try {
       await _auth
           .signInWithEmailAndPassword(email: email.trim(), password: password)
@@ -141,27 +145,40 @@ class _LoginScreenState extends State<LoginScreen> {
       switch (error.code) {
         case "invalid-email":
           _showError("Formato de correo no valido");
+          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+              "El correo ingresado no es valido.", const Color(0xffF0627C)));
           break;
         case "wrong-password":
           // credenciales no validas o usuario no existe
-          _showError("Correo o contraseña incorrecta");
+          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+              "El correo y/o contraseña ingresados no son correctos.",
+              const Color(0xffF0627C)));
           break;
         case "user-not-found":
           // credenciales no validas o usuario no existe
-          _showError("El usuario no se encuentra registrado");
+          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+              "El correo ingresado no se encuentra registrado.",
+              const Color(0xffF0627C)));
           break;
         case "user-disabled":
           //Usuario deshabilitado
-          _showError("Usuario dado de baja");
+          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+              "Su cuenta fue dada de baja.", const Color(0xffF0627C)));
           break;
         case "too-many-requests":
-          _showError("Demasiadas solicitudes");
+          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+              "Se estan realizando demasiadas solicitudes.",
+              const Color(0xffF0627C)));
           break;
         case "operation-not-allowed":
-          _showError("Operacion no permitida");
+          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+              "La accion que intenta realizar no esta permitida.",
+              const Color(0xffF0627C)));
           break;
         default:
-          _showError("Error no identificado");
+          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+              "Ha ocurrido un error intente de nuevo.",
+              const Color(0xffF0627C)));
       }
     }
   }

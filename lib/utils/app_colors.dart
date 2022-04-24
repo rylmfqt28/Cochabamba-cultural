@@ -9,6 +9,8 @@ class AppColors {
 
   final Color _placeHolder = const Color(0xffb4b3b3);
 
+  final Color _errorColor = const Color(0xffF0627C);
+
   AppColors();
 
   Color get primaryBackground => _primaryBackground;
@@ -18,4 +20,6 @@ class AppColors {
   Color get secundaryFont => _secondaryFont;
 
   Color get placeHolder => _placeHolder;
+
+  Color get errorColor => _errorColor;
 }
