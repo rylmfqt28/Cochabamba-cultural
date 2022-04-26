@@ -7,13 +7,14 @@ import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/text_span_widget.dart';
 import 'package:cochabambacultural/ui/widgets/logo_app.dart';
 import 'package:cochabambacultural/ui/widgets/dialog_widget.dart';
-import 'package:cochabambacultural/utils/snack_messages.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/validation.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cochabambacultural/user/bloc/user_bloc.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -25,8 +26,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _keyForm = GlobalKey();
 
-  final _auth = FirebaseAuth.instance;
-
   String _email = '';
   String _password = '';
 
@@ -34,6 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final AppColors colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
+
+    final userBloc = BlocProvider.of<UserBloc>(context);
 
     Validation validation = Validation();
 
@@ -108,7 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelButton: 'Iniciar sesión',
                         onPressed: () async {
                           if (_keyForm.currentState!.validate()) {
-                            signIn(_email, _password);
+                            userBloc.add(SignIn(
+                                email: _email,
+                                password: _password,
+                                context: context));
                           }
                         },
                       ),
@@ -131,54 +135,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  void signIn(String email, String password) async {
-    SnackMessages messages = SnackMessages();
-
-    try {
-      await _auth
-          .signInWithEmailAndPassword(email: email.trim(), password: password)
-          .then((uid) => {Navigator.pushNamed(context, 'user_home_screen')});
-    } on FirebaseAuthException catch (error) {
-      switch (error.code) {
-        case "invalid-email":
-          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-              "El correo ingresado no es valido.", const Color(0xffF0627C)));
-          break;
-        case "wrong-password":
-          // credenciales no validas o usuario no existe
-          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-              "El correo y/o contraseña ingresados no son correctos.",
-              const Color(0xffF0627C)));
-          break;
-        case "user-not-found":
-          // credenciales no validas o usuario no existe
-          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-              "El correo ingresado no se encuentra registrado.",
-              const Color(0xffF0627C)));
-          break;
-        case "user-disabled":
-          //Usuario deshabilitado
-          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-              "Su cuenta fue dada de baja.", const Color(0xffF0627C)));
-          break;
-        case "too-many-requests":
-          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-              "Se estan realizando demasiadas solicitudes.",
-              const Color(0xffF0627C)));
-          break;
-        case "operation-not-allowed":
-          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-              "La accion que intenta realizar no esta permitida.",
-              const Color(0xffF0627C)));
-          break;
-        default:
-          ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-              "Ha ocurrido un error intente de nuevo.",
-              const Color(0xffF0627C)));
-      }
-    }
   }
 
   _showDialog(BuildContext context) {

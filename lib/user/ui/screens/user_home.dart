@@ -11,6 +11,10 @@ import 'package:cochabambacultural/user/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:cochabambacultural/user/bloc/user_bloc.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 class UserHomeScreen extends StatefulWidget {
   const UserHomeScreen({Key? key}) : super(key: key);
 
@@ -23,69 +27,63 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   UserModel userSignin = UserModel();
 
   @override
-  void initState() {
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      userSignin = UserModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
     final colorApp = AppColors();
 
-    return Scaffold(
-      backgroundColor: colorApp.primaryBackground,
-      body: Center(
-        child: Container(
-            constraints: BoxConstraints(
-              maxWidth: responsive.isTablet ? 430 : 360,
-            ),
-            child: Stack(
-              children: [
-                ListView(
+    final userBloc = BlocProvider.of<UserBloc>(context);
+
+    return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
+      if (state.existUser) {
+        return Scaffold(
+          backgroundColor: colorApp.primaryBackground,
+          body: Center(
+            child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: responsive.isTablet ? 430 : 360,
+                ),
+                child: Stack(
                   children: [
-                    SizedBox(height: responsive.hp(8)),
-                    Text(
-                      'BIENVENIDO',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: colorApp.primaryFont,
-                        fontSize: responsive.dp(3.9),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: responsive.hp(5)),
-                    TextFormatWidget(
-                        valueText: "Nombre: ${userSignin.name}",
-                        align: TextAlign.left,
-                        typeText: "Normal"),
-                    SizedBox(height: responsive.hp(3)),
-                    TextFormatWidget(
-                        valueText: "Correo: ${userSignin.email}",
-                        align: TextAlign.left,
-                        typeText: "Normal"),
-                    SizedBox(height: responsive.hp(5)),
-                    GeneralButton(
-                      labelButton: 'Salir',
-                      onPressed: () => logout(context),
+                    ListView(
+                      children: [
+                        SizedBox(height: responsive.hp(8)),
+                        Text(
+                          'BIENVENIDO',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: colorApp.primaryFont,
+                            fontSize: responsive.dp(3.9),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: responsive.hp(5)),
+                        TextFormatWidget(
+                            valueText: "Nombre: ${state.user!.name}",
+                            align: TextAlign.left,
+                            typeText: "Normal"),
+                        SizedBox(height: responsive.hp(3)),
+                        TextFormatWidget(
+                            valueText: "Correo: ${state.user!.email}",
+                            align: TextAlign.left,
+                            typeText: "Normal"),
+                        SizedBox(height: responsive.hp(5)),
+                        GeneralButton(
+                          labelButton: 'Salir',
+                          onPressed: () async {
+                            userBloc.add(SignOut(context: context));
+                          },
+                        ),
+                      ],
                     ),
                   ],
-                ),
-              ],
-            )),
-      ),
-    );
-  }
-
-  Future<void> logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushNamed(context, 'login_screen');
+                )),
+          ),
+        );
+      } else {
+        return Scaffold(
+          backgroundColor: colorApp.primaryBackground,
+        );
+      }
+    });
   }
 }
