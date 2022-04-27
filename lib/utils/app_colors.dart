@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 
 class AppColors {
-  final Color _primaryBackground = const Color(0xffffffff);
+  final Color _primaryBackground = const Color(0xfff4f4f4);
   //final Color _secundaryBackground = const Color(0xff222831);
 
   final Color _primaryFont = const Color(0xff1bba6e);
   final Color _secondaryFont = const Color(0xff212121);
 
   final Color _placeHolder = const Color(0xffb4b3b3);
+
+  final Color _successful = const Color(0xff1bba6e);
+  final Color _errorColor = const Color(0xffF0627C);
 
   AppColors();
 
@@ -18,4 +21,7 @@ class AppColors {
   Color get secundaryFont => _secondaryFont;
 
   Color get placeHolder => _placeHolder;
+
+  Color get errorColor => _errorColor;
+  Color get successful => _successful;
 }
