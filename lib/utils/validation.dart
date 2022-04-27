@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Validation {
   validationField(value, input, [valueAux = '']) {
     switch (input) {
@@ -14,7 +12,7 @@ class Validation {
         // confirm password -> screen user register
         return _confirmPassword(value.trim(), valueAux.trim());
       default:
-        print("Error al validar la informacion");
+      //print("Error al validar la informacion");
     }
   }
 

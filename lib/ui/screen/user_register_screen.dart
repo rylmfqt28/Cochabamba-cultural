@@ -6,14 +6,9 @@ import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/text_span_widget.dart';
 
-import 'package:cochabambacultural/user/model/user_model.dart';
-
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/validation.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
@@ -27,13 +22,12 @@ class UserRegisterScreen extends StatefulWidget {
 }
 
 class _UserRegisterScreenState extends State<UserRegisterScreen> {
-  final _auth = FirebaseAuth.instance;
-
   final GlobalKey<FormState> _keyForm = GlobalKey();
   String _name = '';
   String _email = '';
   String _password = '';
-  String _confirmPassword = '';
+
+  ///String _confirmPassword = '';
 
   Validation validation = Validation();
 
@@ -115,7 +109,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 validation.validationField(
                                     value, "confirmPassword", _password),
                             onChangeInput: (value) {
-                              _confirmPassword = value;
+                              //_confirmPassword = value;
                             },
                           ),
                           SizedBox(height: responsive.hp(7)),
@@ -123,7 +117,6 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             labelButton: 'Registrar',
                             onPressed: () {
                               if (_keyForm.currentState!.validate()) {
-                                //signUp();
                                 userBloc.add(SignUp(
                                     name: _name,
                                     email: _email,
@@ -148,43 +141,5 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                 )),
           )),
     );
-  }
-
-  void signUp() async {
-    try {
-      await _auth
-          .createUserWithEmailAndPassword(email: _email, password: _password)
-          .then((value) => {registerUserToFirestore()})
-          .catchError((e) {
-        print(e!.message);
-      });
-    } on FirebaseAuthException catch (error) {
-      switch (error.code) {
-        case "too-many-requests":
-          print("Demasiadas solicitudes");
-          break;
-        case "operation-not-allowed":
-          print("Operacion no permitida");
-          break;
-        default:
-          print("Error no identificado");
-      }
-    }
-  }
-
-  registerUserToFirestore() async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
-
-    UserModel userModel = UserModel();
-    userModel.uid = user!.uid;
-    userModel.name = _name;
-    userModel.email = user.email;
-
-    await firebaseFirestore
-        .collection("users")
-        .doc(user.uid)
-        .set(userModel.toMap());
-    Navigator.pushNamed(context, 'user_home_screen');
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:meta/meta.dart';
+//import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
 import 'package:cochabambacultural/user/model/user_model.dart';
@@ -67,7 +67,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             .then((value) {
           Navigator.of(event.context, rootNavigator: true).pop('dialog');
           ScaffoldMessenger.of(event.context).showSnackBar(messages.getSnack(
-              "Se envio un mensaje a su correo para recuperar su cuenta.",
+              "Se envió un mensaje a su correo para recuperar su cuenta.",
               colorApp.successful));
         });
       } on FirebaseAuthException catch (error) {
@@ -110,12 +110,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     switch (error) {
       case "wrong-password":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-            "La dirección de correo electrónico o la contraseña son incorrectas.",
+            "El correo electrónico o la contraseña son incorrectas.",
             colorApp.errorColor));
         break;
       case "user-not-found":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-            "El correo ingresado no se encuentra registrado.",
+            "El correo electrónico ingresado no se encuentra registrado.",
             colorApp.errorColor));
         break;
       case "user-disabled":
@@ -124,22 +124,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         break;
       case "invalid-email":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-            "El correo electronico ingresado no es valido.",
+            "El correo electrónico ingresado no es válido.",
             colorApp.errorColor));
         break;
       case "email-already-in-use":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-            "El correo ingresado ya se encuentra registrado.",
+            "El correo electrónico ingresado ya se encuentra registrado.",
             colorApp.errorColor));
         break;
       case "operation-not-allowed":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-            "La operacion que desea realizar no se encuentra disponible.",
+            "La operación que desea realizar no se encuentra disponible.",
             colorApp.errorColor));
         break;
       case "too-many-requests":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-            "Se estan realizando demasiadas solicitudes.",
+            "Se están realizando demasiadas solicitudes.",
             colorApp.errorColor));
         break;
       default:

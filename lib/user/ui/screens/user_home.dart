@@ -9,7 +9,6 @@ import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/user/model/user_model.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
