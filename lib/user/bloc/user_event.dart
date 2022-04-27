@@ -3,17 +3,24 @@ part of 'user_bloc.dart';
 @immutable
 abstract class UserEvent {}
 
-/*
-* Inicio de sesion
-* Registro de usuarios
-* recuperar contraseña
-*/
-
 class SignIn extends UserEvent {
   final String email;
   final String password;
   final BuildContext context;
   SignIn({required this.email, required this.password, required this.context});
+}
+
+class SignUp extends UserEvent {
+  final String name;
+  final String email;
+  final String password;
+  final BuildContext context;
+
+  SignUp(
+      {required this.name,
+      required this.email,
+      required this.password,
+      required this.context});
 }
 
 class SignOut extends UserEvent {

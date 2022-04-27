@@ -6,8 +6,6 @@ import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 
 import 'package:cochabambacultural/utils/responsive.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-
 class DialogWidget extends StatelessWidget {
   final String titleText;
   final String subTitle;

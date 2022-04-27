@@ -23,15 +23,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   SnackMessages messages = SnackMessages();
 
   UserBloc() : super(const UserInitialstate()) {
-    /*
-    * Registro de usuarios
-    * recuperar contraseña
-    */
     on<SignIn>((event, emit) async {
       try {
         await _auth
             .signInWithEmailAndPassword(
-                email: event.email, password: event.password)
+                email: event.email.trim(), password: event.password.trim())
             .then((value) async => {
                   _auth.authStateChanges().listen((User? user) async {
                     if (user != null) {
@@ -51,26 +47,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
                 Navigator.pushNamed(event.context, 'user_home_screen'));
       } on FirebaseAuthException catch (error) {
         await _errorAuthentication(error.code, event.context);
-        // switch (error.code) {
-        //   case "wrong-password":
-        //     ScaffoldMessenger.of(event.context).showSnackBar(messages.getSnack(
-        //         "La dirección de correo electrónico o la contraseña son incorrectas.",
-        //         const Color(0xffF0627C)));
-        //     break;
-        //   case "user-not-found":
-        //     ScaffoldMessenger.of(event.context).showSnackBar(messages.getSnack(
-        //         "El correo ingresado no se encuentra registrado.",
-        //         const Color(0xffF0627C)));
-        //     break;
-        //   case "user-disabled":
-        //     ScaffoldMessenger.of(event.context).showSnackBar(messages.getSnack(
-        //         "Su cuenta esta suspendida", const Color(0xffF0627C)));
-        //     break;
-        //   default:
-        //     ScaffoldMessenger.of(event.context).showSnackBar(messages.getSnack(
-        //         "Ha ocurrido un error intente de nuevo.",
-        //         const Color(0xffF0627C)));
-        // }
       }
     });
 
@@ -81,15 +57,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         emit(const UserInitialstate());
       } on FirebaseAuthException catch (error) {
         await _errorAuthentication(error.code, event.context);
-        // ScaffoldMessenger.of(event.context).showSnackBar(messages.getSnack(
-        //     "Ha ocurrido un error intente de nuevo.", const Color(0xffF0627C)));
       }
     });
 
     on<ResetPassword>((event, emit) async {
       try {
         await FirebaseAuth.instance
-            .sendPasswordResetEmail(email: event.email)
+            .sendPasswordResetEmail(email: event.email.trim())
             .then((value) {
           Navigator.of(event.context, rootNavigator: true).pop('dialog');
           ScaffoldMessenger.of(event.context).showSnackBar(messages.getSnack(
@@ -98,6 +72,32 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         });
       } on FirebaseAuthException catch (error) {
         Navigator.of(event.context, rootNavigator: true).pop('dialog');
+        await _errorAuthentication(error.code, event.context);
+      }
+    });
+
+    on<SignUp>((event, emit) async {
+      try {
+        await _auth
+            .createUserWithEmailAndPassword(
+                email: event.email.trim(), password: event.password.trim())
+            .then((value) async {
+          User? user = _auth.currentUser;
+          UserModel userModel = UserModel();
+          userModel.uid = user!.uid;
+          userModel.name = event.name.trim();
+          userModel.email = user.email;
+
+          await _fireStore
+              .collection("users")
+              .doc(user.uid)
+              .set(userModel.toMap())
+              .then((value) {
+            emit(UserSetState(userModel));
+            Navigator.pushNamed(event.context, 'user_home_screen');
+          });
+        });
+      } on FirebaseAuthException catch (error) {
         await _errorAuthentication(error.code, event.context);
       }
     });
@@ -135,6 +135,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       case "operation-not-allowed":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "La operacion que desea realizar no se encuentra disponible.",
+            colorApp.errorColor));
+        break;
+      case "too-many-requests":
+        ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+            "Se estan realizando demasiadas solicitudes.",
             colorApp.errorColor));
         break;
       default:

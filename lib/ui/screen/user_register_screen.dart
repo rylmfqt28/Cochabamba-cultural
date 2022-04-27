@@ -15,6 +15,10 @@ import 'package:cochabambacultural/utils/validation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:cochabambacultural/user/bloc/user_bloc.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 class UserRegisterScreen extends StatefulWidget {
   const UserRegisterScreen({Key? key}) : super(key: key);
 
@@ -35,6 +39,8 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userBloc = BlocProvider.of<UserBloc>(context);
+
     final Responsive responsive = Responsive.of(context);
     final colorApp = AppColors();
 
@@ -117,7 +123,12 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                             labelButton: 'Registrar',
                             onPressed: () {
                               if (_keyForm.currentState!.validate()) {
-                                signUp();
+                                //signUp();
+                                userBloc.add(SignUp(
+                                    name: _name,
+                                    email: _email,
+                                    password: _password,
+                                    context: context));
                               }
                             },
                           ),
