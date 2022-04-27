@@ -20,3 +20,9 @@ class SignOut extends UserEvent {
   final BuildContext context;
   SignOut({required this.context});
 }
+
+class ResetPassword extends UserEvent {
+  final String email;
+  final BuildContext context;
+  ResetPassword({required this.email, required this.context});
+}

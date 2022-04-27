@@ -9,6 +9,7 @@ class AppColors {
 
   final Color _placeHolder = const Color(0xffb4b3b3);
 
+  final Color _successful = const Color(0xff1bba6e);
   final Color _errorColor = const Color(0xffF0627C);
 
   AppColors();
@@ -22,4 +23,5 @@ class AppColors {
   Color get placeHolder => _placeHolder;
 
   Color get errorColor => _errorColor;
+  Color get successful => _successful;
 }

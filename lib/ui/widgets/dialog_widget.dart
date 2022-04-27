@@ -5,7 +5,6 @@ import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 
 import 'package:cochabambacultural/utils/responsive.dart';
-import 'package:cochabambacultural/utils/validation.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,6 +14,9 @@ class DialogWidget extends StatelessWidget {
   final String labelInputDialog;
   final String hintInputDialog;
   final TextInputType keyboardType;
+  final bool isPassword;
+  final String? Function(String? text)? inputValidation;
+  final void Function(String text) onChangeInput;
   final String labelButtonModal;
   final Function onPressed;
 
@@ -25,6 +27,9 @@ class DialogWidget extends StatelessWidget {
       required this.labelInputDialog,
       required this.hintInputDialog,
       required this.keyboardType,
+      required this.isPassword,
+      required this.inputValidation,
+      required this.onChangeInput,
       required this.labelButtonModal,
       required this.onPressed})
       : super(key: key);
@@ -32,11 +37,6 @@ class DialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
-    final GlobalKey<FormState> _keyFormDialog = GlobalKey();
-
-    Validation validation = Validation();
-
-    String _sendEmail = '';
 
     return Stack(
       alignment: Alignment.center,
@@ -46,72 +46,47 @@ class DialogWidget extends StatelessWidget {
             maxWidth: responsive.isTablet ? 430 : 360,
           ),
           height: responsive.hp(38),
-          child: Form(
-            key: _keyFormDialog,
-            child: Stack(children: [
-              ListView(
-                children: [
-                  SizedBox(height: responsive.hp(2)),
-                  TextFormatWidget(
-                      valueText: titleText,
-                      align: TextAlign.center,
-                      typeText: 'Title'),
-                  SizedBox(height: responsive.hp(2)),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    child: TextFormatWidget(
-                        valueText: subTitle,
-                        align: TextAlign.left,
-                        typeText: 'Normal'),
+          child: Stack(children: [
+            ListView(
+              children: [
+                SizedBox(height: responsive.hp(2)),
+                TextFormatWidget(
+                    valueText: titleText,
+                    align: TextAlign.center,
+                    typeText: 'Title'),
+                SizedBox(height: responsive.hp(2)),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: TextFormatWidget(
+                      valueText: subTitle,
+                      align: TextAlign.left,
+                      typeText: 'Normal'),
+                ),
+                SizedBox(height: responsive.hp(2)),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: InputTextWidget(
+                    labelInput: labelInputDialog,
+                    hintInput: hintInputDialog,
+                    keyboardType: keyboardType,
+                    inputPassword: isPassword,
+                    inputValidation: inputValidation,
+                    onChangeInput: onChangeInput,
                   ),
-                  SizedBox(height: responsive.hp(2)),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    child: InputTextWidget(
-                      labelInput: labelInputDialog,
-                      hintInput: hintInputDialog,
-                      keyboardType: keyboardType,
-                      inputPassword: false,
-                      inputValidation: (value) =>
-                          validation.validationField(value, 'email'),
-                      onChangeInput: (value) {
-                        _sendEmail = value;
-                      },
-                    ),
+                ),
+                SizedBox(height: responsive.hp(4)),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                  child: GeneralButton(
+                    labelButton: labelButtonModal,
+                    onPressed: () => onPressed(),
                   ),
-                  SizedBox(height: responsive.hp(4)),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-                    child: GeneralButton(
-                      labelButton: labelButtonModal,
-                      onPressed: () async {
-                        /***ver q se hace aqui */
-                        if (_keyFormDialog.currentState!.validate()) {
-                          //print("Enviar mensaje a $_sendEmail");
-                          await _resetPassword(_sendEmail.trim()).then(
-                              (value) =>
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop('dialog'));
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ]),
-          ),
+                ),
+              ],
+            ),
+          ]),
         ),
       ],
     );
-  }
-
-  Future<void> _resetPassword(String userEmail) async {
-    try {
-      await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: userEmail)
-          .then((value) => print("mensaje enviado"));
-    } on FirebaseAuthException catch (error) {
-      print(error);
-    }
   }
 }

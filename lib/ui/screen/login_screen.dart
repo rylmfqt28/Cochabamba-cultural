@@ -26,6 +26,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _keyForm = GlobalKey();
 
+  final Validation validation = Validation();
+
   String _email = '';
   String _password = '';
 
@@ -35,8 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final Responsive responsive = Responsive.of(context);
 
     final userBloc = BlocProvider.of<UserBloc>(context);
-
-    Validation validation = Validation();
 
     return Scaffold(
       backgroundColor: colorApp.primaryBackground,
@@ -138,20 +138,40 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _showDialog(BuildContext context) {
+    final GlobalKey<FormState> _keyFormDialog = GlobalKey();
+
+    final userBloc = BlocProvider.of<UserBloc>(context);
+
+    String _sendEmail = '';
+
     return showDialog(
         context: context,
         builder: (context) => Dialog(
             backgroundColor: const Color(0xffffffff),
             insetPadding: const EdgeInsets.all(15),
-            child: DialogWidget(
-              titleText: 'Restablecer contraseña',
-              subTitle:
-                  'Ingrese su correo y se le enviara un mensaje para reestablecer su contraseña.',
-              labelInputDialog: 'Correo',
-              hintInputDialog: 'Ingrese su correo',
-              keyboardType: TextInputType.emailAddress,
-              labelButtonModal: 'Enviar',
-              onPressed: () => {},
+            child: Form(
+              key: _keyFormDialog,
+              child: DialogWidget(
+                titleText: 'Restablecer contraseña',
+                subTitle:
+                    'Ingrese su correo y se le enviara un mensaje para reestablecer su contraseña.',
+                labelInputDialog: 'Correo',
+                hintInputDialog: 'Ingrese su correo',
+                keyboardType: TextInputType.emailAddress,
+                isPassword: false,
+                inputValidation: (value) =>
+                    validation.validationField(value, 'email'),
+                onChangeInput: (value) {
+                  _sendEmail = value;
+                },
+                labelButtonModal: 'Enviar',
+                onPressed: () async {
+                  if (_keyFormDialog.currentState!.validate()) {
+                    userBloc.add(
+                        ResetPassword(email: _sendEmail, context: context));
+                  }
+                },
+              ),
             )));
   }
 }
