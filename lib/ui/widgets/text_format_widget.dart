@@ -32,6 +32,16 @@ class TextFormatWidget extends StatelessWidget {
       );
     }
 
+    // if typeText is equal to 'Subtitle'
+    if (typeText == 'Subtitle') {
+      return Text(
+        valueText,
+        textAlign: align,
+        style: TextStyle(
+            color: colorApp.secundaryFont, fontSize: responsive.dp(2.5)),
+      );
+    }
+
     // if typeText is equal to 'Normal'
     return Text(
       valueText,

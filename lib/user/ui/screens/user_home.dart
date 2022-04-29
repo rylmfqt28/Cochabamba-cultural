@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
+import 'package:cochabambacultural/utils/responsive.dart';
 
 import 'package:cochabambacultural/user/model/user_model.dart';
 
@@ -32,7 +33,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final Responsive responsive = Responsive.of(context);
+    final Responsive responsive = Responsive.of(context);
     final colorApp = AppColors();
 
     final items = <Widget>[
@@ -68,7 +69,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       iconTheme: const IconThemeData(color: Colors.white)),
                   child: CurvedNavigationBar(
                     backgroundColor: Colors.transparent,
-                    height: 60,
+                    height: responsive.hp(7.6),
                     index: index,
                     animationCurve: Curves.easeInOut,
                     animationDuration: const Duration(milliseconds: 300),

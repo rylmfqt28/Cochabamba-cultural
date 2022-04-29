@@ -27,6 +27,7 @@ class _HomeTabState extends State<HomeTab> {
     final userBloc = BlocProvider.of<UserBloc>(context);
 
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
+      final nameUser = state.user!.name!.split(' ');
       return Scaffold(
         backgroundColor: colorApp.primaryBackground,
         body: Center(
@@ -38,22 +39,34 @@ class _HomeTabState extends State<HomeTab> {
                 children: [
                   ListView(
                     children: [
-                      SizedBox(height: responsive.hp(8)),
-                      Text(
-                        'BIENVENIDO',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: colorApp.primaryFont,
-                          fontSize: responsive.dp(3.9),
-                          fontWeight: FontWeight.bold,
-                        ),
+                      SizedBox(height: responsive.hp(2)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          TextFormatWidget(
+                              valueText: "Hola, ${nameUser[0]}",
+                              align: TextAlign.left,
+                              typeText: 'Title'),
+                          ClipOval(
+                            child: Image.network(
+                              'https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/02/322868_1100-800x825.jpg',
+                              width: responsive.dp(7.5),
+                              height: responsive.dp(7.5),
+                            ),
+                          )
+                        ],
                       ),
-                      SizedBox(height: responsive.hp(5)),
-                      TextFormatWidget(
-                          valueText: "Nombre: ${state.user!.name}",
-                          align: TextAlign.left,
-                          typeText: "Normal"),
                       SizedBox(height: responsive.hp(3)),
+                      const TextFormatWidget(
+                          valueText: "Categorias de eventos",
+                          align: TextAlign.left,
+                          typeText: 'Subtitle'),
+                      SizedBox(height: responsive.hp(5)),
+                      const TextFormatWidget(
+                          valueText: "Proximos eventos",
+                          align: TextAlign.left,
+                          typeText: 'Subtitle'),
+                      SizedBox(height: responsive.hp(8)),
                       TextFormatWidget(
                           valueText: "Correo: ${state.user!.email}",
                           align: TextAlign.left,
