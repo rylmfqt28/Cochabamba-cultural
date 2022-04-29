@@ -87,6 +87,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           userModel.uid = user!.uid;
           userModel.name = event.name.trim();
           userModel.email = user.email;
+          userModel.picture =
+              "https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/user-profile-pictures%2Fdefault-picture.png?alt=media&token=c01a7856-6976-4a09-afca-c88cfd36d84c";
 
           await _fireStore
               .collection("users")

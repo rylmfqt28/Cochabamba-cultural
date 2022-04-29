@@ -27,7 +27,8 @@ class _HomeTabState extends State<HomeTab> {
     final userBloc = BlocProvider.of<UserBloc>(context);
 
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
-      final nameUser = state.user!.name!.split(' ');
+      //final nameUser = state.user!.name!.split(' ');
+
       return Scaffold(
         backgroundColor: colorApp.primaryBackground,
         body: Center(
@@ -44,12 +45,14 @@ class _HomeTabState extends State<HomeTab> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextFormatWidget(
-                              valueText: "Hola, ${nameUser[0]}",
+                              valueText:
+                                  "Hola, ${state.user!.name!.split(' ')[0]}",
                               align: TextAlign.left,
                               typeText: 'Title'),
                           ClipOval(
                             child: Image.network(
-                              'https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/02/322868_1100-800x825.jpg',
+                              //'https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/02/322868_1100-800x825.jpg',
+                              state.user!.picture!,
                               width: responsive.dp(7.5),
                               height: responsive.dp(7.5),
                             ),
