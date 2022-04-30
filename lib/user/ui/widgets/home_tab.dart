@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 
-import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
+
+import 'package:cochabambacultural/cultural_event/ui/widgets/event_category_button.dart';
+import 'package:cochabambacultural/cultural_event/ui/widgets/card_event_widget.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
@@ -24,11 +26,7 @@ class _HomeTabState extends State<HomeTab> {
     final colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
 
-    final userBloc = BlocProvider.of<UserBloc>(context);
-
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
-      //final nameUser = state.user!.name!.split(' ');
-
       return Scaffold(
         backgroundColor: colorApp.primaryBackground,
         body: Center(
@@ -51,7 +49,6 @@ class _HomeTabState extends State<HomeTab> {
                               typeText: 'Title'),
                           ClipOval(
                             child: Image.network(
-                              //'https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/02/322868_1100-800x825.jpg',
                               state.user!.picture!,
                               width: responsive.dp(7.5),
                               height: responsive.dp(7.5),
@@ -64,23 +61,150 @@ class _HomeTabState extends State<HomeTab> {
                           valueText: "Categorias de eventos",
                           align: TextAlign.left,
                           typeText: 'Subtitle'),
+                      SizedBox(height: responsive.hp(3)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          EventCategoryButton(
+                              iconEvent: Icons.restaurant,
+                              category: " Gastronomicos",
+                              event: () {
+                                print('ver gastronomicos');
+                              }),
+                          EventCategoryButton(
+                              iconEvent: Icons.music_note,
+                              category: " Musicales",
+                              event: () {
+                                print("ver musicales");
+                              }),
+                        ],
+                      ),
+                      SizedBox(height: responsive.hp(2)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          EventCategoryButton(
+                              iconEvent: Icons.church,
+                              category: " Religiosos",
+                              event: () {
+                                print('ver religiosos');
+                              }),
+                          EventCategoryButton(
+                              iconEvent: Icons.brush,
+                              category: " Artesanales",
+                              event: () {
+                                print("ver artesanales");
+                              }),
+                        ],
+                      ),
                       SizedBox(height: responsive.hp(5)),
                       const TextFormatWidget(
                           valueText: "Proximos eventos",
                           align: TextAlign.left,
                           typeText: 'Subtitle'),
-                      SizedBox(height: responsive.hp(8)),
-                      TextFormatWidget(
-                          valueText: "Correo: ${state.user!.email}",
-                          align: TextAlign.left,
-                          typeText: "Normal"),
-                      SizedBox(height: responsive.hp(5)),
-                      GeneralButton(
-                        labelButton: 'Salir',
-                        onPressed: () async {
-                          userBloc.add(SignOut(context: context));
-                        },
+                      SizedBox(height: responsive.hp(3)),
+                      SizedBox(
+                        height: responsive.hp(35.1),
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            SizedBox(width: responsive.wp(2.5)),
+                            const CardEventWidget(
+                                url:
+                                    'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                                eventTitle:
+                                    'XVI Feria del pescado y aniversario de Villa Tunari.',
+                                eventDate: '30/04/2022'),
+                            // SizedBox(
+                            //   height: responsive.hp(35),
+                            //   width: responsive.wp(55),
+                            //   //color: colorApp.successful,
+                            //   child: Card(
+                            //     color: Colors.white,
+                            //     shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(10)),
+                            //     elevation: 10,
+                            //     child: Column(
+                            //       children: [
+                            //         SizedBox(
+                            //           height: responsive.hp(22),
+                            //           width: responsive.wp(55),
+                            //           child: ClipRRect(
+                            //             borderRadius: const BorderRadius.only(
+                            //                 topLeft: Radius.circular(10.0),
+                            //                 topRight: Radius.circular(10.0)),
+                            //             child: Image.network(
+                            //               'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                            //               fit: BoxFit.fill,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         Padding(
+                            //           padding: const EdgeInsets.fromLTRB(
+                            //               10.0, 8.0, 10.0, 6.0),
+                            //           child: Align(
+                            //             alignment: Alignment.centerLeft,
+                            //             child: Text(
+                            //               'XVI Feria del pescado y aniversario de Villa Tunari.',
+                            //               maxLines: 3,
+                            //               softWrap: true,
+                            //               overflow: TextOverflow.ellipsis,
+                            //               textAlign: TextAlign.left,
+                            //               style: TextStyle(
+                            //                 color: colorApp.secundaryFont,
+                            //                 fontSize: responsive.dp(1.7),
+                            //                 fontWeight: FontWeight.bold,
+                            //               ),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         Row(
+                            //           children: [
+                            //             Padding(
+                            //               padding: const EdgeInsets.fromLTRB(
+                            //                   10.0, 0, 0.0, 0),
+                            //               child: Icon(Icons.calendar_month,
+                            //                   color: colorApp.successful,
+                            //                   size: 20),
+                            //             ),
+                            //             Padding(
+                            //               padding: const EdgeInsets.fromLTRB(
+                            //                   5, 0, 0.0, 0),
+                            //               child: Text(
+                            //                 '28-04-2022',
+                            //                 textAlign: TextAlign.left,
+                            //                 style: TextStyle(
+                            //                   color: colorApp.secundaryFont,
+                            //                   fontSize: responsive.dp(1.7),
+                            //                   fontWeight: FontWeight.normal,
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         )
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            SizedBox(width: responsive.wp(4)),
+                            const CardEventWidget(
+                                url:
+                                    'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                                eventTitle:
+                                    'XXVIII Feria Apicola y sus derivados.',
+                                eventDate: '31/04/2022'),
+                            SizedBox(width: responsive.wp(4)),
+                            const CardEventWidget(
+                                url:
+                                    'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                                eventTitle:
+                                    'Feria artesanal por el dia del trabajo.',
+                                eventDate: '01/05/2022'),
+                            SizedBox(width: responsive.wp(2.5)),
+                          ],
+                        ),
                       ),
+                      SizedBox(height: responsive.hp(3)),
                     ],
                   ),
                 ],

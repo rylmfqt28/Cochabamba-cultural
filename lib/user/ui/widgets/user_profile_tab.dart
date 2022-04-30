@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 
+import 'package:cochabambacultural/ui/widgets/general_button.dart';
+
+import 'package:cochabambacultural/user/bloc/user_bloc.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 class UserProfileTab extends StatefulWidget {
   const UserProfileTab({Key? key}) : super(key: key);
 
@@ -16,6 +22,8 @@ class _UserProfileTabState extends State<UserProfileTab> {
   Widget build(BuildContext context) {
     final colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
+
+    final userBloc = BlocProvider.of<UserBloc>(context);
 
     return Scaffold(
       backgroundColor: colorApp.primaryBackground,
@@ -37,6 +45,12 @@ class _UserProfileTabState extends State<UserProfileTab> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  SizedBox(height: responsive.hp(5)),
+                  GeneralButton(
+                      labelButton: 'Salir',
+                      onPressed: () async {
+                        userBloc.add(SignOut(context: context));
+                      })
                 ],
               )
             ],
