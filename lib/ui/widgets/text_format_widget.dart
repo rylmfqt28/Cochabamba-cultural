@@ -42,6 +42,16 @@ class TextFormatWidget extends StatelessWidget {
       );
     }
 
+    // if typeText is equal to 'Litle'
+    if (typeText == 'Litle') {
+      return Text(
+        valueText,
+        textAlign: align,
+        style: TextStyle(
+            color: colorApp.secundaryFont, fontSize: responsive.dp(1.4)),
+      );
+    }
+
     // if typeText is equal to 'Normal'
     return Text(
       valueText,
