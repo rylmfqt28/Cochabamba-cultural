@@ -47,13 +47,15 @@ class _HomeTabState extends State<HomeTab> {
                                   "Hola, ${state.user!.name!.split(' ')[0]}",
                               align: TextAlign.left,
                               typeText: 'Title'),
-                          ClipOval(
-                            child: Image.network(
-                              state.user!.picture!,
-                              width: responsive.dp(7.5),
-                              height: responsive.dp(7.5),
+                          CircleAvatar(
+                            backgroundColor: colorApp.successful,
+                            radius: responsive.dp(3.2),
+                            child: CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(state.user!.picture!),
+                              radius: responsive.dp(2.9),
                             ),
-                          )
+                          ),
                         ],
                       ),
                       SizedBox(height: responsive.hp(3)),

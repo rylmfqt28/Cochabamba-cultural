@@ -43,11 +43,19 @@ class _UserProfileTabState extends State<UserProfileTab> {
                     SizedBox(height: responsive.hp(3)),
                     Column(
                       children: [
-                        ClipOval(
-                          child: Image.network(
-                            state.user!.picture!,
-                            width: responsive.dp(20),
-                            height: responsive.dp(20),
+                        // ClipOval(
+                        //   child: Image.network(
+                        //     state.user!.picture!,
+                        //     width: responsive.dp(20),
+                        //     height: responsive.dp(20),
+                        //   ),
+                        // ),
+                        CircleAvatar(
+                          backgroundColor: colorApp.successful,
+                          radius: responsive.dp(10),
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(state.user!.picture!),
+                            radius: responsive.dp(9.4),
                           ),
                         ),
                         SizedBox(height: responsive.hp(1)),
@@ -75,46 +83,6 @@ class _UserProfileTabState extends State<UserProfileTab> {
                       ],
                     ),
                     SizedBox(height: responsive.hp(3)),
-                    //aqui
-                    // Column(
-                    //   children: [
-                    //     const Align(
-                    //       alignment: Alignment.topLeft,
-                    //       child: TextFormatWidget(
-                    //           valueText: 'Nombre:',
-                    //           align: TextAlign.left,
-                    //           typeText: 'Litle'),
-                    //     ),
-                    //     Container(
-                    //       height: responsive.hp(6),
-                    //       width: responsive.isTablet ? 430 : 360,
-                    //       decoration: BoxDecoration(
-                    //           border: Border(
-                    //               bottom: BorderSide(
-                    //         color: colorApp.successful,
-                    //       ))),
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         children: [
-                    //           TextFormatWidget(
-                    //               valueText: state.user!.name!,
-                    //               align: TextAlign.left,
-                    //               typeText: 'Normal'),
-                    //           InkWell(
-                    //             onTap: () {
-                    //               print("Editar nombre");
-                    //             },
-                    //             child: Icon(
-                    //               Icons.edit,
-                    //               color: colorApp.successful,
-                    //               size: 25,
-                    //             ),
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ) //fin
-                    //   ],
-                    // ),
                     FieldUpdateAccount(
                         nameField: 'Nombre:',
                         onPressed: () {
