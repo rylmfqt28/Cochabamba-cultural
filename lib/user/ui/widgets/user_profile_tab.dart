@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
+import 'package:cochabambacultural/utils/validation.dart';
 
 import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
+import 'package:cochabambacultural/ui/widgets/dialog_widget.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
@@ -21,6 +23,8 @@ class UserProfileTab extends StatefulWidget {
 }
 
 class _UserProfileTabState extends State<UserProfileTab> {
+  final Validation validation = Validation();
+
   @override
   Widget build(BuildContext context) {
     final colorApp = AppColors();
@@ -43,13 +47,6 @@ class _UserProfileTabState extends State<UserProfileTab> {
                     SizedBox(height: responsive.hp(3)),
                     Column(
                       children: [
-                        // ClipOval(
-                        //   child: Image.network(
-                        //     state.user!.picture!,
-                        //     width: responsive.dp(20),
-                        //     height: responsive.dp(20),
-                        //   ),
-                        // ),
                         CircleAvatar(
                           backgroundColor: colorApp.successful,
                           radius: responsive.dp(10),
@@ -86,7 +83,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
                     FieldUpdateAccount(
                         nameField: 'Nombre:',
                         onPressed: () {
-                          print('Abrir editar nombre');
+                          _showDialog(context, state.user!.uid!);
                         },
                         valueField: state.user!.name!),
                     SizedBox(height: responsive.hp(3)),
@@ -126,5 +123,43 @@ class _UserProfileTabState extends State<UserProfileTab> {
         ),
       );
     });
+  }
+
+  //modal update user data
+  _showDialog(BuildContext context, String uid) {
+    final GlobalKey<FormState> _keyFormDialog = GlobalKey();
+
+    final userBloc = BlocProvider.of<UserBloc>(context);
+
+    String _newName = '';
+
+    return showDialog(
+        context: context,
+        builder: (context) => Dialog(
+            backgroundColor: const Color(0xffffffff),
+            insetPadding: const EdgeInsets.all(15),
+            child: Form(
+              key: _keyFormDialog,
+              child: DialogWidget(
+                titleText: 'Editar nombre',
+                subTitle: 'Ingrese su nombre para guardar los cambios.',
+                labelInputDialog: '* Nombre',
+                hintInputDialog: 'Ingrese su nombre',
+                keyboardType: TextInputType.text,
+                isPassword: false,
+                inputValidation: (value) =>
+                    validation.validationField(value, 'userName'),
+                onChangeInput: (value) {
+                  _newName = value;
+                },
+                labelButtonModal: 'Guardar',
+                onPressed: () async {
+                  if (_keyFormDialog.currentState!.validate()) {
+                    userBloc.add(UpdateNameUser(
+                        uidUser: uid, newName: _newName, context: context));
+                  }
+                },
+              ),
+            )));
   }
 }
