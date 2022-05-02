@@ -65,12 +65,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             .sendPasswordResetEmail(email: event.email.trim())
             .then((value) {
           Navigator.of(event.context, rootNavigator: true).pop('dialog');
-          // ScaffoldMessenger.of(event.context).showSnackBar(messages.getSnack(
-          //     "Se envió un mensaje a su correo para recuperar su cuenta.",
-          //     colorApp.successful));
           _successDialog(
               "Se envió un mensaje a su correo para recuperar su cuenta.",
-              event.context);
+              event.context,
+              150);
         });
       } on FirebaseAuthException catch (error) {
         Navigator.of(event.context, rootNavigator: true).pop('dialog');
@@ -115,7 +113,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }).then((value) {
           Navigator.of(event.context, rootNavigator: true).pop('dialog');
           _successDialog(
-              "Su nombre se ha actualizado correctamente.", event.context);
+              "Su nombre se ha actualizado correctamente.", event.context, 190);
         });
       } on FirebaseException catch (error) {
         await _errorStore(error.code, event.context);
@@ -132,49 +130,57 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico o la contraseña son incorrectas.",
             colorApp.errorColor,
-            context));
+            context,
+            150));
         break;
       case "user-not-found":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico ingresado no se encuentra registrado.",
             colorApp.errorColor,
-            context));
+            context,
+            150));
         break;
       case "user-disabled":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Su cuenta se encuentra suspendida.",
             colorApp.errorColor,
-            context));
+            context,
+            150));
         break;
       case "invalid-email":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico ingresado no es válido.",
             colorApp.errorColor,
-            context));
+            context,
+            150));
         break;
       case "email-already-in-use":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico ingresado ya se encuentra registrado.",
             colorApp.errorColor,
-            context));
+            context,
+            150));
         break;
       case "operation-not-allowed":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "La operación que desea realizar no se encuentra disponible.",
             colorApp.errorColor,
-            context));
+            context,
+            150));
         break;
       case "too-many-requests":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Se están realizando demasiadas solicitudes.",
             colorApp.errorColor,
-            context));
+            context,
+            150));
         break;
       default:
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Ha ocurrido un error intente de nuevo.",
             colorApp.errorColor,
-            context));
+            context,
+            150));
     }
   }
 
@@ -184,36 +190,41 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Ha ocurrido un error de autenticacion.",
             colorApp.errorColor,
-            context));
+            context,
+            190));
         break;
       case "unauthorized":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "No estás autorizado para realizar la acción deseada.",
             colorApp.errorColor,
-            context));
+            context,
+            190));
         break;
       case "retry-limit-exceeded":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Se ha superado el límite de tiempo máximo de espera, intente de nuevo.",
             colorApp.errorColor,
-            context));
+            context,
+            190));
         break;
       case "canceled":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Se ha cancelado la operación, intente de nuevo.",
             colorApp.errorColor,
-            context));
+            context,
+            190));
         break;
       default:
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Ha ocurrido un error intente de nuevo.",
             colorApp.errorColor,
-            context));
+            context,
+            190));
     }
   }
 
-  _successDialog(String message, BuildContext context) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(messages.getSnack(message, colorApp.successful, context));
+  _successDialog(String message, BuildContext context, double margin) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        messages.getSnack(message, colorApp.successful, context, margin));
   }
 }
