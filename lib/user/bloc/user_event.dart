@@ -42,3 +42,10 @@ class UpdateNameUser extends UserEvent {
   UpdateNameUser(
       {required this.uidUser, required this.newName, required this.context});
 }
+
+class UpdateUserPassword extends UserEvent {
+  final String newPassword;
+  final BuildContext context;
+
+  UpdateUserPassword({required this.newPassword, required this.context});
+}

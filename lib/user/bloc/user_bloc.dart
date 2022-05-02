@@ -45,7 +45,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             .then((value) =>
                 Navigator.pushNamed(event.context, 'user_home_screen'));
       } on FirebaseAuthException catch (error) {
-        await _errorAuthentication(error.code, event.context);
+        await _errorAuthentication(error.code, event.context, 150);
       }
     });
 
@@ -55,7 +55,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         Navigator.pushNamed(event.context, 'welcome_screen');
         emit(const UserInitialstate());
       } on FirebaseAuthException catch (error) {
-        await _errorAuthentication(error.code, event.context);
+        await _errorAuthentication(error.code, event.context, 150);
       }
     });
 
@@ -72,7 +72,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         });
       } on FirebaseAuthException catch (error) {
         Navigator.of(event.context, rootNavigator: true).pop('dialog');
-        await _errorAuthentication(error.code, event.context);
+        await _errorAuthentication(error.code, event.context, 190);
       }
     });
 
@@ -100,7 +100,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           });
         });
       } on FirebaseAuthException catch (error) {
-        await _errorAuthentication(error.code, event.context);
+        await _errorAuthentication(error.code, event.context, 150);
       }
     });
 
@@ -119,68 +119,81 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         await _errorStore(error.code, event.context);
       }
     });
+
+    on<UpdateUserPassword>((event, emit) async {
+      try {
+        User? user = FirebaseAuth.instance.currentUser;
+        await user?.updatePassword(event.newPassword).then((value) {
+          add(SignOut(context: event.context));
+          _successDialog("Su contraseña se ha actualizado correctamente.",
+              event.context, 150);
+        });
+      } on FirebaseAuthException catch (error) {
+        await _errorAuthentication(error.code, event.context, 190);
+      }
+    });
   }
 
   /*
   * SncakBar message for error in login, register and reset password
   */
-  _errorAuthentication(String error, BuildContext context) {
+  _errorAuthentication(String error, BuildContext context, double margin) {
     switch (error) {
       case "wrong-password":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico o la contraseña son incorrectas.",
             colorApp.errorColor,
             context,
-            150));
+            margin));
         break;
       case "user-not-found":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico ingresado no se encuentra registrado.",
             colorApp.errorColor,
             context,
-            150));
+            margin));
         break;
       case "user-disabled":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Su cuenta se encuentra suspendida.",
             colorApp.errorColor,
             context,
-            150));
+            margin));
         break;
       case "invalid-email":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico ingresado no es válido.",
             colorApp.errorColor,
             context,
-            150));
+            margin));
         break;
       case "email-already-in-use":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico ingresado ya se encuentra registrado.",
             colorApp.errorColor,
             context,
-            150));
+            margin));
         break;
       case "operation-not-allowed":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "La operación que desea realizar no se encuentra disponible.",
             colorApp.errorColor,
             context,
-            150));
+            margin));
         break;
       case "too-many-requests":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Se están realizando demasiadas solicitudes.",
             colorApp.errorColor,
             context,
-            150));
+            margin));
         break;
       default:
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Ha ocurrido un error intente de nuevo.",
             colorApp.errorColor,
             context,
-            150));
+            margin));
     }
   }
 

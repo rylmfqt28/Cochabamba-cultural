@@ -1,4 +1,5 @@
 /* (5) Tab user profile */
+import 'package:cochabambacultural/utils/snack_messages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
@@ -15,6 +16,8 @@ import 'package:cochabambacultural/user/ui/widgets/field_update_account.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class UserProfileTab extends StatefulWidget {
   const UserProfileTab({Key? key}) : super(key: key);
 
@@ -25,9 +28,11 @@ class UserProfileTab extends StatefulWidget {
 class _UserProfileTabState extends State<UserProfileTab> {
   final Validation validation = Validation();
 
+  final SnackMessages messages = SnackMessages();
+  final colorApp = AppColors();
+
   @override
   Widget build(BuildContext context) {
-    final colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
 
     final userBloc = BlocProvider.of<UserBloc>(context);
@@ -100,7 +105,8 @@ class _UserProfileTabState extends State<UserProfileTab> {
                         const Text(""),
                         InkWell(
                             onTap: () {
-                              print("Abrir editar contraseña");
+                              _showDialogConfirmPassword(
+                                  context, state.user!.email!);
                             },
                             child: const TextFormatWidget(
                                 valueText: 'Cambiar contraseña',
@@ -156,7 +162,101 @@ class _UserProfileTabState extends State<UserProfileTab> {
                 onPressed: () async {
                   if (_keyFormDialog.currentState!.validate()) {
                     userBloc.add(UpdateNameUser(
-                        uidUser: uid, newName: _newName, context: context));
+                        uidUser: uid,
+                        newName: _newName.trim(),
+                        context: context));
+                  }
+                },
+              ),
+            )));
+  }
+
+  //Update password
+  _showDialogConfirmPassword(BuildContext context, String email) {
+    final GlobalKey<FormState> _keyFormDialog = GlobalKey();
+
+    String _password = '';
+
+    return showDialog(
+        context: context,
+        builder: (context) => Dialog(
+            backgroundColor: const Color(0xffffffff),
+            insetPadding: const EdgeInsets.all(15),
+            child: Form(
+              key: _keyFormDialog,
+              child: DialogWidget(
+                titleText: 'Contraseña actual',
+                subTitle: 'Ingrese su contraseña actual para continuar.',
+                labelInputDialog: '* Contraseña',
+                hintInputDialog: 'Ingrese su contraseña actual',
+                keyboardType: TextInputType.text,
+                isPassword: true,
+                inputValidation: (value) {
+                  if (value!.isEmpty) {
+                    return 'El campo Contraseña es obligatorio';
+                  }
+                  return null;
+                },
+                onChangeInput: (value) {
+                  _password = value;
+                },
+                labelButtonModal: 'Confirmar',
+                onPressed: () async {
+                  if (_keyFormDialog.currentState!.validate()) {
+                    await _confirm(email, _password);
+                  }
+                },
+              ),
+            )));
+  }
+
+  Future<void> _confirm(String email, String password) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      var credential =
+          EmailAuthProvider.credential(email: email, password: password);
+      await user?.reauthenticateWithCredential(credential).then((value) {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        _showDialogUpdatePassword(context);
+      });
+    } on FirebaseAuthException catch (error) {
+      Navigator.of(context, rootNavigator: true).pop('dialog');
+      ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+          "La constraseña no es correcta.", colorApp.errorColor, context, 190));
+    }
+  }
+
+  _showDialogUpdatePassword(BuildContext context) {
+    final GlobalKey<FormState> _keyFormDialog = GlobalKey();
+
+    final userBloc = BlocProvider.of<UserBloc>(context);
+
+    String _newPassword = '';
+
+    return showDialog(
+        context: context,
+        builder: (context) => Dialog(
+            backgroundColor: const Color(0xffffffff),
+            insetPadding: const EdgeInsets.all(15),
+            child: Form(
+              key: _keyFormDialog,
+              child: DialogWidget(
+                titleText: 'Editar contraseña',
+                subTitle: 'Ingrese la contraseña nueva.',
+                labelInputDialog: '* Contraseña',
+                hintInputDialog: 'Contraseña nueva',
+                keyboardType: TextInputType.text,
+                isPassword: true,
+                inputValidation: (value) =>
+                    validation.validationField(value, 'passwordR"'),
+                onChangeInput: (value) {
+                  _newPassword = value;
+                },
+                labelButtonModal: 'Guardar',
+                onPressed: () async {
+                  if (_keyFormDialog.currentState!.validate()) {
+                    userBloc.add(UpdateUserPassword(
+                        newPassword: _newPassword, context: context));
                   }
                 },
               ),
