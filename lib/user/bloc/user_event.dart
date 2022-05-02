@@ -49,3 +49,9 @@ class UpdateUserPassword extends UserEvent {
 
   UpdateUserPassword({required this.newPassword, required this.context});
 }
+
+class UpdateImageUser extends UserEvent {
+  final BuildContext context;
+
+  UpdateImageUser({required this.context});
+}

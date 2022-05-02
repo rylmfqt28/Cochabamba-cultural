@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:bloc/bloc.dart';
@@ -9,6 +11,9 @@ import 'package:cochabambacultural/utils/app_colors.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:image_picker/image_picker.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
@@ -116,7 +121,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
               "Su nombre se ha actualizado correctamente.", event.context, 190);
         });
       } on FirebaseException catch (error) {
-        await _errorStore(error.code, event.context);
+        Navigator.of(event.context, rootNavigator: true).pop('dialog');
+        await _errorStore(error.code, event.context, 190);
       }
     });
 
@@ -129,7 +135,42 @@ class UserBloc extends Bloc<UserEvent, UserState> {
               event.context, 150);
         });
       } on FirebaseAuthException catch (error) {
+        Navigator.of(event.context, rootNavigator: true).pop('dialog');
         await _errorAuthentication(error.code, event.context, 190);
+      }
+    });
+
+    // For ios add permission
+    on<UpdateImageUser>((event, emit) async {
+      try {
+        final _storage = FirebaseStorage.instance;
+
+        final imageSelected =
+            await ImagePicker().pickImage(source: ImageSource.gallery);
+
+        if (imageSelected != null) {
+          final pathImage = File(imageSelected.path);
+          await _storage
+              .ref()
+              .child('user-profile-pictures/${state.user!.uid}')
+              .putFile(pathImage)
+              .then((TaskSnapshot taskSnapshot) async {
+            await taskSnapshot.ref.getDownloadURL().then((value) async {
+              await _fireStore
+                  .collection("users")
+                  .doc(state.user!.uid)
+                  .update({'picture': value}).then((valueComp) async {
+                emit(UserSetState(state.user!.copyWith(picture: value)));
+              });
+              // emit(UserSetState(state.user!.copyWith(picture: value)));
+            });
+          }).then((value) {
+            _successDialog(
+                "Su foto de perfil se ha actualizado.", event.context, 190);
+          });
+        }
+      } on FirebaseException catch (error) {
+        await _errorStore(error.code, event.context, 150);
       }
     });
   }
@@ -197,42 +238,42 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  _errorStore(String error, BuildContext context) {
+  _errorStore(String error, BuildContext context, double margin) {
     switch (error) {
       case "unauthenticated":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Ha ocurrido un error de autenticacion.",
             colorApp.errorColor,
             context,
-            190));
+            margin));
         break;
       case "unauthorized":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "No estás autorizado para realizar la acción deseada.",
             colorApp.errorColor,
             context,
-            190));
+            margin));
         break;
       case "retry-limit-exceeded":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Se ha superado el límite de tiempo máximo de espera, intente de nuevo.",
             colorApp.errorColor,
             context,
-            190));
+            margin));
         break;
       case "canceled":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Se ha cancelado la operación, intente de nuevo.",
             colorApp.errorColor,
             context,
-            190));
+            margin));
         break;
       default:
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Ha ocurrido un error intente de nuevo.",
             colorApp.errorColor,
             context,
-            190));
+            margin));
     }
   }
 

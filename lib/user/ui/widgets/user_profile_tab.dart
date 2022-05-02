@@ -66,8 +66,8 @@ class _UserProfileTabState extends State<UserProfileTab> {
                           children: [
                             const Text(""),
                             InkWell(
-                              onTap: () {
-                                print("Open select new user picture profile");
+                              onTap: () async {
+                                userBloc.add(UpdateImageUser(context: context));
                               },
                               child: Text(
                                 'Cambiar foto',
@@ -94,9 +94,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
                     SizedBox(height: responsive.hp(3)),
                     FieldUpdateAccount(
                         nameField: 'Correo:',
-                        onPressed: () {
-                          print('Abrir editar correo');
-                        },
+                        onPressed: () {},
                         valueField: state.user!.email!),
                     SizedBox(height: responsive.hp(4.5)),
                     Row(
@@ -210,6 +208,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
             )));
   }
 
+  //Confirm password dialog
   Future<void> _confirm(String email, String password) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -226,6 +225,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
     }
   }
 
+  //Update password dialog
   _showDialogUpdatePassword(BuildContext context) {
     final GlobalKey<FormState> _keyFormDialog = GlobalKey();
 
