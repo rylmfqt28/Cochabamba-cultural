@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 
+import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
+
+import 'package:cochabambacultural/cultural_event/ui/widgets/event_category_button.dart';
+
+import 'package:cochabambacultural/cultural_event/ui/widgets/event_row_widget.dart';
+
 class CreateEventTab extends StatefulWidget {
   const CreateEventTab({Key? key}) : super(key: key);
 
@@ -28,14 +34,42 @@ class _CreateEventTabState extends State<CreateEventTab> {
             children: [
               ListView(
                 children: [
-                  Text(
-                    'Crear Evento',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: colorApp.primaryFont,
-                      fontSize: responsive.dp(3.9),
-                      fontWeight: FontWeight.bold,
-                    ),
+                  SizedBox(height: responsive.hp(3)),
+                  const TextFormatWidget(
+                      valueText: 'Eventos creados',
+                      align: TextAlign.left,
+                      typeText: 'Title'),
+                  SizedBox(height: responsive.hp(1)),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: EventCategoryButton(
+                        iconEvent: Icons.add,
+                        category: 'Crear evento',
+                        event: () {}),
+                  ),
+                  SizedBox(height: responsive.hp(3)),
+                  EvenRowWidget(
+                    url:
+                        'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                    eventName:
+                        'XVI Feria del pescado y aniversario de Villa Tunari.',
+                    event: () {},
+                  ),
+                  SizedBox(height: responsive.hp(2)),
+                  EvenRowWidget(
+                    url:
+                        'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                    eventName:
+                        'XVI Feria del pescado y aniversario de Villa Tunari.',
+                    event: () {},
+                  ),
+                  SizedBox(height: responsive.hp(2)),
+                  EvenRowWidget(
+                    url:
+                        'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                    eventName:
+                        'XVI Feria del pescado y aniversario de Villa Tunari.',
+                    event: () {},
                   ),
                 ],
               )

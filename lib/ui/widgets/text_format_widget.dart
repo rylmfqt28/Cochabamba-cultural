@@ -24,6 +24,9 @@ class TextFormatWidget extends StatelessWidget {
       return Text(
         valueText,
         textAlign: align,
+        maxLines: 2,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: colorApp.secundaryFont,
           fontSize: responsive.dp(3),
@@ -37,6 +40,9 @@ class TextFormatWidget extends StatelessWidget {
       return Text(
         valueText,
         textAlign: align,
+        maxLines: 2,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
             color: colorApp.secundaryFont, fontSize: responsive.dp(2.5)),
       );
@@ -47,6 +53,9 @@ class TextFormatWidget extends StatelessWidget {
       return Text(
         valueText,
         textAlign: align,
+        maxLines: 2,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
             color: colorApp.secundaryFont, fontSize: responsive.dp(1.4)),
       );
@@ -56,6 +65,9 @@ class TextFormatWidget extends StatelessWidget {
     return Text(
       valueText,
       textAlign: align,
+      maxLines: 2,
+      softWrap: true,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: colorApp.secundaryFont,
         fontSize: responsive.dp(1.9),
