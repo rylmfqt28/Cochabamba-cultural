@@ -221,7 +221,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
     } on FirebaseAuthException catch (error) {
       Navigator.of(context, rootNavigator: true).pop('dialog');
       ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-          "La constraseña no es correcta.", colorApp.errorColor, context, 190));
+          "La contraseña no es correcta.", colorApp.errorColor, context, 190));
     }
   }
 
