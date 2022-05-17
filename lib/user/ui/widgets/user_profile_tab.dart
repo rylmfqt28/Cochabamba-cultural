@@ -86,16 +86,16 @@ class _UserProfileTabState extends State<UserProfileTab> {
                     ),
                     SizedBox(height: responsive.hp(3)),
                     FieldUpdateAccount(
+                        nameField: 'Correo:',
+                        onPressed: () {},
+                        valueField: state.user!.email!),
+                    SizedBox(height: responsive.hp(3)),
+                    FieldUpdateAccount(
                         nameField: 'Nombre:',
                         onPressed: () {
                           _showDialog(context, state.user!.uid!);
                         },
                         valueField: state.user!.name!),
-                    SizedBox(height: responsive.hp(3)),
-                    FieldUpdateAccount(
-                        nameField: 'Correo:',
-                        onPressed: () {},
-                        valueField: state.user!.email!),
                     SizedBox(height: responsive.hp(4.5)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,

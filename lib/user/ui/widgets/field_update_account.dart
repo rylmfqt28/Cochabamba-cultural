@@ -49,14 +49,15 @@ class _FieldUpdateAccountState extends State<FieldUpdateAccount> {
                   valueText: widget.valueField,
                   align: TextAlign.left,
                   typeText: 'Normal'),
-              InkWell(
-                onTap: () => widget.onPressed(),
-                child: Icon(
-                  Icons.edit,
-                  color: colorApp.successful,
-                  size: 25,
-                ),
-              )
+              if (widget.nameField == 'Nombre:')
+                InkWell(
+                  onTap: () => widget.onPressed(),
+                  child: Icon(
+                    Icons.edit,
+                    color: colorApp.successful,
+                    size: 25,
+                  ),
+                )
             ],
           ),
         )
