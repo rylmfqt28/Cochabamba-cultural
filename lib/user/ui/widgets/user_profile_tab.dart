@@ -53,7 +53,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
                     Column(
                       children: [
                         CircleAvatar(
-                          backgroundColor: colorApp.successful,
+                          backgroundColor: colorApp.primaryColor,
                           radius: responsive.dp(10),
                           child: CircleAvatar(
                             backgroundImage: NetworkImage(state.user!.picture!),
@@ -140,7 +140,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
     return showDialog(
         context: context,
         builder: (context) => Dialog(
-            backgroundColor: const Color(0xffffffff),
+            backgroundColor: colorApp.primaryBackground,
             insetPadding: const EdgeInsets.all(15),
             child: Form(
               key: _keyFormDialog,
@@ -178,7 +178,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
     return showDialog(
         context: context,
         builder: (context) => Dialog(
-            backgroundColor: const Color(0xffffffff),
+            backgroundColor: colorApp.primaryBackground,
             insetPadding: const EdgeInsets.all(15),
             child: Form(
               key: _keyFormDialog,
@@ -236,7 +236,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
     return showDialog(
         context: context,
         builder: (context) => Dialog(
-            backgroundColor: const Color(0xffffffff),
+            backgroundColor: colorApp.primaryBackground,
             insetPadding: const EdgeInsets.all(15),
             child: Form(
               key: _keyFormDialog,

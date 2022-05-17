@@ -52,7 +52,7 @@ class EvenRowWidget extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Icon(
               Icons.edit,
-              color: colorApp.successful,
+              color: colorApp.primaryColor,
               size: 30,
             ),
           )

@@ -23,11 +23,11 @@ class EventCategoryButton extends StatelessWidget {
     return Container(
       width: responsive.wp(42),
       height: responsive.hp(6),
-      decoration: const BoxDecoration(boxShadow: [
+      decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-            color: Colors.black54,
+            color: colorApp.shadowColor,
             blurRadius: 8.0,
-            offset: Offset(0.0, 0.15),
+            offset: const Offset(0.0, 0.15),
             spreadRadius: -9)
       ]),
       child: MaterialButton(
@@ -35,7 +35,7 @@ class EventCategoryButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(iconEvent, size: 30, color: colorApp.successful),
+              Icon(iconEvent, size: 30, color: colorApp.primaryColor),
               Text(
                 category,
                 textAlign: TextAlign.left,
@@ -50,7 +50,7 @@ class EventCategoryButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
-          color: Colors.white,
+          color: colorApp.primaryBackground,
           onPressed: () => event()),
     );
   }

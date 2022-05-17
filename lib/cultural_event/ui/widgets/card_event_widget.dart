@@ -25,7 +25,7 @@ class CardEventWidget extends StatelessWidget {
       width: responsive.wp(55),
       //color: colorApp.successful,
       child: Card(
-        color: Colors.white,
+        color: colorApp.primaryBackground,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 10,
         child: Column(
@@ -66,7 +66,7 @@ class CardEventWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 0, 0.0, 0),
                   child: Icon(Icons.calendar_month,
-                      color: colorApp.successful, size: 20),
+                      color: colorApp.primaryColor, size: 20),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(5, 0, 0.0, 0),

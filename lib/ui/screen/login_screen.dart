@@ -24,6 +24,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AppColors colorApp = AppColors();
+
   final GlobalKey<FormState> _keyForm = GlobalKey();
 
   final Validation validation = Validation();
@@ -33,7 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AppColors colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
 
     final userBloc = BlocProvider.of<UserBloc>(context);
@@ -147,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return showDialog(
         context: context,
         builder: (context) => Dialog(
-            backgroundColor: const Color(0xffffffff),
+            backgroundColor: colorApp.primaryBackground,
             insetPadding: const EdgeInsets.all(15),
             child: Form(
               key: _keyFormDialog,

@@ -41,7 +41,8 @@ class _FieldUpdateAccountState extends State<FieldUpdateAccount> {
           decoration: BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-                      color: colorApp.successful, width: responsive.hp(0.3)))),
+                      color: colorApp.primaryColor,
+                      width: responsive.hp(0.3)))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -54,7 +55,7 @@ class _FieldUpdateAccountState extends State<FieldUpdateAccount> {
                   onTap: () => widget.onPressed(),
                   child: Icon(
                     Icons.edit,
-                    color: colorApp.successful,
+                    color: colorApp.primaryColor,
                     size: 25,
                   ),
                 )

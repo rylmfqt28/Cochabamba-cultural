@@ -56,7 +56,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
       if (state.existUser) {
         return Container(
-          color: colorApp.successful,
+          color: colorApp.primaryBackground,
           child: SafeArea(
             top: false,
             child: ClipRect(
@@ -66,7 +66,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 body: tabs[index],
                 bottomNavigationBar: Theme(
                   data: Theme.of(context).copyWith(
-                      iconTheme: const IconThemeData(color: Colors.white)),
+                      iconTheme: IconThemeData(color: colorApp.iconPrimary)),
                   child: CurvedNavigationBar(
                     backgroundColor: Colors.transparent,
                     height: responsive.hp(7.6),
@@ -74,7 +74,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     animationCurve: Curves.easeInOut,
                     animationDuration: const Duration(milliseconds: 300),
                     items: items,
-                    color: colorApp.successful,
+                    color: colorApp.primaryColor,
                     onTap: (index) => setState(() {
                       this.index = index;
                     }),

@@ -48,7 +48,7 @@ class _HomeTabState extends State<HomeTab> {
                               align: TextAlign.left,
                               typeText: 'Title'),
                           CircleAvatar(
-                            backgroundColor: colorApp.successful,
+                            backgroundColor: colorApp.primaryColor,
                             radius: responsive.dp(3.2),
                             child: CircleAvatar(
                               backgroundImage:
