@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-//import 'package:meta/meta.dart';
 import 'package:bloc/bloc.dart';
 
 import 'package:cochabambacultural/user/model/user_model.dart';
@@ -10,6 +11,9 @@ import 'package:cochabambacultural/utils/app_colors.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:image_picker/image_picker.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
@@ -46,7 +50,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             .then((value) =>
                 Navigator.pushNamed(event.context, 'user_home_screen'));
       } on FirebaseAuthException catch (error) {
-        await _errorAuthentication(error.code, event.context);
+        await _errorAuthentication(error.code, event.context, 150);
       }
     });
 
@@ -56,7 +60,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         Navigator.pushNamed(event.context, 'welcome_screen');
         emit(const UserInitialstate());
       } on FirebaseAuthException catch (error) {
-        await _errorAuthentication(error.code, event.context);
+        await _errorAuthentication(error.code, event.context, 150);
       }
     });
 
@@ -66,13 +70,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             .sendPasswordResetEmail(email: event.email.trim())
             .then((value) {
           Navigator.of(event.context, rootNavigator: true).pop('dialog');
-          ScaffoldMessenger.of(event.context).showSnackBar(messages.getSnack(
+          _successDialog(
               "Se envió un mensaje a su correo para recuperar su cuenta.",
-              colorApp.successful));
+              event.context,
+              150);
         });
       } on FirebaseAuthException catch (error) {
         Navigator.of(event.context, rootNavigator: true).pop('dialog');
-        await _errorAuthentication(error.code, event.context);
+        await _errorAuthentication(error.code, event.context, 190);
       }
     });
 
@@ -87,6 +92,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           userModel.uid = user!.uid;
           userModel.name = event.name.trim();
           userModel.email = user.email;
+          userModel.picture =
+              "https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/user-profile-pictures%2Fdefault-picture.png?alt=media&token=c01a7856-6976-4a09-afca-c88cfd36d84c";
 
           await _fireStore
               .collection("users")
@@ -98,7 +105,72 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           });
         });
       } on FirebaseAuthException catch (error) {
-        await _errorAuthentication(error.code, event.context);
+        await _errorAuthentication(error.code, event.context, 150);
+      }
+    });
+
+    on<UpdateNameUser>((event, emit) async {
+      try {
+        await _fireStore.collection("users").doc(event.uidUser).update({
+          'name': event.newName,
+        }).then((value) {
+          emit(UserSetState(state.user!.copyWith(name: event.newName)));
+        }).then((value) {
+          Navigator.of(event.context, rootNavigator: true).pop('dialog');
+          _successDialog(
+              "Su nombre se ha actualizado correctamente.", event.context, 190);
+        });
+      } on FirebaseException catch (error) {
+        Navigator.of(event.context, rootNavigator: true).pop('dialog');
+        await _errorStore(error.code, event.context, 190);
+      }
+    });
+
+    on<UpdateUserPassword>((event, emit) async {
+      try {
+        User? user = FirebaseAuth.instance.currentUser;
+        await user?.updatePassword(event.newPassword).then((value) {
+          add(SignOut(context: event.context));
+          _successDialog("Su contraseña se ha actualizado correctamente.",
+              event.context, 150);
+        });
+      } on FirebaseAuthException catch (error) {
+        Navigator.of(event.context, rootNavigator: true).pop('dialog');
+        await _errorAuthentication(error.code, event.context, 190);
+      }
+    });
+
+    // For ios add permission
+    on<UpdateImageUser>((event, emit) async {
+      try {
+        final _storage = FirebaseStorage.instance;
+
+        final imageSelected =
+            await ImagePicker().pickImage(source: ImageSource.gallery);
+
+        if (imageSelected != null) {
+          final pathImage = File(imageSelected.path);
+          await _storage
+              .ref()
+              .child('user-profile-pictures/${state.user!.uid}')
+              .putFile(pathImage)
+              .then((TaskSnapshot taskSnapshot) async {
+            await taskSnapshot.ref.getDownloadURL().then((value) async {
+              await _fireStore
+                  .collection("users")
+                  .doc(state.user!.uid)
+                  .update({'picture': value}).then((valueComp) async {
+                emit(UserSetState(state.user!.copyWith(picture: value)));
+              });
+              // emit(UserSetState(state.user!.copyWith(picture: value)));
+            });
+          }).then((value) {
+            _successDialog(
+                "Su foto de perfil se ha actualizado.", event.context, 190);
+          });
+        }
+      } on FirebaseException catch (error) {
+        await _errorStore(error.code, event.context, 150);
       }
     });
   }
@@ -106,45 +178,107 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   /*
   * SncakBar message for error in login, register and reset password
   */
-  _errorAuthentication(String error, BuildContext context) {
+  _errorAuthentication(String error, BuildContext context, double margin) {
     switch (error) {
       case "wrong-password":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico o la contraseña son incorrectas.",
-            colorApp.errorColor));
+            colorApp.errorColor,
+            context,
+            margin));
         break;
       case "user-not-found":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico ingresado no se encuentra registrado.",
-            colorApp.errorColor));
+            colorApp.errorColor,
+            context,
+            margin));
         break;
       case "user-disabled":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-            "Su cuenta se encuentra suspendida.", colorApp.errorColor));
+            "Su cuenta se encuentra suspendida.",
+            colorApp.errorColor,
+            context,
+            margin));
         break;
       case "invalid-email":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico ingresado no es válido.",
-            colorApp.errorColor));
+            colorApp.errorColor,
+            context,
+            margin));
         break;
       case "email-already-in-use":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "El correo electrónico ingresado ya se encuentra registrado.",
-            colorApp.errorColor));
+            colorApp.errorColor,
+            context,
+            margin));
         break;
       case "operation-not-allowed":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "La operación que desea realizar no se encuentra disponible.",
-            colorApp.errorColor));
+            colorApp.errorColor,
+            context,
+            margin));
         break;
       case "too-many-requests":
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
             "Se están realizando demasiadas solicitudes.",
-            colorApp.errorColor));
+            colorApp.errorColor,
+            context,
+            margin));
         break;
       default:
         ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
-            "Ha ocurrido un error intente de nuevo.", colorApp.errorColor));
+            "Ha ocurrido un error intente de nuevo.",
+            colorApp.errorColor,
+            context,
+            margin));
     }
+  }
+
+  _errorStore(String error, BuildContext context, double margin) {
+    switch (error) {
+      case "unauthenticated":
+        ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+            "Ha ocurrido un error de autenticacion.",
+            colorApp.errorColor,
+            context,
+            margin));
+        break;
+      case "unauthorized":
+        ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+            "No estás autorizado para realizar la acción deseada.",
+            colorApp.errorColor,
+            context,
+            margin));
+        break;
+      case "retry-limit-exceeded":
+        ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+            "Se ha superado el límite de tiempo máximo de espera, intente de nuevo.",
+            colorApp.errorColor,
+            context,
+            margin));
+        break;
+      case "canceled":
+        ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+            "Se ha cancelado la operación, intente de nuevo.",
+            colorApp.errorColor,
+            context,
+            margin));
+        break;
+      default:
+        ScaffoldMessenger.of(context).showSnackBar(messages.getSnack(
+            "Ha ocurrido un error intente de nuevo.",
+            colorApp.errorColor,
+            context,
+            margin));
+    }
+  }
+
+  _successDialog(String message, BuildContext context, double margin) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        messages.getSnack(message, colorApp.successful, context, margin));
   }
 }

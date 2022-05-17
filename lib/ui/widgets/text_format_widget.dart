@@ -24,6 +24,9 @@ class TextFormatWidget extends StatelessWidget {
       return Text(
         valueText,
         textAlign: align,
+        maxLines: 2,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: colorApp.secundaryFont,
           fontSize: responsive.dp(3),
@@ -32,10 +35,39 @@ class TextFormatWidget extends StatelessWidget {
       );
     }
 
+    // if typeText is equal to 'Subtitle'
+    if (typeText == 'Subtitle') {
+      return Text(
+        valueText,
+        textAlign: align,
+        maxLines: 2,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+            color: colorApp.secundaryFont, fontSize: responsive.dp(2.5)),
+      );
+    }
+
+    // if typeText is equal to 'Litle'
+    if (typeText == 'Litle') {
+      return Text(
+        valueText,
+        textAlign: align,
+        maxLines: 2,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+            color: colorApp.secundaryFont, fontSize: responsive.dp(1.4)),
+      );
+    }
+
     // if typeText is equal to 'Normal'
     return Text(
       valueText,
       textAlign: align,
+      maxLines: 2,
+      softWrap: true,
+      overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: colorApp.secundaryFont,
         fontSize: responsive.dp(1.9),

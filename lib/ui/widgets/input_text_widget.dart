@@ -41,10 +41,10 @@ class InputTextWidget extends StatelessWidget {
         floatingLabelStyle:
             TextStyle(color: colorApp.primaryFont, fontWeight: FontWeight.w500),
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: colorApp.primaryFont),
+          borderSide: BorderSide(color: colorApp.primaryColor),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: colorApp.primaryFont),
+          borderSide: BorderSide(color: colorApp.primaryColor),
         ),
       ),
     );

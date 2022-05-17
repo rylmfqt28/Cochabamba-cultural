@@ -1,12 +1,16 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 
-import 'package:cochabambacultural/ui/widgets/general_button.dart';
-import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
-
 import 'package:cochabambacultural/user/model/user_model.dart';
+
+import 'package:cochabambacultural/user/ui/widgets/home_tab.dart';
+import 'package:cochabambacultural/user/ui/widgets/search_event_tab.dart';
+import 'package:cochabambacultural/user/ui/widgets/create_event_tab.dart';
+import 'package:cochabambacultural/user/ui/widgets/favorites_event_tab.dart';
+import 'package:cochabambacultural/user/ui/widgets/user_profile_tab.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -25,57 +29,59 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel userSignin = UserModel();
 
+  int index = 0;
+
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
     final colorApp = AppColors();
 
-    final userBloc = BlocProvider.of<UserBloc>(context);
+    final items = <Widget>[
+      const Icon(Icons.home, size: 30),
+      const Icon(Icons.search, size: 30),
+      const Icon(Icons.add, size: 30),
+      const Icon(Icons.favorite, size: 30),
+      const Icon(Icons.person, size: 30)
+    ];
+    //final userBloc = BlocProvider.of<UserBloc>(context);
+
+    final tabs = [
+      const HomeTab(),
+      const SearchEventTab(),
+      const CreateEventTab(),
+      const FavoritesEventTab(),
+      const UserProfileTab()
+    ];
 
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
       if (state.existUser) {
-        return Scaffold(
-          backgroundColor: colorApp.primaryBackground,
-          body: Center(
-            child: Container(
-                constraints: BoxConstraints(
-                  maxWidth: responsive.isTablet ? 430 : 360,
+        return Container(
+          color: colorApp.primaryBackground,
+          child: SafeArea(
+            top: false,
+            child: ClipRect(
+              child: Scaffold(
+                backgroundColor: colorApp.primaryBackground,
+                extendBody: true,
+                body: tabs[index],
+                bottomNavigationBar: Theme(
+                  data: Theme.of(context).copyWith(
+                      iconTheme: IconThemeData(color: colorApp.iconPrimary)),
+                  child: CurvedNavigationBar(
+                    backgroundColor: Colors.transparent,
+                    height: responsive.hp(7.6),
+                    index: index,
+                    animationCurve: Curves.easeInOut,
+                    animationDuration: const Duration(milliseconds: 300),
+                    items: items,
+                    color: colorApp.primaryColor,
+                    onTap: (index) => setState(() {
+                      this.index = index;
+                    }),
+                  ),
                 ),
-                child: Stack(
-                  children: [
-                    ListView(
-                      children: [
-                        SizedBox(height: responsive.hp(8)),
-                        Text(
-                          'BIENVENIDO',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: colorApp.primaryFont,
-                            fontSize: responsive.dp(3.9),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: responsive.hp(5)),
-                        TextFormatWidget(
-                            valueText: "Nombre: ${state.user!.name}",
-                            align: TextAlign.left,
-                            typeText: "Normal"),
-                        SizedBox(height: responsive.hp(3)),
-                        TextFormatWidget(
-                            valueText: "Correo: ${state.user!.email}",
-                            align: TextAlign.left,
-                            typeText: "Normal"),
-                        SizedBox(height: responsive.hp(5)),
-                        GeneralButton(
-                          labelButton: 'Salir',
-                          onPressed: () async {
-                            userBloc.add(SignOut(context: context));
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
-                )),
+              ),
+            ),
           ),
         );
       } else {

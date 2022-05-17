@@ -33,3 +33,25 @@ class ResetPassword extends UserEvent {
   final BuildContext context;
   ResetPassword({required this.email, required this.context});
 }
+
+class UpdateNameUser extends UserEvent {
+  final String uidUser;
+  final String newName;
+  final BuildContext context;
+
+  UpdateNameUser(
+      {required this.uidUser, required this.newName, required this.context});
+}
+
+class UpdateUserPassword extends UserEvent {
+  final String newPassword;
+  final BuildContext context;
+
+  UpdateUserPassword({required this.newPassword, required this.context});
+}
+
+class UpdateImageUser extends UserEvent {
+  final BuildContext context;
+
+  UpdateImageUser({required this.context});
+}
