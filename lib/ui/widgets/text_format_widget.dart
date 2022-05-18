@@ -65,7 +65,7 @@ class TextFormatWidget extends StatelessWidget {
     return Text(
       valueText,
       textAlign: align,
-      maxLines: 2,
+      maxLines: 3,
       softWrap: true,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(

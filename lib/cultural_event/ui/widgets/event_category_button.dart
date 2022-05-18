@@ -21,7 +21,7 @@ class EventCategoryButton extends StatelessWidget {
     final Responsive responsive = Responsive.of(context);
 
     return Container(
-      width: responsive.wp(42),
+      width: responsive.wp(45),
       height: responsive.hp(6),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
