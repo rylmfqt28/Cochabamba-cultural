@@ -16,6 +16,8 @@ import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:cochabambacultural/user/ui/screens/user_home.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
@@ -39,103 +41,110 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final userBloc = BlocProvider.of<UserBloc>(context);
 
-    return Scaffold(
-      backgroundColor: colorApp.primaryBackground,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Center(
-          child: Container(
-            constraints: BoxConstraints(
-              maxWidth: responsive.isTablet ? 430 : 360,
-            ),
-            child: Form(
-              key: _keyForm,
-              child: Stack(
-                children: [
-                  ListView(
+    return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
+      if (!state.existUser) {
+        return Scaffold(
+          backgroundColor: colorApp.primaryBackground,
+          body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Center(
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: responsive.isTablet ? 430 : 360,
+                ),
+                child: Form(
+                  key: _keyForm,
+                  child: Stack(
                     children: [
-                      SizedBox(
-                        height: responsive.hp(3),
-                      ),
-                      LogoApp(
-                          heightLogo:
-                              responsive.isTablet ? 300 : responsive.hp(24),
-                          widthLogo:
-                              responsive.isTablet ? 300 : responsive.wp(41)),
-                      SizedBox(height: responsive.hp(3)),
-                      const TextFormatWidget(
-                          valueText: 'Inicio de Sesión',
-                          align: TextAlign.left,
-                          typeText: 'Title'),
-                      SizedBox(height: responsive.hp(2)),
-                      InputTextWidget(
-                        labelInput: "Correo",
-                        hintInput: "Ingrese su correo",
-                        keyboardType: TextInputType.emailAddress,
-                        inputPassword: false,
-                        inputValidation: (value) =>
-                            validation.validationField(value, 'email'),
-                        onChangeInput: (value) {
-                          _email = value;
-                        },
-                      ),
-                      SizedBox(height: responsive.hp(2)),
-                      InputTextWidget(
-                        labelInput: "Contraseña",
-                        hintInput: "Ingrese su constraseña",
-                        inputPassword: true,
-                        inputValidation: (value) {
-                          if (value!.isEmpty) {
-                            return 'Ingrese su contraseña';
-                          }
-                          return null;
-                        },
-                        onChangeInput: (value) {
-                          _password = value;
-                        },
-                      ),
-                      SizedBox(height: responsive.hp(2.2)),
-                      TextSpanWidget(
-                          normalText: '',
-                          spanText: '¿Olvidaste tu contraseña?',
-                          eventOnTap: TapGestureRecognizer()
-                            ..onTap = () {
-                              _showDialog(context);
+                      ListView(
+                        children: [
+                          SizedBox(
+                            height: responsive.hp(3),
+                          ),
+                          LogoApp(
+                              heightLogo:
+                                  responsive.isTablet ? 300 : responsive.hp(24),
+                              widthLogo: responsive.isTablet
+                                  ? 300
+                                  : responsive.wp(41)),
+                          SizedBox(height: responsive.hp(3)),
+                          const TextFormatWidget(
+                              valueText: 'Inicio de Sesión',
+                              align: TextAlign.left,
+                              typeText: 'Title'),
+                          SizedBox(height: responsive.hp(2)),
+                          InputTextWidget(
+                            labelInput: "Correo",
+                            hintInput: "Ingrese su correo",
+                            keyboardType: TextInputType.emailAddress,
+                            inputPassword: false,
+                            inputValidation: (value) =>
+                                validation.validationField(value, 'email'),
+                            onChangeInput: (value) {
+                              _email = value;
                             },
-                          align: TextAlign.right),
-                      SizedBox(height: responsive.hp(5)),
-                      GeneralButton(
-                        labelButton: 'Iniciar sesión',
-                        onPressed: () async {
-                          if (_keyForm.currentState!.validate()) {
-                            userBloc.add(SignIn(
-                                email: _email,
-                                password: _password,
-                                context: context));
-                          }
-                        },
-                      ),
-                      SizedBox(height: responsive.hp(3)),
-                      TextSpanWidget(
-                          normalText: '¿Aún no tienes una cuenta?\n',
-                          spanText: 'Registrate aquí',
-                          eventOnTap: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.pushNamed(
-                                  context, 'user_register_screen');
+                          ),
+                          SizedBox(height: responsive.hp(2)),
+                          InputTextWidget(
+                            labelInput: "Contraseña",
+                            hintInput: "Ingrese su constraseña",
+                            inputPassword: true,
+                            inputValidation: (value) {
+                              if (value!.isEmpty) {
+                                return 'Ingrese su contraseña';
+                              }
+                              return null;
                             },
-                          align: TextAlign.center),
+                            onChangeInput: (value) {
+                              _password = value;
+                            },
+                          ),
+                          SizedBox(height: responsive.hp(2.2)),
+                          TextSpanWidget(
+                              normalText: '',
+                              spanText: '¿Olvidaste tu contraseña?',
+                              eventOnTap: TapGestureRecognizer()
+                                ..onTap = () {
+                                  _showDialog(context);
+                                },
+                              align: TextAlign.right),
+                          SizedBox(height: responsive.hp(5)),
+                          GeneralButton(
+                            labelButton: 'Iniciar sesión',
+                            onPressed: () async {
+                              if (_keyForm.currentState!.validate()) {
+                                userBloc.add(SignIn(
+                                    email: _email,
+                                    password: _password,
+                                    context: context));
+                              }
+                            },
+                          ),
+                          SizedBox(height: responsive.hp(3)),
+                          TextSpanWidget(
+                              normalText: '¿Aún no tienes una cuenta?\n',
+                              spanText: 'Registrate aquí',
+                              eventOnTap: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushNamed(
+                                      context, 'user_register_screen');
+                                },
+                              align: TextAlign.center),
+                        ],
+                      ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
+      } else {
+        return const UserHomeScreen();
+      }
+    });
   }
 
   _showDialog(BuildContext context) {

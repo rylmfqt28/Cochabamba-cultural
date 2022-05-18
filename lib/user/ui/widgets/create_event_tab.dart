@@ -1,4 +1,3 @@
-/* (3) Tab create event event */
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
@@ -44,7 +43,7 @@ class _CreateEventTabState extends State<CreateEventTab> {
                     alignment: Alignment.centerRight,
                     child: EventCategoryButton(
                         iconEvent: Icons.add,
-                        category: 'Crear evento',
+                        category: '   Crear evento',
                         event: () {}),
                   ),
                   SizedBox(height: responsive.hp(3)),

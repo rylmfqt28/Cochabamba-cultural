@@ -43,7 +43,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       const Icon(Icons.favorite, size: 30),
       const Icon(Icons.person, size: 30)
     ];
-    //final userBloc = BlocProvider.of<UserBloc>(context);
 
     final tabs = [
       const HomeTab(),
