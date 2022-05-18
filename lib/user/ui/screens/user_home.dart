@@ -12,6 +12,8 @@ import 'package:cochabambacultural/user/ui/widgets/create_event_tab.dart';
 import 'package:cochabambacultural/user/ui/widgets/favorites_event_tab.dart';
 import 'package:cochabambacultural/user/ui/widgets/user_profile_tab.dart';
 
+import 'package:cochabambacultural/ui/widgets/splash_widget.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
@@ -84,9 +86,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           ),
         );
       } else {
-        return Scaffold(
-          backgroundColor: colorApp.primaryBackground,
-        );
+        return const SplashWidget();
       }
     });
   }
