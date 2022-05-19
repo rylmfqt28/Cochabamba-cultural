@@ -32,8 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final Validation validation = Validation();
 
-  String _email = '';
-  String _password = '';
+  final _email = TextEditingController();
+  final _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             inputPassword: false,
                             inputValidation: (value) =>
                                 validation.validationField(value, 'email'),
-                            onChangeInput: (value) {
-                              _email = value;
-                            },
+                            controllerText: _email,
                           ),
                           SizedBox(height: responsive.hp(2)),
                           InputTextWidget(
@@ -97,9 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                               return null;
                             },
-                            onChangeInput: (value) {
-                              _password = value;
-                            },
+                            controllerText: _password,
                           ),
                           SizedBox(height: responsive.hp(2.2)),
                           TextSpanWidget(
@@ -116,8 +112,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                               if (_keyForm.currentState!.validate()) {
                                 userBloc.add(SignIn(
-                                    email: _email,
-                                    password: _password,
+                                    email: _email.text,
+                                    password: _password.text,
                                     context: context));
                               }
                             },
@@ -152,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final userBloc = BlocProvider.of<UserBloc>(context);
 
-    String _sendEmail = '';
+    final _sendEmail = TextEditingController();
 
     return showDialog(
         context: context,
@@ -171,14 +167,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 isPassword: false,
                 inputValidation: (value) =>
                     validation.validationField(value, 'email'),
-                onChangeInput: (value) {
-                  _sendEmail = value;
-                },
+                controller: _sendEmail,
                 labelButtonModal: 'Enviar',
                 onPressed: () async {
                   if (_keyFormDialog.currentState!.validate()) {
-                    userBloc.add(
-                        ResetPassword(email: _sendEmail, context: context));
+                    userBloc.add(ResetPassword(
+                        email: _sendEmail.text, context: context));
                   }
                 },
               ),

@@ -44,7 +44,9 @@ class _CreateEventTabState extends State<CreateEventTab> {
                     child: EventCategoryButton(
                         iconEvent: Icons.add,
                         category: '   Crear evento',
-                        event: () {}),
+                        event: () {
+                          Navigator.pushNamed(context, 'create_event_screen');
+                        }),
                   ),
                   SizedBox(height: responsive.hp(3)),
                   EvenRowWidget(

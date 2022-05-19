@@ -27,7 +27,7 @@ class EventCategoryButton extends StatelessWidget {
         BoxShadow(
             color: colorApp.shadowColor,
             blurRadius: 8.0,
-            offset: const Offset(0.0, 0.15),
+            offset: const Offset(0.0, 4),
             spreadRadius: -9)
       ]),
       child: MaterialButton(

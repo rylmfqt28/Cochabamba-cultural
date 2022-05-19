@@ -9,7 +9,7 @@ class InputTextWidget extends StatelessWidget {
   final TextInputType keyboardType;
   final bool inputPassword;
   final String? Function(String? text)? inputValidation;
-  final void Function(String text) onChangeInput;
+  final TextEditingController controllerText;
 
   const InputTextWidget(
       {Key? key,
@@ -18,7 +18,7 @@ class InputTextWidget extends StatelessWidget {
       this.keyboardType = TextInputType.text,
       required this.inputPassword,
       required this.inputValidation,
-      required this.onChangeInput})
+      required this.controllerText})
       : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class InputTextWidget extends StatelessWidget {
       validator: inputValidation,
       keyboardType: keyboardType,
       obscureText: inputPassword,
-      onChanged: onChangeInput,
+      controller: controllerText,
       style: TextStyle(fontSize: responsive.dp(1.9)),
       decoration: InputDecoration(
         hintText: hintInput,

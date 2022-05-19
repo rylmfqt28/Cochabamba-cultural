@@ -25,9 +25,11 @@ class UserRegisterScreen extends StatefulWidget {
 
 class _UserRegisterScreenState extends State<UserRegisterScreen> {
   final GlobalKey<FormState> _keyForm = GlobalKey();
-  String _name = '';
-  String _email = '';
-  String _password = '';
+
+  final _name = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _confirmPassword = TextEditingController();
 
   Validation validation = Validation();
 
@@ -75,9 +77,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 inputPassword: false,
                                 inputValidation: (value) => validation
                                     .validationField(value, "userName"),
-                                onChangeInput: (value) {
-                                  _name = value;
-                                },
+                                controllerText: _name,
                               ),
                               SizedBox(height: responsive.hp(2.2)),
                               InputTextWidget(
@@ -87,9 +87,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 inputPassword: false,
                                 inputValidation: (value) =>
                                     validation.validationField(value, 'email'),
-                                onChangeInput: (value) {
-                                  _email = value;
-                                },
+                                controllerText: _email,
                               ),
                               SizedBox(height: responsive.hp(2.2)),
                               InputTextWidget(
@@ -98,9 +96,7 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 inputPassword: true,
                                 inputValidation: (value) => validation
                                     .validationField(value, "passwordR"),
-                                onChangeInput: (value) {
-                                  _password = value;
-                                },
+                                controllerText: _password,
                               ),
                               SizedBox(height: responsive.hp(2.2)),
                               InputTextWidget(
@@ -108,11 +104,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 hintInput: "Ingrese nuevamente su contraseña",
                                 inputPassword: true,
                                 inputValidation: (value) =>
-                                    validation.validationField(
-                                        value, "confirmPassword", _password),
-                                onChangeInput: (value) {
-                                  //_confirmPassword = value;
-                                },
+                                    validation.validationField(value,
+                                        "confirmPassword", _password.text),
+                                controllerText: _confirmPassword,
                               ),
                               SizedBox(height: responsive.hp(7)),
                               GeneralButton(
@@ -120,9 +114,9 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                 onPressed: () {
                                   if (_keyForm.currentState!.validate()) {
                                     userBloc.add(SignUp(
-                                        name: _name,
-                                        email: _email,
-                                        password: _password,
+                                        name: _name.text,
+                                        email: _email.text,
+                                        password: _password.text,
                                         context: context));
                                   }
                                 },

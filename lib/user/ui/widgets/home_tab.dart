@@ -70,15 +70,11 @@ class _HomeTabState extends State<HomeTab> {
                           EventCategoryButton(
                               iconEvent: Icons.restaurant,
                               category: " Gastronomicos",
-                              event: () {
-                                print('ver gastronomicos');
-                              }),
+                              event: () {}),
                           EventCategoryButton(
                               iconEvent: Icons.music_note,
                               category: " Musicales",
-                              event: () {
-                                print("ver musicales");
-                              }),
+                              event: () {}),
                         ],
                       ),
                       SizedBox(height: responsive.hp(2)),
@@ -88,15 +84,11 @@ class _HomeTabState extends State<HomeTab> {
                           EventCategoryButton(
                               iconEvent: Icons.church,
                               category: " Religiosos",
-                              event: () {
-                                print('ver religiosos');
-                              }),
+                              event: () {}),
                           EventCategoryButton(
                               iconEvent: Icons.brush,
                               category: " Artesanales",
-                              event: () {
-                                print("ver artesanales");
-                              }),
+                              event: () {}),
                         ],
                       ),
                       SizedBox(height: responsive.hp(5)),

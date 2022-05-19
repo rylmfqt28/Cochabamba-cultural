@@ -14,7 +14,7 @@ class DialogWidget extends StatelessWidget {
   final TextInputType keyboardType;
   final bool isPassword;
   final String? Function(String? text)? inputValidation;
-  final void Function(String text) onChangeInput;
+  final TextEditingController controller;
   final String labelButtonModal;
   final Function onPressed;
 
@@ -27,7 +27,7 @@ class DialogWidget extends StatelessWidget {
       required this.keyboardType,
       required this.isPassword,
       required this.inputValidation,
-      required this.onChangeInput,
+      required this.controller,
       required this.labelButtonModal,
       required this.onPressed})
       : super(key: key);
@@ -69,7 +69,7 @@ class DialogWidget extends StatelessWidget {
                     keyboardType: keyboardType,
                     inputPassword: isPassword,
                     inputValidation: inputValidation,
-                    onChangeInput: onChangeInput,
+                    controllerText: controller,
                   ),
                 ),
                 SizedBox(height: responsive.hp(4)),

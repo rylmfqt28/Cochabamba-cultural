@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 
-import 'package:cochabambacultural/user/model/user_model.dart';
-
 import 'package:cochabambacultural/user/ui/widgets/home_tab.dart';
 import 'package:cochabambacultural/user/ui/widgets/search_event_tab.dart';
 import 'package:cochabambacultural/user/ui/widgets/create_event_tab.dart';
@@ -29,7 +27,6 @@ class UserHomeScreen extends StatefulWidget {
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel userSignin = UserModel();
 
   int index = 0;
 
