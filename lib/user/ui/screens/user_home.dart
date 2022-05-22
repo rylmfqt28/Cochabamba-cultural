@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
+
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -53,29 +56,37 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
       if (state.existUser) {
-        return Container(
-          color: colorApp.primaryBackground,
-          child: SafeArea(
-            top: false,
-            child: ClipRect(
-              child: Scaffold(
-                backgroundColor: colorApp.primaryBackground,
-                extendBody: true,
-                body: tabs[index],
-                bottomNavigationBar: Theme(
-                  data: Theme.of(context).copyWith(
-                      iconTheme: IconThemeData(color: colorApp.iconPrimary)),
-                  child: CurvedNavigationBar(
-                    backgroundColor: Colors.transparent,
-                    height: responsive.hp(7.6),
-                    index: index,
-                    animationCurve: Curves.easeInOut,
-                    animationDuration: const Duration(milliseconds: 300),
-                    items: items,
-                    color: colorApp.primaryColor,
-                    onTap: (index) => setState(() {
-                      this.index = index;
-                    }),
+        return WillPopScope(
+          onWillPop: () async {
+            // if (Platform.isAndroid) {
+            //   SystemNavigator.pop();
+            // }
+            return false;
+          },
+          child: Container(
+            color: colorApp.primaryBackground,
+            child: SafeArea(
+              top: false,
+              child: ClipRect(
+                child: Scaffold(
+                  backgroundColor: colorApp.primaryBackground,
+                  extendBody: true,
+                  body: tabs[index],
+                  bottomNavigationBar: Theme(
+                    data: Theme.of(context).copyWith(
+                        iconTheme: IconThemeData(color: colorApp.iconPrimary)),
+                    child: CurvedNavigationBar(
+                      backgroundColor: Colors.transparent,
+                      height: responsive.hp(7.6),
+                      index: index,
+                      animationCurve: Curves.easeInOut,
+                      animationDuration: const Duration(milliseconds: 300),
+                      items: items,
+                      color: colorApp.primaryColor,
+                      onTap: (index) => setState(() {
+                        this.index = index;
+                      }),
+                    ),
                   ),
                 ),
               ),
@@ -83,7 +94,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           ),
         );
       } else {
-        return const SplashWidget();
+        return WillPopScope(
+            onWillPop: () async {
+              return false;
+            },
+            child: const SplashWidget());
       }
     });
   }
