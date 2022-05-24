@@ -6,6 +6,8 @@ import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/text_span_widget.dart';
 
+import 'package:cochabambacultural/ui/animation/bounce_animation.dart';
+
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/validation.dart';
@@ -76,66 +78,82 @@ class _UserRegisterScreenState extends State<UserRegisterScreen> {
                                     align: TextAlign.left,
                                     typeText: "Normal"),
                                 SizedBox(height: responsive.hp(3)),
-                                InputTextWidget(
-                                  labelInput: "* Nombre",
-                                  hintInput: "Ingrese su nombre",
-                                  inputPassword: false,
-                                  inputValidation: (value) => validation
-                                      .validationField(value, "userName"),
-                                  controllerText: _name,
+                                BounceAnimation(
+                                  child: InputTextWidget(
+                                    labelInput: "* Nombre",
+                                    hintInput: "Ingrese su nombre",
+                                    inputPassword: false,
+                                    inputValidation: (value) => validation
+                                        .validationField(value, "userName"),
+                                    controllerText: _name,
+                                  ),
                                 ),
                                 SizedBox(height: responsive.hp(2.2)),
-                                InputTextWidget(
-                                  labelInput: "* Correo",
-                                  hintInput: "Ingrese su correo",
-                                  keyboardType: TextInputType.emailAddress,
-                                  inputPassword: false,
-                                  inputValidation: (value) => validation
-                                      .validationField(value, 'email'),
-                                  controllerText: _email,
+                                BounceAnimation(
+                                  child: InputTextWidget(
+                                    labelInput: "* Correo",
+                                    hintInput: "Ingrese su correo",
+                                    keyboardType: TextInputType.emailAddress,
+                                    inputPassword: false,
+                                    inputValidation: (value) => validation
+                                        .validationField(value, 'email'),
+                                    controllerText: _email,
+                                  ),
                                 ),
                                 SizedBox(height: responsive.hp(2.2)),
-                                InputTextWidget(
-                                  labelInput: "* Contraseña",
-                                  hintInput: "Ingrese su constraseña",
-                                  inputPassword: true,
-                                  inputValidation: (value) => validation
-                                      .validationField(value, "passwordR"),
-                                  controllerText: _password,
+                                BounceAnimation(
+                                  child: InputTextWidget(
+                                    labelInput: "* Contraseña",
+                                    hintInput: "Ingrese su constraseña",
+                                    inputPassword: true,
+                                    inputValidation: (value) => validation
+                                        .validationField(value, "passwordR"),
+                                    controllerText: _password,
+                                  ),
                                 ),
                                 SizedBox(height: responsive.hp(2.2)),
-                                InputTextWidget(
-                                  labelInput: "* Confirmar contraseña",
-                                  hintInput: "Ingrese nuevamente su contraseña",
-                                  inputPassword: true,
-                                  inputValidation: (value) =>
-                                      validation.validationField(value,
-                                          "confirmPassword", _password.text),
-                                  controllerText: _confirmPassword,
+                                BounceAnimation(
+                                  child: InputTextWidget(
+                                    labelInput: "* Confirmar contraseña",
+                                    hintInput:
+                                        "Ingrese nuevamente su contraseña",
+                                    inputPassword: true,
+                                    inputValidation: (value) =>
+                                        validation.validationField(value,
+                                            "confirmPassword", _password.text),
+                                    controllerText: _confirmPassword,
+                                  ),
                                 ),
                                 SizedBox(height: responsive.hp(7)),
-                                GeneralButton(
-                                  labelButton: 'Registrar',
-                                  onPressed: () {
-                                    if (_keyForm.currentState!.validate()) {
-                                      userBloc.add(SignUp(
-                                          name: _name.text,
-                                          email: _email.text,
-                                          password: _password.text,
-                                          context: context));
-                                    }
-                                  },
+                                BounceAnimation(
+                                  orientation: Axis.vertical,
+                                  child: GeneralButton(
+                                    labelButton: 'Registrar',
+                                    onPressed: () {
+                                      if (_keyForm.currentState!.validate()) {
+                                        userBloc.add(SignUp(
+                                            name: _name.text,
+                                            email: _email.text,
+                                            password: _password.text,
+                                            context: context));
+                                      }
+                                    },
+                                  ),
                                 ),
                                 SizedBox(height: responsive.dp(3)),
-                                TextSpanWidget(
-                                    normalText: '¿Ya tienes una cuenta?\n',
-                                    spanText: 'Iniciar sesión',
-                                    eventOnTap: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.pushNamed(
-                                            context, 'login_screen');
-                                      },
-                                    align: TextAlign.center),
+                                BounceAnimation(
+                                  orientation: Axis.vertical,
+                                  duration: const Duration(milliseconds: 1000),
+                                  child: TextSpanWidget(
+                                      normalText: '¿Ya tienes una cuenta?\n',
+                                      spanText: 'Iniciar sesión',
+                                      eventOnTap: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.pushNamed(
+                                              context, 'login_screen');
+                                        },
+                                      align: TextAlign.center),
+                                ),
                               ],
                             ),
                           ],

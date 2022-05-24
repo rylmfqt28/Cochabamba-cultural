@@ -1,3 +1,4 @@
+import 'package:cochabambacultural/ui/animation/bounce_animation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -68,40 +69,52 @@ class _LoginScreenState extends State<LoginScreen> {
                             SizedBox(
                               height: responsive.hp(3),
                             ),
-                            LogoApp(
-                                heightLogo: responsive.isTablet
-                                    ? 300
-                                    : responsive.hp(24),
-                                widthLogo: responsive.isTablet
-                                    ? 300
-                                    : responsive.wp(41)),
+                            BounceAnimation(
+                              orientation: Axis.vertical,
+                              curveEffect: Curves.bounceOut,
+                              child: LogoApp(
+                                  heightLogo: responsive.isTablet
+                                      ? 300
+                                      : responsive.hp(24),
+                                  widthLogo: responsive.isTablet
+                                      ? 300
+                                      : responsive.wp(41)),
+                            ),
                             SizedBox(height: responsive.hp(3)),
-                            const TextFormatWidget(
-                                valueText: 'Inicio de Sesión',
-                                align: TextAlign.left,
-                                typeText: 'Title'),
-                            SizedBox(height: responsive.hp(2)),
-                            InputTextWidget(
-                              labelInput: "Correo",
-                              hintInput: "Ingrese su correo",
-                              keyboardType: TextInputType.emailAddress,
-                              inputPassword: false,
-                              inputValidation: (value) =>
-                                  validation.validationField(value, 'email'),
-                              controllerText: _email,
+                            const BounceAnimation(
+                              child: TextFormatWidget(
+                                  valueText: 'Inicio de Sesión',
+                                  align: TextAlign.left,
+                                  typeText: 'Title'),
                             ),
                             SizedBox(height: responsive.hp(2)),
-                            InputTextWidget(
-                              labelInput: "Contraseña",
-                              hintInput: "Ingrese su constraseña",
-                              inputPassword: true,
-                              inputValidation: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Ingrese su contraseña';
-                                }
-                                return null;
-                              },
-                              controllerText: _password,
+                            BounceAnimation(
+                              duration: const Duration(milliseconds: 980),
+                              child: InputTextWidget(
+                                labelInput: "Correo",
+                                hintInput: "Ingrese su correo",
+                                keyboardType: TextInputType.emailAddress,
+                                inputPassword: false,
+                                inputValidation: (value) =>
+                                    validation.validationField(value, 'email'),
+                                controllerText: _email,
+                              ),
+                            ),
+                            SizedBox(height: responsive.hp(2)),
+                            BounceAnimation(
+                              duration: const Duration(milliseconds: 980),
+                              child: InputTextWidget(
+                                labelInput: "Contraseña",
+                                hintInput: "Ingrese su constraseña",
+                                inputPassword: true,
+                                inputValidation: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Ingrese su contraseña';
+                                  }
+                                  return null;
+                                },
+                                controllerText: _password,
+                              ),
                             ),
                             SizedBox(height: responsive.hp(2.2)),
                             TextSpanWidget(
@@ -113,27 +126,34 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 align: TextAlign.right),
                             SizedBox(height: responsive.hp(5)),
-                            GeneralButton(
-                              labelButton: 'Iniciar sesión',
-                              onPressed: () async {
-                                if (_keyForm.currentState!.validate()) {
-                                  userBloc.add(SignIn(
-                                      email: _email.text,
-                                      password: _password.text,
-                                      context: context));
-                                }
-                              },
+                            BounceAnimation(
+                              orientation: Axis.vertical,
+                              child: GeneralButton(
+                                labelButton: 'Iniciar sesión',
+                                onPressed: () async {
+                                  if (_keyForm.currentState!.validate()) {
+                                    userBloc.add(SignIn(
+                                        email: _email.text,
+                                        password: _password.text,
+                                        context: context));
+                                  }
+                                },
+                              ),
                             ),
                             SizedBox(height: responsive.hp(3)),
-                            TextSpanWidget(
-                                normalText: '¿Aún no tienes una cuenta?\n',
-                                spanText: 'Registrate aquí',
-                                eventOnTap: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.pushNamed(
-                                        context, 'user_register_screen');
-                                  },
-                                align: TextAlign.center),
+                            BounceAnimation(
+                              orientation: Axis.vertical,
+                              duration: const Duration(milliseconds: 1000),
+                              child: TextSpanWidget(
+                                  normalText: '¿Aún no tienes una cuenta?\n',
+                                  spanText: 'Registrate aquí',
+                                  eventOnTap: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.pushNamed(
+                                          context, 'user_register_screen');
+                                    },
+                                  align: TextAlign.center),
+                            ),
                           ],
                         ),
                       ],

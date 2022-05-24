@@ -5,20 +5,22 @@ class BounceAnimation extends StatelessWidget {
   final Duration duration;
   final double offset;
   final Axis orientation;
+  final Curve curveEffect;
 
   const BounceAnimation(
       {Key? key,
       required this.child,
       this.duration = const Duration(milliseconds: 900),
       this.offset = 140.0,
-      this.orientation = Axis.horizontal})
+      this.orientation = Axis.horizontal,
+      this.curveEffect = Curves.elasticOut})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TweenAnimationBuilder<double>(
         child: child,
-        curve: Curves.elasticOut,
+        curve: curveEffect,
         tween: Tween(begin: 1.0, end: 0),
         duration: duration,
         builder: (context, value, child) {
