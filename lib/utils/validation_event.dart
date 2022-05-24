@@ -27,8 +27,8 @@ class ValidationEvent {
       return 'El campo Descripción es obligatorio';
     }
 
-    if (value.length < 10 || value.length > 100) {
-      return 'El campo Descripción requiere el ingreso de entre 10 a 500 caracteres';
+    if (value.length < 10 || value.length > 600) {
+      return 'El campo Descripción requiere el ingreso de entre 10 a 600 caracteres';
     }
 
     return null;

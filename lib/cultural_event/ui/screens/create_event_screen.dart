@@ -6,6 +6,7 @@ import 'package:cochabambacultural/utils/validation_event.dart';
 
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/input_text_widget.dart';
+import 'package:cochabambacultural/ui/widgets/input_text_area_widget.dart';
 import 'package:cochabambacultural/ui/widgets/general_button.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
@@ -23,6 +24,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final GlobalKey<FormState> _keyForm = GlobalKey();
 
   final _event = TextEditingController();
+  final _description = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +55,18 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.arrow_back,
-                              color: colorApp.primaryColor,
-                              size: responsive.dp(3.5),
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Icon(
+                                Icons.arrow_back,
+                                color: colorApp.primaryColor,
+                                size: responsive.dp(3.5),
+                              ),
                             ),
                             SizedBox(
-                              width: responsive.wp(2),
+                              width: responsive.wp(3.5),
                             ),
                             const TextFormatWidget(
                                 valueText: 'Crear Evento',
@@ -76,7 +83,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             align: TextAlign.left,
                             typeText: 'Normal'),
                         SizedBox(
-                          height: responsive.hp(2),
+                          height: responsive.hp(2.5),
                         ),
                         InputTextWidget(
                           labelInput: '* Nombre del evento',
@@ -85,10 +92,27 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           inputValidation: (value) =>
                               validate.validationFileEvent(value, 'nameEvent'),
                           controllerText: _event,
-                          // onChangeInput: (value) {
-                          //   _eventName = value;
-                          // })
-                        )
+                        ),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        InputTextAreaWidget(
+                            labelInput: '* Descripción',
+                            hintInput: 'Ingrese la descripción del evento',
+                            inputValidation: (value) => validate
+                                .validationFileEvent(value, "description"),
+                            controllerText: _description,
+                            maxCharacters: 600),
+                        SizedBox(
+                          height: responsive.hp(3),
+                        ),
+                        GeneralButton(
+                            labelButton: 'Crear evento',
+                            onPressed: () async {
+                              if (_keyForm.currentState!.validate()) {
+                                // event - create event
+                              }
+                            })
                       ],
                     )
                   ],
