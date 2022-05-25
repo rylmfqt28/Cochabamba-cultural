@@ -9,6 +9,8 @@ import 'package:cochabambacultural/ui/widgets/input_text_widget.dart';
 import 'package:cochabambacultural/ui/widgets/input_text_area_widget.dart';
 import 'package:cochabambacultural/ui/widgets/general_button.dart';
 
+import 'package:cochabambacultural/cultural_event/ui/widgets/radio_button_event.dart';
+
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,6 +33,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     final Responsive responsive = Responsive.of(context);
     final colorApp = AppColors();
     final validate = ValidationEvent();
+
+    String _categoryEvent = 'Gastronómico';
 
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
       return Scaffold(
@@ -103,6 +107,20 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                 .validationFileEvent(value, "description"),
                             controllerText: _description,
                             maxCharacters: 600),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        const TextFormatWidget(
+                            valueText: '* Categoría',
+                            align: TextAlign.left,
+                            typeText: 'Normal'),
+                        SizedBox(
+                          height: responsive.hp(1.5),
+                        ),
+                        RadioButtonEvent(changeCategory: (value) {
+                          _categoryEvent = value;
+                          print(_categoryEvent);
+                        }),
                         SizedBox(
                           height: responsive.hp(3),
                         ),
