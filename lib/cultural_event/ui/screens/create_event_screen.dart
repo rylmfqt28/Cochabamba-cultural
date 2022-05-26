@@ -27,6 +27,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   final _event = TextEditingController();
   final _description = TextEditingController();
+  final _costEvent = TextEditingController();
+  final _transport = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +113,20 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           height: responsive.hp(2.2),
                         ),
                         const TextFormatWidget(
+                            valueText: '* Fecha de inicio',
+                            align: TextAlign.left,
+                            typeText: 'Normal'),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        const TextFormatWidget(
+                            valueText: '* Fecha fin',
+                            align: TextAlign.left,
+                            typeText: 'Normal'),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        const TextFormatWidget(
                             valueText: '* Categoría',
                             align: TextAlign.left,
                             typeText: 'Normal'),
@@ -119,8 +135,59 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         ),
                         RadioButtonEvent(changeCategory: (value) {
                           _categoryEvent = value;
-                          print(_categoryEvent);
                         }),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        const TextFormatWidget(
+                            valueText: '* Ubicación',
+                            align: TextAlign.left,
+                            typeText: 'Normal'),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        const TextFormatWidget(
+                            valueText: '* Imagen principal',
+                            align: TextAlign.left,
+                            typeText: 'Normal'),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        const TextFormatWidget(
+                            valueText: 'Imagenes secundarias',
+                            align: TextAlign.left,
+                            typeText: 'Normal'),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        const TextFormatWidget(
+                            valueText: '* Etiquetas',
+                            align: TextAlign.left,
+                            typeText: 'Normal'),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        InputTextWidget(
+                          labelInput: 'Precio',
+                          hintInput: 'Ingrese el precio de entrada al evento',
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          inputPassword: false,
+                          inputValidation: (value) =>
+                              validate.validationFileEvent(value, 'costEvent'),
+                          controllerText: _costEvent,
+                        ),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
+                        InputTextAreaWidget(
+                            labelInput: 'Transporte',
+                            hintInput:
+                                'Ingrese los diferentes medios de transporte para llegar al lugar del evento',
+                            inputValidation: (value) => validate
+                                .validationFileEvent(value, "transport"),
+                            controllerText: _transport,
+                            maxCharacters: 150),
                         SizedBox(
                           height: responsive.hp(3),
                         ),
@@ -130,7 +197,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               if (_keyForm.currentState!.validate()) {
                                 // event - create event
                               }
-                            })
+                            }),
+                        SizedBox(
+                          height: responsive.hp(5),
+                        ),
                       ],
                     )
                   ],
