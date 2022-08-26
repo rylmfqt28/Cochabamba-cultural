@@ -51,7 +51,7 @@ class _CreateEventTabState extends State<CreateEventTab> {
                   SizedBox(height: responsive.hp(3)),
                   EvenRowWidget(
                     url:
-                        'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                        'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
                     eventName:
                         'XVI Feria del pescado y aniversario de Villa Tunari.',
                     event: () {},
@@ -59,7 +59,7 @@ class _CreateEventTabState extends State<CreateEventTab> {
                   SizedBox(height: responsive.hp(2)),
                   EvenRowWidget(
                     url:
-                        'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                        'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
                     eventName:
                         'XVI Feria del pescado y aniversario de Villa Tunari.',
                     event: () {},
@@ -67,7 +67,7 @@ class _CreateEventTabState extends State<CreateEventTab> {
                   SizedBox(height: responsive.hp(2)),
                   EvenRowWidget(
                     url:
-                        'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                        'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
                     eventName:
                         'XVI Feria del pescado y aniversario de Villa Tunari.',
                     event: () {},
