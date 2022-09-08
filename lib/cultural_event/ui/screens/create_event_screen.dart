@@ -8,8 +8,10 @@ import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/input_text_widget.dart';
 import 'package:cochabambacultural/ui/widgets/input_text_area_widget.dart';
 import 'package:cochabambacultural/ui/widgets/general_button.dart';
+import 'package:cochabambacultural/ui/widgets/dialog_widget.dart';
 
 import 'package:cochabambacultural/cultural_event/ui/widgets/radio_button_event.dart';
+import 'package:cochabambacultural/cultural_event/ui/widgets/add_button.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
@@ -25,16 +27,19 @@ class CreateEventScreen extends StatefulWidget {
 class _CreateEventScreenState extends State<CreateEventScreen> {
   final GlobalKey<FormState> _keyForm = GlobalKey();
 
+  final colorApp = AppColors();
+  final validate = ValidationEvent();
+
   final _event = TextEditingController();
   final _description = TextEditingController();
   final _costEvent = TextEditingController();
   final _transport = TextEditingController();
 
+  List<String> _tags = [];
+
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
-    final colorApp = AppColors();
-    final validate = ValidationEvent();
 
     String _categoryEvent = 'Gastronómico';
 
@@ -167,6 +172,46 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
+                        SizedBox(
+                          height: responsive.hp(10),
+                          child: Row(
+                            children: [
+                              AddButton(
+                                  iconAdd: Icons.add,
+                                  event: () {
+                                    _showDialog(context);
+                                  }),
+                              SizedBox(
+                                width: responsive.wp(2),
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const ClampingScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    padding:
+                                        EdgeInsets.only(left: responsive.wp(2)),
+                                    itemCount: _tags.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                          padding: EdgeInsets.only(
+                                              right: responsive.wp(3)),
+                                          child: Chip(
+                                            label: Text(_tags[index]),
+                                            onDeleted: () => {
+                                              setState(() {
+                                                _tags.remove(_tags[index]);
+                                              })
+                                            },
+                                          ));
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
                         InputTextWidget(
                           labelInput: 'Precio',
                           hintInput: 'Ingrese el precio de entrada al evento',
@@ -211,5 +256,39 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         ),
       );
     });
+  }
+
+  _showDialog(BuildContext context) {
+    final GlobalKey<FormState> _keyFormDialog = GlobalKey();
+
+    final _newTag = TextEditingController();
+
+    return showDialog(
+        context: context,
+        builder: (context) => Dialog(
+            backgroundColor: colorApp.primaryBackground,
+            insetPadding: const EdgeInsets.all(15),
+            child: Form(
+              key: _keyFormDialog,
+              child: DialogWidget(
+                titleText: 'Crear Etiqueta',
+                subTitle: 'Ingrese la etiqueta que quiera agregar al evento.',
+                labelInputDialog: 'Etiqueta',
+                hintInputDialog: 'Ingrese la etiqueta',
+                keyboardType: TextInputType.text,
+                isPassword: false,
+                inputValidation: (value) =>
+                    validate.validationFileEvent(value, "tagName"),
+                controller: _newTag,
+                labelButtonModal: 'Crear',
+                onPressed: () async {
+                  if (_keyFormDialog.currentState!.validate()) {
+                    setState(() {
+                      _tags.add(_newTag.text);
+                    });
+                  }
+                },
+              ),
+            )));
   }
 }
