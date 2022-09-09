@@ -12,7 +12,7 @@ class ValidationEvent {
       case "tagName":
         return _validateTagName(value.trim());
       default:
-      //print("Error al validar la informacion");
+        return 'La validacion fallo.';
     }
   }
 
@@ -63,6 +63,24 @@ class ValidationEvent {
     }
     if (value.length < 4 || value.length > 20) {
       return 'El campo Etiqueta requiere el ingreso de entre 4 a 20 caracteres';
+    }
+  }
+
+  validateTagNameField(String value, int length, List<String> tags) {
+    if (length >= 5) {
+      return 'Ya se agregaron 5 etiquetas';
+    }
+    if (value.isEmpty) {
+      return 'El campo Etiqueta es obligatorio.';
+    }
+    if (value.length < 3 || value.length > 15) {
+      return 'El campo Etiqueta requiere el ingreso de entre 3 a 15 caracteres';
+    }
+    if (tags.isNotEmpty) {
+      List<String> auxTags = tags.map((tag) => tag.toLowerCase()).toList();
+      if (auxTags.contains(value.toLowerCase())) {
+        return 'La etiqueta ya se encuentra agregada.';
+      }
     }
   }
 }

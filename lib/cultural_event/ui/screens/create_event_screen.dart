@@ -37,6 +37,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   List<String> _tags = [];
 
+  bool _errorTag = false;
+
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
@@ -154,26 +156,26 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         const TextFormatWidget(
                             valueText: '* Imagen principal',
                             align: TextAlign.left,
-                            typeText: 'Normal'),
+                            typeText: 'LabelTitleForm'),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
                         const TextFormatWidget(
                             valueText: 'Imagenes secundarias',
                             align: TextAlign.left,
-                            typeText: 'Normal'),
+                            typeText: 'LabelTitleForm'),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
                         const TextFormatWidget(
                             valueText: '* Etiquetas',
                             align: TextAlign.left,
-                            typeText: 'Normal'),
+                            typeText: 'LabelTitleForm'),
                         SizedBox(
-                          height: responsive.hp(2.2),
+                          height: responsive.hp(2),
                         ),
                         SizedBox(
-                          height: responsive.hp(10),
+                          height: responsive.hp(5),
                           child: Row(
                             children: [
                               AddButton(
@@ -197,12 +199,21 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                           padding: EdgeInsets.only(
                                               right: responsive.wp(3)),
                                           child: Chip(
-                                            label: Text(_tags[index]),
+                                            backgroundColor:
+                                                colorApp.primaryBackground,
+                                            elevation: 5,
+                                            shadowColor: colorApp.shadowColor,
+                                            label: TextFormatWidget(
+                                                valueText: _tags[index],
+                                                align: TextAlign.left,
+                                                typeText: 'Normal'),
                                             onDeleted: () => {
                                               setState(() {
                                                 _tags.remove(_tags[index]);
                                               })
                                             },
+                                            deleteIconColor:
+                                                colorApp.iconSecondary,
                                           ));
                                     }),
                               )
@@ -210,7 +221,18 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: responsive.hp(2.2),
+                          height: responsive.hp(1.9),
+                        ),
+                        Visibility(
+                          child: const TextFormatWidget(
+                              valueText:
+                                  'Es necesario añadir al menos 1 etiqueta.',
+                              align: TextAlign.left,
+                              typeText: 'LabelErrorForm'),
+                          visible: _errorTag,
+                        ),
+                        SizedBox(
+                          height: responsive.hp(2),
                         ),
                         InputTextWidget(
                           labelInput: 'Precio',
@@ -239,8 +261,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         GeneralButton(
                             labelButton: 'Crear evento',
                             onPressed: () async {
+                              _showErrorLabels(_tags.isEmpty);
                               if (_keyForm.currentState!.validate()) {
-                                // event - create event
+                                if (_tags.isEmpty) {
+                                  return;
+                                }
                               }
                             }),
                         SizedBox(
@@ -278,7 +303,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 keyboardType: TextInputType.text,
                 isPassword: false,
                 inputValidation: (value) =>
-                    validate.validationFileEvent(value, "tagName"),
+                    validate.validateTagNameField(value!, _tags.length, _tags),
                 controller: _newTag,
                 labelButtonModal: 'Crear',
                 onPressed: () async {
@@ -286,9 +311,16 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     setState(() {
                       _tags.add(_newTag.text);
                     });
+                    Navigator.of(context, rootNavigator: true).pop('dialog');
                   }
                 },
               ),
             )));
+  }
+
+  _showErrorLabels(bool msgTag) {
+    setState(() {
+      _errorTag = msgTag;
+    });
   }
 }

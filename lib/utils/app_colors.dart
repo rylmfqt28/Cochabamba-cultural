@@ -25,6 +25,7 @@ class AppColors {
   final Color _shadowColor = const Color(0xff212121);
 
   final Color _iconPrimary = const Color(0xffffffff);
+  final Color _iconSecondary = const Color(0xff1bba6e);
 
   AppColors();
 
@@ -45,4 +46,5 @@ class AppColors {
   Color get shadowColor => _shadowColor;
 
   Color get iconPrimary => _iconPrimary;
+  Color get iconSecondary => _iconSecondary;
 }
