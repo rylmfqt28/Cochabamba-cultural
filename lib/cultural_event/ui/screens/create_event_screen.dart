@@ -13,6 +13,7 @@ import 'package:cochabambacultural/ui/widgets/dialog_widget.dart';
 
 import 'package:cochabambacultural/cultural_event/ui/widgets/radio_button_event.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_button.dart';
+import 'package:cochabambacultural/cultural_event/ui/widgets/tag_chip.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
@@ -32,10 +33,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final validate = ValidationEvent();
   final SnackMessages snackMessages = SnackMessages();
 
-  final _event = TextEditingController();
+  final _eventName = TextEditingController();
   final _description = TextEditingController();
   final _costEvent = TextEditingController();
   final _transport = TextEditingController();
+
+  double _pricipalImgHeight = 5;
+  double _secondaryImgHeight = 5;
 
   List<String> _tags = [];
 
@@ -104,9 +108,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           labelInput: '* Nombre del evento',
                           hintInput: 'Ingrese el nombre del evento',
                           inputPassword: false,
+                          controllerText: _eventName,
                           inputValidation: (value) =>
-                              validate.validationFileEvent(value, 'nameEvent'),
-                          controllerText: _event,
+                              validate.validationFileEvent(value, 'eventName'),
                         ),
                         SizedBox(
                           height: responsive.hp(2.2),
@@ -138,7 +142,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         const TextFormatWidget(
                             valueText: '* Categoría',
                             align: TextAlign.left,
-                            typeText: 'Normal'),
+                            typeText: 'LabelTitleForm'),
                         SizedBox(
                           height: responsive.hp(1.5),
                         ),
@@ -162,36 +166,36 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         SizedBox(
                           height: responsive.hp(2),
                         ),
-                        SizedBox(
-                          height: responsive.hp(5),
-                          child: Row(
-                            children: [
-                              AddButton(
-                                  iconAdd: Icons.add_photo_alternate_rounded,
-                                  event: () => {})
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: responsive.hp(2.2),
-                        ),
+                        // SizedBox(
+                        //   height: responsive.hp(_pricipalImgHeight),
+                        //   child: Row(
+                        //     children: [
+                        //       AddButton(
+                        //           iconAdd: Icons.add_photo_alternate_rounded,
+                        //           event: () {})
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: responsive.hp(2.2),
+                        // ),
                         const TextFormatWidget(
                             valueText: 'Imagenes secundarias',
                             align: TextAlign.left,
                             typeText: 'LabelTitleForm'),
-                        SizedBox(
-                          height: responsive.hp(2),
-                        ),
-                        SizedBox(
-                          height: responsive.hp(5),
-                          child: Row(
-                            children: [
-                              AddButton(
-                                  iconAdd: Icons.add_photo_alternate_rounded,
-                                  event: () => {})
-                            ],
-                          ),
-                        ),
+                        // SizedBox(
+                        //   height: responsive.hp(2),
+                        // ),
+                        // SizedBox(
+                        //   height: responsive.hp(_secondaryImgHeight),
+                        //   child: Row(
+                        //     children: [
+                        //       AddButton(
+                        //           iconAdd: Icons.add_photo_alternate_rounded,
+                        //           event: () {})
+                        //     ],
+                        //   ),
+                        // ),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -232,26 +236,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                         EdgeInsets.only(left: responsive.wp(2)),
                                     itemCount: _tags.length,
                                     itemBuilder: (context, index) {
-                                      return Padding(
-                                          padding: EdgeInsets.only(
-                                              right: responsive.wp(3)),
-                                          child: Chip(
-                                            backgroundColor:
-                                                colorApp.primaryBackground,
-                                            elevation: 5,
-                                            shadowColor: colorApp.shadowColor,
-                                            label: TextFormatWidget(
-                                                valueText: _tags[index],
-                                                align: TextAlign.left,
-                                                typeText: 'Normal'),
-                                            onDeleted: () => {
-                                              setState(() {
-                                                _tags.remove(_tags[index]);
-                                              })
-                                            },
-                                            deleteIconColor:
-                                                colorApp.iconSecondary,
-                                          ));
+                                      return TagChip(
+                                          labelTag: _tags[index],
+                                          deleteEvent: () => {
+                                                setState(() {
+                                                  _tags.remove(_tags[index]);
+                                                })
+                                              });
                                     }),
                               )
                             ],
@@ -297,7 +288,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         ),
                         GeneralButton(
                             labelButton: 'Crear evento',
-                            onPressed: () async {
+                            onPressed: () {
                               _showErrorLabels(_tags.isEmpty);
                               if (_keyForm.currentState!.validate()) {
                                 if (_tags.isEmpty) {

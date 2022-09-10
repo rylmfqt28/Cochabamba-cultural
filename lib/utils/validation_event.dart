@@ -1,7 +1,7 @@
 class ValidationEvent {
   validationFileEvent(value, input) {
     switch (input) {
-      case "nameEvent":
+      case "eventName":
         return _validateNameEvent(value.trim());
       case "description":
         return _validateDescription(value.trim());
@@ -9,8 +9,6 @@ class ValidationEvent {
         return _validateTransport(value.trim());
       case "costEvent":
         return _validateCostEvent(value.trim());
-      case "tagName":
-        return _validateTagName(value.trim());
       default:
         return 'La validacion fallo.';
     }
@@ -57,30 +55,26 @@ class ValidationEvent {
     return null;
   }
 
-  _validateTagName(value) {
-    if (value!.isEmpty) {
-      return 'El campo Etiqueta es obligatorio.';
-    }
-    if (value.length < 4 || value.length > 20) {
-      return 'El campo Etiqueta requiere el ingreso de entre 4 a 20 caracteres';
-    }
-  }
-
-  validateTagNameField(String value, int length, List<String> tags) {
+  validateTagNameField(String valueTag, int length, List<String> tags) {
     if (length >= 5) {
       return 'Ya se agregaron 5 etiquetas';
     }
-    if (value.isEmpty) {
+
+    if (valueTag.isEmpty) {
       return 'El campo Etiqueta es obligatorio.';
     }
-    if (value.length < 3 || value.length > 15) {
+
+    if (valueTag.length < 3 || valueTag.length > 15) {
       return 'El campo Etiqueta requiere el ingreso de entre 3 a 15 caracteres';
     }
+
     if (tags.isNotEmpty) {
       List<String> auxTags = tags.map((tag) => tag.toLowerCase()).toList();
-      if (auxTags.contains(value.toLowerCase())) {
+      if (auxTags.contains(valueTag.toLowerCase())) {
         return 'La etiqueta ya se encuentra agregada.';
       }
     }
+
+    return null;
   }
 }

@@ -17,7 +17,7 @@ class AddButton extends StatelessWidget {
 
     return Container(
       width: responsive.wp(20),
-      height: responsive.hp(6),
+      height: responsive.hp(5),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
             color: colorApp.shadowColor,
@@ -26,7 +26,7 @@ class AddButton extends StatelessWidget {
             spreadRadius: -9)
       ]),
       child: MaterialButton(
-        height: responsive.hp(6),
+        height: responsive.hp(5),
         child: Icon(iconAdd, size: 30, color: colorApp.primaryColor),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
