@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:cochabambacultural/ui/screen/welcome_screen.dart';
 import 'package:cochabambacultural/ui/screen/login_screen.dart';
@@ -9,7 +10,7 @@ import 'package:cochabambacultural/user/ui/screens/user_home.dart';
 import 'package:cochabambacultural/cultural_event/ui/screens/create_event_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
@@ -20,6 +21,8 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp],
   );
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.black, statusBarIconBrightness: Brightness.light));
   runApp(const MyApp());
 }
 
