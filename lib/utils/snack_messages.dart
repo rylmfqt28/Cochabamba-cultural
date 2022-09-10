@@ -5,7 +5,7 @@ class SnackMessages {
       String message, Color statusColor, BuildContext context, double margin) {
     //margin: sin menu->150, con menu->190
     final dynamic snackBar = SnackBar(
-        duration: const Duration(seconds: 10),
+        duration: const Duration(seconds: 5),
         content: Text(message),
         backgroundColor: statusColor,
         behavior: SnackBarBehavior.floating,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/validation_event.dart';
+import 'package:cochabambacultural/utils/snack_messages.dart';
 
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/input_text_widget.dart';
@@ -29,6 +30,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   final colorApp = AppColors();
   final validate = ValidationEvent();
+  final SnackMessages snackMessages = SnackMessages();
 
   final _event = TextEditingController();
   final _description = TextEditingController();
@@ -158,12 +160,38 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             align: TextAlign.left,
                             typeText: 'LabelTitleForm'),
                         SizedBox(
+                          height: responsive.hp(2),
+                        ),
+                        SizedBox(
+                          height: responsive.hp(5),
+                          child: Row(
+                            children: [
+                              AddButton(
+                                  iconAdd: Icons.add_photo_alternate_rounded,
+                                  event: () => {})
+                            ],
+                          ),
+                        ),
+                        SizedBox(
                           height: responsive.hp(2.2),
                         ),
                         const TextFormatWidget(
                             valueText: 'Imagenes secundarias',
                             align: TextAlign.left,
                             typeText: 'LabelTitleForm'),
+                        SizedBox(
+                          height: responsive.hp(2),
+                        ),
+                        SizedBox(
+                          height: responsive.hp(5),
+                          child: Row(
+                            children: [
+                              AddButton(
+                                  iconAdd: Icons.add_photo_alternate_rounded,
+                                  event: () => {})
+                            ],
+                          ),
+                        ),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -181,7 +209,16 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               AddButton(
                                   iconAdd: Icons.add,
                                   event: () {
-                                    _showDialog(context);
+                                    if (_tags.length < 5) {
+                                      _showDialog(context);
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackMessages.getSnack(
+                                              "No es posible agregar mas etiquetas.",
+                                              colorApp.infoColor,
+                                              context,
+                                              140));
+                                    }
                                   }),
                               SizedBox(
                                 width: responsive.wp(2),

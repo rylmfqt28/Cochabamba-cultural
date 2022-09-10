@@ -16,6 +16,7 @@ class AppColors {
 
   final Color _successful = const Color(0xff1bba6e);
   final Color _errorColor = const Color(0xffF0627C);
+  final Color _infoColor = const Color(0xff6495ED);
   // final Color _successful = const Color(0xff129959); dark mode
   // final Color _errorColor = const Color(0xffF0627C);
 
@@ -40,6 +41,7 @@ class AppColors {
 
   Color get errorColor => _errorColor;
   Color get successful => _successful;
+  Color get infoColor => _infoColor;
 
   Color get primaryColor => _primaryColor;
 
