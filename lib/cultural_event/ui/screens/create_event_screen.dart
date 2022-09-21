@@ -14,6 +14,7 @@ import 'package:cochabambacultural/ui/widgets/dialog_widget.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/radio_button_event.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_button.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/tag_chip.dart';
+import 'package:cochabambacultural/cultural_event/ui/widgets/add_image_event.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
@@ -38,10 +39,19 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   final _costEvent = TextEditingController();
   final _transport = TextEditingController();
 
-  double _pricipalImgHeight = 5;
-  double _secondaryImgHeight = 5;
+  final double _pricipalImgHeight = 5;
+  final double _secondaryImgHeight = 5;
 
   List<String> _tags = [];
+
+  List<String> principalImage = [
+    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
+  ];
+  List<String> secondaryImages = [
+    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
+    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
+    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f'
+  ];
 
   bool _errorTag = false;
 
@@ -166,36 +176,20 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         SizedBox(
                           height: responsive.hp(2),
                         ),
-                        // SizedBox(
-                        //   height: responsive.hp(_pricipalImgHeight),
-                        //   child: Row(
-                        //     children: [
-                        //       AddButton(
-                        //           iconAdd: Icons.add_photo_alternate_rounded,
-                        //           event: () {})
-                        //     ],
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   height: responsive.hp(2.2),
-                        // ),
+                        AddImageEvent(
+                            images: principalImage, addImage: () => {}),
+                        SizedBox(
+                          height: responsive.hp(2.2),
+                        ),
                         const TextFormatWidget(
                             valueText: 'Imagenes secundarias',
                             align: TextAlign.left,
                             typeText: 'LabelTitleForm'),
-                        // SizedBox(
-                        //   height: responsive.hp(2),
-                        // ),
-                        // SizedBox(
-                        //   height: responsive.hp(_secondaryImgHeight),
-                        //   child: Row(
-                        //     children: [
-                        //       AddButton(
-                        //           iconAdd: Icons.add_photo_alternate_rounded,
-                        //           event: () {})
-                        //     ],
-                        //   ),
-                        // ),
+                        SizedBox(
+                          height: responsive.hp(2),
+                        ),
+                        AddImageEvent(
+                            images: secondaryImages, addImage: () => {}),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
