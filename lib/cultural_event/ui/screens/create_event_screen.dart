@@ -4,6 +4,7 @@ import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/validation_event.dart';
 import 'package:cochabambacultural/utils/snack_messages.dart';
+import 'package:cochabambacultural/utils/load_image.dart';
 
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/input_text_widget.dart';
@@ -28,11 +29,12 @@ class CreateEventScreen extends StatefulWidget {
 }
 
 class _CreateEventScreenState extends State<CreateEventScreen> {
-  final GlobalKey<FormState> _keyForm = GlobalKey();
+  final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
   final colorApp = AppColors();
   final validate = ValidationEvent();
   final SnackMessages snackMessages = SnackMessages();
+  final LoadImage loadImage = LoadImage();
 
   final _eventName = TextEditingController();
   final _description = TextEditingController();
@@ -44,14 +46,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   List<String> _tags = [];
 
-  List<String> principalImage = [
-    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-  ];
-  List<String> secondaryImages = [
-    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f'
-  ];
+  List<String> principalImage = [];
+  List<String> secondaryImages = [];
 
   bool _errorTag = false;
 
@@ -177,7 +173,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           height: responsive.hp(2),
                         ),
                         AddImageEvent(
-                            images: principalImage, addImage: () => {}),
+                            images: principalImage,
+                            addImage: () => loadImage.loadImage(
+                                principalImage.length, 1, context)),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -189,7 +187,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           height: responsive.hp(2),
                         ),
                         AddImageEvent(
-                            images: secondaryImages, addImage: () => {}),
+                            images: secondaryImages,
+                            addImage: () => loadImage.loadImage(
+                                secondaryImages.length, 4, context)),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),

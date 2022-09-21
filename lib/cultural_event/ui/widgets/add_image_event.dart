@@ -36,7 +36,15 @@ class _AddImageEventState extends State<AddImageEvent> {
           child: Row(
             children: [
               AddButton(
-                  iconAdd: Icons.add_photo_alternate_rounded, event: () {}),
+                  iconAdd: Icons.add_photo_alternate_rounded,
+                  event: () async {
+                    String path = await widget.addImage();
+                    if (path.isNotEmpty) {
+                      setState(() {
+                        widget.images.add(path);
+                      });
+                    }
+                  }),
               SizedBox(
                 width: responsive.hp(2.2),
               ),
