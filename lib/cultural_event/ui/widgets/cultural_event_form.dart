@@ -10,52 +10,70 @@ import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 import 'package:cochabambacultural/ui/widgets/input_text_widget.dart';
 import 'package:cochabambacultural/ui/widgets/input_text_area_widget.dart';
 import 'package:cochabambacultural/ui/widgets/general_button.dart';
-import 'package:cochabambacultural/ui/widgets/dialog_widget.dart';
 
 import 'package:cochabambacultural/cultural_event/ui/widgets/radio_button_event.dart';
-import 'package:cochabambacultural/cultural_event/ui/widgets/add_button.dart';
-import 'package:cochabambacultural/cultural_event/ui/widgets/tag_chip.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_image_event.dart';
+import 'package:cochabambacultural/cultural_event/ui/widgets/add_tag.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CreateEventScreen extends StatefulWidget {
-  const CreateEventScreen({Key? key}) : super(key: key);
+class CulturalEventForm extends StatefulWidget {
+  final GlobalKey<FormState> keyForm;
+  final TextEditingController eventName;
+  final TextEditingController description;
+  final TextEditingController costEvent;
+  final TextEditingController transport;
+  final TextEditingController category;
+
+  final List<String> principalImage;
+  final List<String> secondaryImages;
+
+  final List<String> tags;
+
+  final String labelButtonForm;
+  final Function formEvent;
+
+  const CulturalEventForm(
+      {Key? key,
+      required this.keyForm,
+      required this.eventName,
+      required this.description,
+      required this.costEvent,
+      required this.transport,
+      required this.category,
+      required this.principalImage,
+      required this.secondaryImages,
+      required this.tags,
+      required this.labelButtonForm,
+      required this.formEvent})
+      : super(key: key);
 
   @override
-  State<CreateEventScreen> createState() => _CreateEventScreenState();
+  State<CulturalEventForm> createState() => _CulturalEventFormState();
 }
 
-class _CreateEventScreenState extends State<CreateEventScreen> {
-  final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
-
-  final colorApp = AppColors();
-  final validate = ValidationEvent();
-  final SnackMessages snackMessages = SnackMessages();
-  final LoadImage loadImage = LoadImage();
-
-  final _eventName = TextEditingController();
-  final _description = TextEditingController();
-  final _costEvent = TextEditingController();
-  final _transport = TextEditingController();
-
+class _CulturalEventFormState extends State<CulturalEventForm> {
   final double _pricipalImgHeight = 5;
   final double _secondaryImgHeight = 5;
 
-  List<String> _tags = [];
-
-  List<String> principalImage = [];
-  List<String> secondaryImages = [];
+  final int maxImagePrincipal = 1;
+  final int maxImagesSecondary = 4;
 
   bool _errorTag = false;
+
+  final colorApp = AppColors();
+
+  final validate = ValidationEvent();
+
+  final SnackMessages snackMessages = SnackMessages();
+
+  final LoadImage loadImage = LoadImage();
 
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
-
-    String _categoryEvent = 'Gastronómico';
 
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
       return Scaffold(
@@ -69,7 +87,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               constraints:
                   BoxConstraints(maxWidth: responsive.isTablet ? 430 : 360),
               child: Form(
-                key: _keyForm,
+                key: widget.keyForm,
                 child: Stack(
                   children: [
                     ListView(
@@ -114,7 +132,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           labelInput: '* Nombre del evento',
                           hintInput: 'Ingrese el nombre del evento',
                           inputPassword: false,
-                          controllerText: _eventName,
+                          controllerText: widget.eventName,
                           inputValidation: (value) =>
                               validate.validationFileEvent(value, 'eventName'),
                         ),
@@ -126,7 +144,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             hintInput: 'Ingrese la descripción del evento',
                             inputValidation: (value) => validate
                                 .validationFileEvent(value, "description"),
-                            controllerText: _description,
+                            controllerText: widget.description,
                             maxCharacters: 600),
                         SizedBox(
                           height: responsive.hp(2.2),
@@ -153,7 +171,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           height: responsive.hp(1.5),
                         ),
                         RadioButtonEvent(changeCategory: (value) {
-                          _categoryEvent = value;
+                          setState(() {
+                            widget.category.text = value;
+                          });
                         }),
                         SizedBox(
                           height: responsive.hp(2.2),
@@ -173,9 +193,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           height: responsive.hp(2),
                         ),
                         AddImageEvent(
-                            images: principalImage,
+                            images: widget.principalImage,
                             addImage: () => loadImage.loadImage(
-                                principalImage.length, 1, context)),
+                                widget.principalImage.length,
+                                maxImagePrincipal,
+                                context)),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -187,9 +209,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           height: responsive.hp(2),
                         ),
                         AddImageEvent(
-                            images: secondaryImages,
+                            images: widget.secondaryImages,
                             addImage: () => loadImage.loadImage(
-                                secondaryImages.length, 4, context)),
+                                widget.secondaryImages.length,
+                                maxImagesSecondary,
+                                context)),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -200,48 +224,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         SizedBox(
                           height: responsive.hp(2),
                         ),
-                        SizedBox(
-                          height: responsive.hp(5),
-                          child: Row(
-                            children: [
-                              AddButton(
-                                  iconAdd: Icons.add,
-                                  event: () {
-                                    if (_tags.length < 5) {
-                                      _showDialog(context);
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackMessages.getSnack(
-                                              "No es posible agregar mas etiquetas.",
-                                              colorApp.infoColor,
-                                              context,
-                                              140));
-                                    }
-                                  }),
-                              SizedBox(
-                                width: responsive.wp(2),
-                              ),
-                              Expanded(
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: const ClampingScrollPhysics(),
-                                    scrollDirection: Axis.horizontal,
-                                    padding:
-                                        EdgeInsets.only(left: responsive.wp(2)),
-                                    itemCount: _tags.length,
-                                    itemBuilder: (context, index) {
-                                      return TagChip(
-                                          labelTag: _tags[index],
-                                          deleteEvent: () => {
-                                                setState(() {
-                                                  _tags.remove(_tags[index]);
-                                                })
-                                              });
-                                    }),
-                              )
-                            ],
-                          ),
-                        ),
+                        AddTag(tags: widget.tags),
                         SizedBox(
                           height: responsive.hp(1.9),
                         ),
@@ -264,7 +247,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           inputPassword: false,
                           inputValidation: (value) =>
                               validate.validationFileEvent(value, 'costEvent'),
-                          controllerText: _costEvent,
+                          controllerText: widget.costEvent,
                         ),
                         SizedBox(
                           height: responsive.hp(2.2),
@@ -275,19 +258,20 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                 'Ingrese los diferentes medios de transporte para llegar al lugar del evento',
                             inputValidation: (value) => validate
                                 .validationFileEvent(value, "transport"),
-                            controllerText: _transport,
+                            controllerText: widget.transport,
                             maxCharacters: 150),
                         SizedBox(
                           height: responsive.hp(3),
                         ),
                         GeneralButton(
-                            labelButton: 'Crear evento',
+                            labelButton: widget.labelButtonForm,
                             onPressed: () {
-                              _showErrorLabels(_tags.isEmpty);
-                              if (_keyForm.currentState!.validate()) {
-                                if (_tags.isEmpty) {
+                              _showErrorLabels(widget.tags.isEmpty);
+                              if (widget.keyForm.currentState!.validate()) {
+                                if (widget.tags.isEmpty) {
                                   return;
                                 }
+                                widget.formEvent();
                               }
                             }),
                         SizedBox(
@@ -305,44 +289,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     });
   }
 
-  _showDialog(BuildContext context) {
-    final GlobalKey<FormState> _keyFormDialog = GlobalKey();
-
-    final _newTag = TextEditingController();
-
-    return showDialog(
-        context: context,
-        builder: (context) => Dialog(
-            backgroundColor: colorApp.primaryBackground,
-            insetPadding: const EdgeInsets.all(15),
-            child: Form(
-              key: _keyFormDialog,
-              child: DialogWidget(
-                titleText: 'Crear Etiqueta',
-                subTitle: 'Ingrese la etiqueta que quiera agregar al evento.',
-                labelInputDialog: 'Etiqueta',
-                hintInputDialog: 'Ingrese la etiqueta',
-                keyboardType: TextInputType.text,
-                isPassword: false,
-                inputValidation: (value) =>
-                    validate.validateTagNameField(value!, _tags.length, _tags),
-                controller: _newTag,
-                labelButtonModal: 'Crear',
-                onPressed: () async {
-                  if (_keyFormDialog.currentState!.validate()) {
-                    setState(() {
-                      _tags.add(_newTag.text);
-                    });
-                    Navigator.of(context, rootNavigator: true).pop('dialog');
-                  }
-                },
-              ),
-            )));
-  }
-
-  _showErrorLabels(bool msgTag) {
+  _showErrorLabels(bool showMessageTag) {
     setState(() {
-      _errorTag = msgTag;
+      _errorTag = showMessageTag;
     });
   }
 }
