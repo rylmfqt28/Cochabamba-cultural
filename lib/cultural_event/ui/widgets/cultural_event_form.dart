@@ -26,6 +26,8 @@ class CulturalEventForm extends StatefulWidget {
   final TextEditingController description;
   final TextEditingController costEvent;
   final TextEditingController transport;
+
+  final int actualEventType;
   final TextEditingController category;
 
   final TextEditingController controllerInitialDateTime;
@@ -46,6 +48,7 @@ class CulturalEventForm extends StatefulWidget {
       required this.description,
       required this.costEvent,
       required this.transport,
+      required this.actualEventType,
       required this.category,
       required this.controllerInitialDateTime,
       required this.initialDateTime,
@@ -177,11 +180,14 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                         SizedBox(
                           height: responsive.hp(1.5),
                         ),
-                        RadioButtonEvent(changeCategory: (value) {
-                          setState(() {
-                            widget.category.text = value;
-                          });
-                        }),
+                        RadioButtonEvent(
+                          changeCategory: (value) {
+                            setState(() {
+                              widget.category.text = value;
+                            });
+                          },
+                          actualValueRadio: widget.actualEventType,
+                        ),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),

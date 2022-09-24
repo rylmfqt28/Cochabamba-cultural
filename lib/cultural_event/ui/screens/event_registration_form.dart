@@ -34,6 +34,7 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
         description: _description,
         costEvent: _costEvent,
         transport: _transport,
+        actualEventType: 1,
         category: _category,
         controllerInitialDateTime: _controllerInitialDateTime,
         initialDateTime: _initialDateTime,

@@ -6,8 +6,10 @@ import 'package:cochabambacultural/utils/app_colors.dart';
 
 class RadioButtonEvent extends StatefulWidget {
   final void Function(String value) changeCategory;
+  final int actualValueRadio;
 
-  const RadioButtonEvent({Key? key, required this.changeCategory})
+  const RadioButtonEvent(
+      {Key? key, required this.changeCategory, required this.actualValueRadio})
       : super(key: key);
 
   @override
@@ -15,7 +17,7 @@ class RadioButtonEvent extends StatefulWidget {
 }
 
 class _RadioButtonEventState extends State<RadioButtonEvent> {
-  int _valueRadio = 1;
+  late int _valueRadio = widget.actualValueRadio;
 
   @override
   Widget build(BuildContext context) {
