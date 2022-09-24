@@ -14,6 +14,7 @@ import 'package:cochabambacultural/ui/widgets/general_button.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/radio_button_event.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_image_event.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_tag.dart';
+import 'package:cochabambacultural/cultural_event/ui/widgets/input_field_date.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
@@ -26,6 +27,9 @@ class CulturalEventForm extends StatefulWidget {
   final TextEditingController costEvent;
   final TextEditingController transport;
   final TextEditingController category;
+
+  final TextEditingController controllerInitialDateTime;
+  final DateTime initialDateTime;
 
   final List<String> principalImage;
   final List<String> secondaryImages;
@@ -43,6 +47,8 @@ class CulturalEventForm extends StatefulWidget {
       required this.costEvent,
       required this.transport,
       required this.category,
+      required this.controllerInitialDateTime,
+      required this.initialDateTime,
       required this.principalImage,
       required this.secondaryImages,
       required this.tags,
@@ -55,13 +61,11 @@ class CulturalEventForm extends StatefulWidget {
 }
 
 class _CulturalEventFormState extends State<CulturalEventForm> {
-  final double _pricipalImgHeight = 5;
-  final double _secondaryImgHeight = 5;
-
   final int maxImagePrincipal = 1;
   final int maxImagesSecondary = 4;
 
   bool _errorTag = false;
+  bool _errorPrincipalImage = false;
 
   final colorApp = AppColors();
 
@@ -126,16 +130,15 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                             align: TextAlign.left,
                             typeText: 'Normal'),
                         SizedBox(
-                          height: responsive.hp(2.5),
+                          height: responsive.hp(2.2),
                         ),
                         InputTextWidget(
-                          labelInput: '* Nombre del evento',
-                          hintInput: 'Ingrese el nombre del evento',
-                          inputPassword: false,
-                          controllerText: widget.eventName,
-                          inputValidation: (value) =>
-                              validate.validationFileEvent(value, 'eventName'),
-                        ),
+                            labelInput: '* Nombre del evento',
+                            hintInput: 'Ingrese el nombre del evento',
+                            inputValidation: (value) => validate
+                                .validationFileEvent(value, 'eventName'),
+                            controllerText: widget.eventName,
+                            inputPassword: false),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -149,10 +152,13 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
-                        const TextFormatWidget(
-                            valueText: '* Fecha de inicio',
-                            align: TextAlign.left,
-                            typeText: 'Normal'),
+                        InputFieldDate(
+                            labelInput: '* Fecha y hora de inicio',
+                            hintInput:
+                                'Ingrese fecha y hora de inicio del evento',
+                            initialDateTime: widget.initialDateTime,
+                            controllerDateTime:
+                                widget.controllerInitialDateTime),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -160,6 +166,7 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                             valueText: '* Fecha fin',
                             align: TextAlign.left,
                             typeText: 'Normal'),
+                        // widget add end date
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -182,6 +189,7 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                             valueText: '* Ubicación',
                             align: TextAlign.left,
                             typeText: 'Normal'),
+                        // widget map
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -198,6 +206,17 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                                 widget.principalImage.length,
                                 maxImagePrincipal,
                                 context)),
+                        SizedBox(
+                          height: responsive.hp(1.9),
+                        ),
+                        Visibility(
+                          child: const TextFormatWidget(
+                              valueText:
+                                  'Es necesario añadir una imagen principal.',
+                              align: TextAlign.left,
+                              typeText: 'LabelErrorForm'),
+                          visible: _errorPrincipalImage,
+                        ),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
@@ -266,9 +285,9 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                         GeneralButton(
                             labelButton: widget.labelButtonForm,
                             onPressed: () {
-                              _showErrorLabels(widget.tags.isEmpty);
+                              _showErrorLabels();
                               if (widget.keyForm.currentState!.validate()) {
-                                if (widget.tags.isEmpty) {
+                                if (_fieldSpecialValidate()) {
                                   return;
                                 }
                                 widget.formEvent();
@@ -289,9 +308,21 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
     });
   }
 
-  _showErrorLabels(bool showMessageTag) {
+  _showErrorLabels() {
     setState(() {
-      _errorTag = showMessageTag;
+      _errorTag = widget.tags.isEmpty;
+      _errorPrincipalImage = widget.principalImage.isEmpty;
     });
+  }
+
+  bool _fieldSpecialValidate() {
+    if (_errorTag) {
+      return true;
+    }
+    if (_errorPrincipalImage) {
+      return true;
+    }
+
+    return false;
   }
 }

@@ -13,17 +13,15 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
   final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
 
   final _eventName = TextEditingController();
-
   final _description = TextEditingController();
-
   final _costEvent = TextEditingController();
-
   final _transport = TextEditingController();
-
   final _category = TextEditingController(text: 'Gastronómico');
 
-  List<String> principalImage = [];
+  final _controllerInitialDateTime = TextEditingController();
+  final DateTime _initialDateTime = DateTime.now();
 
+  List<String> principalImage = [];
   List<String> secondaryImages = [];
 
   List<String> tags = [];
@@ -37,6 +35,8 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
         costEvent: _costEvent,
         transport: _transport,
         category: _category,
+        controllerInitialDateTime: _controllerInitialDateTime,
+        initialDateTime: _initialDateTime,
         principalImage: principalImage,
         secondaryImages: secondaryImages,
         tags: tags,
@@ -44,5 +44,7 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
         formEvent: () => _createEvent());
   }
 
-  _createEvent() {}
+  _createEvent() {
+    return;
+  }
 }
