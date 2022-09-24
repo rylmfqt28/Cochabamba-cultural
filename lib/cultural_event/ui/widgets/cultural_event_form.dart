@@ -33,6 +33,9 @@ class CulturalEventForm extends StatefulWidget {
   final TextEditingController controllerInitialDateTime;
   final DateTime initialDateTime;
 
+  final TextEditingController controllerEndDateTime;
+  final DateTime endDateTime;
+
   final List<String> principalImage;
   final List<String> secondaryImages;
 
@@ -52,6 +55,8 @@ class CulturalEventForm extends StatefulWidget {
       required this.category,
       required this.controllerInitialDateTime,
       required this.initialDateTime,
+      required this.controllerEndDateTime,
+      required this.endDateTime,
       required this.principalImage,
       required this.secondaryImages,
       required this.tags,
@@ -165,11 +170,12 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),
-                        const TextFormatWidget(
-                            valueText: '* Fecha fin',
-                            align: TextAlign.left,
-                            typeText: 'Normal'),
-                        // widget add end date
+                        InputFieldDate(
+                            labelInput: '* Fecha y hora de finalización',
+                            hintInput:
+                                'Ingrese fecha y hora de finalización del evento',
+                            initialDateTime: widget.endDateTime,
+                            controllerDateTime: widget.controllerEndDateTime),
                         SizedBox(
                           height: responsive.hp(2.2),
                         ),

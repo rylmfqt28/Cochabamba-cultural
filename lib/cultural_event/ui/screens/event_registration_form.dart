@@ -21,6 +21,9 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
   final _controllerInitialDateTime = TextEditingController();
   final DateTime _initialDateTime = DateTime.now();
 
+  final _controllerEndDateTime = TextEditingController();
+  final DateTime _endDateTime = DateTime.now();
+
   List<String> principalImage = [];
   List<String> secondaryImages = [];
 
@@ -38,6 +41,8 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
         category: _category,
         controllerInitialDateTime: _controllerInitialDateTime,
         initialDateTime: _initialDateTime,
+        controllerEndDateTime: _controllerEndDateTime,
+        endDateTime: _endDateTime,
         principalImage: principalImage,
         secondaryImages: secondaryImages,
         tags: tags,
