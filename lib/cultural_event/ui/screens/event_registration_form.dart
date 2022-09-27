@@ -10,8 +10,6 @@ class EventRegistrationForm extends StatefulWidget {
 }
 
 class _EventRegistrationFormState extends State<EventRegistrationForm> {
-  final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
-
   final _eventName = TextEditingController();
   final _description = TextEditingController();
   final _costEvent = TextEditingController();
@@ -32,7 +30,6 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
   @override
   Widget build(BuildContext context) {
     return CulturalEventForm(
-        keyForm: _keyForm,
         eventName: _eventName,
         description: _description,
         costEvent: _costEvent,

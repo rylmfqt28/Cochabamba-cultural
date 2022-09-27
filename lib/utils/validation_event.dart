@@ -77,4 +77,12 @@ class ValidationEvent {
 
     return null;
   }
+
+  validateDateField(String valueDate, String nameField) {
+    if (valueDate.isEmpty) {
+      return 'El campo $nameField es obligatorio.';
+    }
+
+    return null;
+  }
 }

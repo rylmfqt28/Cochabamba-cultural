@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
+import 'package:cochabambacultural/utils/validation_event.dart';
 
 import 'package:cochabambacultural/cultural_event/utils/date_time_picker.dart';
 
@@ -28,18 +29,20 @@ class _InputFieldDateState extends State<InputFieldDate> {
 
   final TextEditingController controllerTextInput = TextEditingController();
 
-  late DateTime _selectedDateTime;
+  late DateTime _selectedDateTime = widget.initialDateTime;
 
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
     final colorApp = AppColors();
 
-    _selectedDateTime = widget.initialDateTime;
+    final validate = ValidationEvent();
 
     return TextFormField(
       controller: controllerTextInput,
       style: TextStyle(fontSize: responsive.dp(1.9)),
+      validator: (value) =>
+          validate.validateDateField(value!, widget.labelInput),
       showCursor: false,
       readOnly: true,
       onTap: () async {
@@ -49,7 +52,7 @@ class _InputFieldDateState extends State<InputFieldDate> {
         hintText: widget.hintInput,
         hintStyle:
             TextStyle(color: colorApp.placeHolder, fontWeight: FontWeight.w500),
-        labelText: widget.labelInput,
+        labelText: '* ${widget.labelInput}',
         labelStyle: TextStyle(color: colorApp.placeHolder),
         floatingLabelStyle:
             TextStyle(color: colorApp.primaryFont, fontWeight: FontWeight.w500),
