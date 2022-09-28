@@ -85,4 +85,16 @@ class ValidationEvent {
 
     return null;
   }
+
+  validateLocation(String value) {
+    if (value.isEmpty) {
+      return 'El campo Ubicación es obligatorio.';
+    }
+
+    if (value.length < 10 || value.length > 600) {
+      return 'El campo Ubicación requiere el ingreso de entre 5 a 200 caracteres.';
+    }
+
+    return null;
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:cochabambacultural/cultural_event/ui/widgets/add_button.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
@@ -16,6 +17,8 @@ import 'package:cochabambacultural/cultural_event/ui/widgets/add_image_event.dar
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_tag.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/input_field_date.dart';
 
+import 'package:cochabambacultural/cultural_event/utils/modal_button_sheet.dart';
+
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +31,8 @@ class CulturalEventForm extends StatefulWidget {
 
   final int actualEventType;
   final TextEditingController category;
+
+  final TextEditingController location;
 
   final TextEditingController controllerInitialDateTime;
   final DateTime initialDateTime;
@@ -51,6 +56,7 @@ class CulturalEventForm extends StatefulWidget {
       required this.transport,
       required this.actualEventType,
       required this.category,
+      required this.location,
       required this.controllerInitialDateTime,
       required this.initialDateTime,
       required this.controllerEndDateTime,
@@ -82,6 +88,8 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
   final LoadImage loadImage = LoadImage();
 
   final _keyForm = GlobalKey<FormState>();
+
+  final ModalButtonSheet _modalButtonSheet = ModalButtonSheet();
 
   @override
   Widget build(BuildContext context) {
@@ -200,11 +208,26 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                             SizedBox(
                               height: responsive.hp(2.2),
                             ),
-                            const TextFormatWidget(
-                                valueText: '* Ubicación',
-                                align: TextAlign.left,
-                                typeText: 'Normal'),
-                            // widget map
+                            InputTextAreaWidget(
+                                labelInput: '* Ubicación',
+                                hintInput: 'Ingrese la ubicación del evento',
+                                inputValidation: (value) =>
+                                    validate.validateLocation(value!),
+                                controllerText: widget.location,
+                                maxCharacters: 200),
+                            SizedBox(
+                              height: responsive.hp(1.5),
+                            ),
+                            AddButton(
+                                iconAdd: Icons.add_location_alt,
+                                event: () {
+                                  _modalButtonSheet.showModal(
+                                      context,
+                                      const TextFormatWidget(
+                                          valueText: 'Aqui va el mapa',
+                                          align: TextAlign.left,
+                                          typeText: 'Normal'));
+                                }),
                             SizedBox(
                               height: responsive.hp(2.2),
                             ),

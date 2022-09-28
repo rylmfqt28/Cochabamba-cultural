@@ -15,6 +15,7 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
   final _costEvent = TextEditingController();
   final _transport = TextEditingController();
   final _category = TextEditingController(text: 'Gastronómico');
+  final _location = TextEditingController();
 
   final _controllerInitialDateTime = TextEditingController();
   final DateTime _initialDateTime = DateTime.now();
@@ -36,6 +37,7 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
         transport: _transport,
         actualEventType: 1,
         category: _category,
+        location: _location,
         controllerInitialDateTime: _controllerInitialDateTime,
         initialDateTime: _initialDateTime,
         controllerEndDateTime: _controllerEndDateTime,
