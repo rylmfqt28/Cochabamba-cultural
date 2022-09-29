@@ -16,6 +16,7 @@ import 'package:cochabambacultural/cultural_event/ui/widgets/radio_button_event.
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_image_event.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_tag.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/input_field_date.dart';
+import 'package:cochabambacultural/cultural_event/ui/widgets/map_widget.dart';
 
 import 'package:cochabambacultural/cultural_event/utils/modal_button_sheet.dart';
 
@@ -222,11 +223,7 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                                 iconAdd: Icons.add_location_alt,
                                 event: () {
                                   _modalButtonSheet.showModal(
-                                      context,
-                                      const TextFormatWidget(
-                                          valueText: 'Aqui va el mapa',
-                                          align: TextAlign.left,
-                                          typeText: 'Normal'));
+                                      context, const MapWidget());
                                 }),
                             SizedBox(
                               height: responsive.hp(2.2),
