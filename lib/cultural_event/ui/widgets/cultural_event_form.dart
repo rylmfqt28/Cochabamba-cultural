@@ -1,4 +1,5 @@
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_button.dart';
+import 'package:cochabambacultural/cultural_event/ui/widgets/map_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
@@ -16,7 +17,6 @@ import 'package:cochabambacultural/cultural_event/ui/widgets/radio_button_event.
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_image_event.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_tag.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/input_field_date.dart';
-import 'package:cochabambacultural/cultural_event/ui/widgets/map_widget.dart';
 
 import 'package:cochabambacultural/cultural_event/utils/modal_button_sheet.dart';
 
@@ -189,7 +189,7 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                                 controllerDateTime:
                                     widget.controllerEndDateTime),
                             SizedBox(
-                              height: responsive.hp(2.2),
+                              height: responsive.hp(2.8),
                             ),
                             const TextFormatWidget(
                                 valueText: '* Categoría',
@@ -226,7 +226,7 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                                       context, const MapWidget());
                                 }),
                             SizedBox(
-                              height: responsive.hp(2.2),
+                              height: responsive.hp(3),
                             ),
                             const TextFormatWidget(
                                 valueText: '* Imagen principal',
