@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_button.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/map_widget.dart';
-import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
@@ -24,6 +25,9 @@ import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+
 class CulturalEventForm extends StatefulWidget {
   final TextEditingController eventName;
   final TextEditingController description;
@@ -32,6 +36,9 @@ class CulturalEventForm extends StatefulWidget {
 
   final int actualEventType;
   final TextEditingController category;
+
+  final LatLng initialLocation;
+  final List<Marker> markers;
 
   final TextEditingController location;
 
@@ -57,7 +64,9 @@ class CulturalEventForm extends StatefulWidget {
       required this.transport,
       required this.actualEventType,
       required this.category,
+      required this.initialLocation,
       required this.location,
+      required this.markers,
       required this.controllerInitialDateTime,
       required this.initialDateTime,
       required this.controllerEndDateTime,
@@ -223,7 +232,11 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                                 iconAdd: Icons.add_location_alt,
                                 event: () {
                                   _modalButtonSheet.showModal(
-                                      context, const MapWidget());
+                                      context,
+                                      MapWidget(
+                                        initialLocation: widget.initialLocation,
+                                        markers: widget.markers,
+                                      ));
                                 }),
                             SizedBox(
                               height: responsive.hp(3),
