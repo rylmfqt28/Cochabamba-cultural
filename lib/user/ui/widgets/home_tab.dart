@@ -87,7 +87,7 @@ class _HomeTabState extends State<HomeTab> {
                               event: () {}),
                           EventCategoryButton(
                               iconEvent: Icons.brush,
-                              category: " Artesanales",
+                              category: " Artísticos",
                               event: () {}),
                         ],
                       ),
