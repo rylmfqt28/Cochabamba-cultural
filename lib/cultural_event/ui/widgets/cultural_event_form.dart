@@ -236,6 +236,7 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                                       MapWidget(
                                         initialLocation: widget.initialLocation,
                                         markers: widget.markers,
+                                        location: widget.location,
                                       ));
                                 }),
                             SizedBox(
