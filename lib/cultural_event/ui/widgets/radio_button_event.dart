@@ -88,10 +88,10 @@ class _RadioButtonEventState extends State<RadioButtonEvent> {
                   setState(() {
                     _valueRadio = int.parse(value.toString());
                   });
-                  widget.changeCategory('Artesanal');
+                  widget.changeCategory('Artísticos');
                 }),
             const TextFormatWidget(
-                valueText: 'Artesanal',
+                valueText: 'Artísticos',
                 align: TextAlign.left,
                 typeText: 'Normal')
           ],
