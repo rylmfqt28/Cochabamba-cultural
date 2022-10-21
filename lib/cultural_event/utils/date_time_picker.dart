@@ -16,7 +16,7 @@ class DateTimePicker {
           fieldHintText: 'Ingrese una fecha',
           fieldLabelText: 'Fecha',
           initialDate: initialDate,
-          firstDate: DateTime(initialDate.year),
+          firstDate: DateTime.now(),
           lastDate: DateTime(2100),
           builder: (context, child) {
             return _setThemeDialogDateTimePicker(context, child);
@@ -31,6 +31,7 @@ class DateTimePicker {
           errorInvalidText: 'Hora seleccionada no valida.',
           hourLabelText: 'Hora',
           minuteLabelText: 'Minuto',
+          initialEntryMode: TimePickerEntryMode.input,
           initialTime:
               TimeOfDay(hour: initialTime.hour, minute: initialTime.minute),
           builder: (context, child) {
