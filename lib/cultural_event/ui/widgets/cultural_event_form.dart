@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:cochabambacultural/cultural_event/ui/widgets/add_button.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/map_widget.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
@@ -18,6 +17,7 @@ import 'package:cochabambacultural/cultural_event/ui/widgets/radio_button_event.
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_image_event.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/add_tag.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/input_field_date.dart';
+import 'package:cochabambacultural/cultural_event/ui/widgets/add_location_widget.dart';
 
 import 'package:cochabambacultural/cultural_event/utils/modal_button_sheet.dart';
 
@@ -27,6 +27,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+
+import 'event_category_button.dart';
 
 class CulturalEventForm extends StatefulWidget {
   final TextEditingController eventName;
@@ -88,6 +90,7 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
 
   bool _errorTag = false;
   bool _errorPrincipalImage = false;
+  bool _errorEventLocation = false;
 
   final colorApp = AppColors();
 
@@ -100,6 +103,14 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
   final _keyForm = GlobalKey<FormState>();
 
   final ModalButtonSheet _modalButtonSheet = ModalButtonSheet();
+
+  MapController mapController = MapController();
+
+  @override
+  void dispose() {
+    mapController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +136,7 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             SizedBox(
-                              height: responsive.hp(12),
+                              height: responsive.hp(10),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -228,17 +239,36 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                             SizedBox(
                               height: responsive.hp(1.5),
                             ),
-                            AddButton(
-                                iconAdd: Icons.add_location_alt,
+                            AddLocationWidget(
+                                initialLocation: widget.initialLocation,
+                                markers: widget.markers,
+                                mapController: mapController),
+                            SizedBox(
+                              height: responsive.hp(1.5),
+                            ),
+                            EventCategoryButton(
+                                iconEvent: Icons.add_location_alt,
+                                category: " Seleccionar ubicación",
                                 event: () {
                                   _modalButtonSheet.showModal(
                                       context,
                                       MapWidget(
-                                        initialLocation: widget.initialLocation,
-                                        markers: widget.markers,
-                                        location: widget.location,
-                                      ));
+                                          initialLocation:
+                                              widget.initialLocation,
+                                          markers: widget.markers,
+                                          location: widget.location,
+                                          mapController: mapController));
                                 }),
+                            SizedBox(
+                              height: responsive.hp(1.9),
+                            ),
+                            Visibility(
+                                child: const TextFormatWidget(
+                                    valueText:
+                                        "Es necesario añadir la ubicación del evento",
+                                    align: TextAlign.left,
+                                    typeText: 'LabelErrorForm'),
+                                visible: _errorEventLocation),
                             SizedBox(
                               height: responsive.hp(3),
                             ),
@@ -361,12 +391,16 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
 
   _showErrorLabels() {
     setState(() {
+      _errorEventLocation = widget.markers.isEmpty;
       _errorTag = widget.tags.isEmpty;
       _errorPrincipalImage = widget.principalImage.isEmpty;
     });
   }
 
   bool _fieldSpecialValidate() {
+    if (_errorEventLocation) {
+      return true;
+    }
     if (_errorTag) {
       return true;
     }

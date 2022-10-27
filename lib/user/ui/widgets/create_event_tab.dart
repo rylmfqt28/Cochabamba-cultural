@@ -43,7 +43,7 @@ class _CreateEventTabState extends State<CreateEventTab> {
                     alignment: Alignment.centerRight,
                     child: EventCategoryButton(
                         iconEvent: Icons.add,
-                        category: '   Crear evento',
+                        category: ' Crear evento',
                         event: () {
                           Navigator.pushNamed(context, 'create_event_screen');
                         }),

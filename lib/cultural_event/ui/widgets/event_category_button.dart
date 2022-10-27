@@ -33,7 +33,7 @@ class EventCategoryButton extends StatelessWidget {
       child: MaterialButton(
           height: responsive.hp(6),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(iconEvent, size: 30, color: colorApp.primaryColor),
               Text(
