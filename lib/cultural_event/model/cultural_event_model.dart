@@ -1,5 +1,3 @@
-import 'package:cochabambacultural/cultural_event/model/comment_model.dart';
-
 class CulturalEventModel {
   String? uid;
   String? eventName;
