@@ -1,3 +1,4 @@
+import 'package:cochabambacultural/cultural_event/model/auxiliar_model/auxiliar_data.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/responsive.dart';
@@ -11,13 +12,15 @@ class InputFieldDate extends StatefulWidget {
   final String hintInput;
   final DateTime initialDateTime;
   final TextEditingController controllerDateTime;
+  final AuxiliarData auxiliarData;
 
   const InputFieldDate(
       {Key? key,
       required this.labelInput,
       required this.hintInput,
       required this.initialDateTime,
-      required this.controllerDateTime})
+      required this.controllerDateTime,
+      required this.auxiliarData})
       : super(key: key);
 
   @override
@@ -83,5 +86,19 @@ class _InputFieldDateState extends State<InputFieldDate> {
       widget.controllerDateTime.text =
           "${newDate.year}-${newDate.month}-${newDate.day}T${newTime.hour}:${newTime.minute}";
     });
+
+    if (widget.labelInput == 'Fecha y hora de inicio') {
+      setState(() {
+        widget.auxiliarData.initialDateTime = DateTime(newDate.year,
+            newDate.month, newDate.day, newTime.hour, newTime.minute);
+      });
+    }
+
+    if (widget.labelInput == 'Fecha y hora de finalización') {
+      setState(() {
+        widget.auxiliarData.endDateTime = DateTime(newDate.year, newDate.month,
+            newDate.day, newTime.hour, newTime.minute);
+      });
+    }
   }
 }

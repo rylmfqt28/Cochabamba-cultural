@@ -1,3 +1,4 @@
+import 'package:cochabambacultural/cultural_event/model/auxiliar_model/auxiliar_data.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/cultural_event/ui/widgets/map_widget.dart';
@@ -58,6 +59,8 @@ class CulturalEventForm extends StatefulWidget {
   final String labelButtonForm;
   final Function formEvent;
 
+  final AuxiliarData auxiliarData;
+
   const CulturalEventForm(
       {Key? key,
       required this.eventName,
@@ -77,7 +80,8 @@ class CulturalEventForm extends StatefulWidget {
       required this.secondaryImages,
       required this.tags,
       required this.labelButtonForm,
-      required this.formEvent})
+      required this.formEvent,
+      required this.auxiliarData})
       : super(key: key);
 
   @override
@@ -192,12 +196,14 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                               height: responsive.hp(2.2),
                             ),
                             InputFieldDate(
-                                labelInput: 'Fecha y hora de inicio',
-                                hintInput:
-                                    'Ingrese fecha y hora de inicio del evento',
-                                initialDateTime: widget.initialDateTime,
-                                controllerDateTime:
-                                    widget.controllerInitialDateTime),
+                              labelInput: 'Fecha y hora de inicio',
+                              hintInput:
+                                  'Ingrese fecha y hora de inicio del evento',
+                              initialDateTime: widget.initialDateTime,
+                              controllerDateTime:
+                                  widget.controllerInitialDateTime,
+                              auxiliarData: widget.auxiliarData,
+                            ),
                             SizedBox(
                               height: responsive.hp(2.2),
                             ),
@@ -207,7 +213,8 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                                     'Ingrese fecha y hora de finalización del evento',
                                 initialDateTime: widget.endDateTime,
                                 controllerDateTime:
-                                    widget.controllerEndDateTime),
+                                    widget.controllerEndDateTime,
+                                auxiliarData: widget.auxiliarData),
                             SizedBox(
                               height: responsive.hp(2.8),
                             ),
@@ -225,6 +232,7 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                                 });
                               },
                               actualValueRadio: widget.actualEventType,
+                              auxiliarData: widget.auxiliarData,
                             ),
                             SizedBox(
                               height: responsive.hp(2.2),

@@ -1,3 +1,4 @@
+import 'package:cochabambacultural/cultural_event/model/auxiliar_model/auxiliar_data.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
@@ -7,9 +8,13 @@ import 'package:cochabambacultural/utils/app_colors.dart';
 class RadioButtonEvent extends StatefulWidget {
   final void Function(String value) changeCategory;
   final int actualValueRadio;
+  final AuxiliarData auxiliarData;
 
   const RadioButtonEvent(
-      {Key? key, required this.changeCategory, required this.actualValueRadio})
+      {Key? key,
+      required this.changeCategory,
+      required this.actualValueRadio,
+      required this.auxiliarData})
       : super(key: key);
 
   @override
@@ -34,6 +39,8 @@ class _RadioButtonEventState extends State<RadioButtonEvent> {
               onChanged: (value) {
                 setState(() {
                   _valueRadio = int.parse(value.toString());
+                  widget.auxiliarData.actualEventType =
+                      int.parse(value.toString());
                 });
                 widget.changeCategory('Gastronómico');
               },
@@ -53,6 +60,8 @@ class _RadioButtonEventState extends State<RadioButtonEvent> {
                 onChanged: (value) {
                   setState(() {
                     _valueRadio = int.parse(value.toString());
+                    widget.auxiliarData.actualEventType =
+                        int.parse(value.toString());
                   });
                   widget.changeCategory('Musical');
                 }),
@@ -69,6 +78,8 @@ class _RadioButtonEventState extends State<RadioButtonEvent> {
                 onChanged: (value) {
                   setState(() {
                     _valueRadio = int.parse(value.toString());
+                    widget.auxiliarData.actualEventType =
+                        int.parse(value.toString());
                   });
                   widget.changeCategory('Religioso');
                 }),
@@ -87,6 +98,8 @@ class _RadioButtonEventState extends State<RadioButtonEvent> {
                 onChanged: (value) {
                   setState(() {
                     _valueRadio = int.parse(value.toString());
+                    widget.auxiliarData.actualEventType =
+                        int.parse(value.toString());
                   });
                   widget.changeCategory('Artísticos');
                 }),

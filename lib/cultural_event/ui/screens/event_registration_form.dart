@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cochabambacultural/cultural_event/model/auxiliar_model/auxiliar_data.dart';
+import 'package:cochabambacultural/cultural_event/model/cultural_event_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/cultural_event/ui/widgets/cultural_event_form.dart';
@@ -29,6 +33,11 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
   final _controllerEndDateTime = TextEditingController();
   final DateTime _endDateTime = DateTime.now();
 
+  final AuxiliarData auxiliarData = AuxiliarData(
+      initialDateTime: DateTime.now(),
+      endDateTime: DateTime.now(),
+      actualEventType: 1);
+
   List<String> principalImage = [];
   List<String> secondaryImages = [];
 
@@ -54,10 +63,30 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
         secondaryImages: secondaryImages,
         tags: tags,
         labelButtonForm: 'Crear evento',
-        formEvent: () => _createEvent());
+        formEvent: () => _createEvent(),
+        auxiliarData: auxiliarData);
   }
 
   _createEvent() {
-    return;
+    CulturalEventModel newEvent = CulturalEventModel(
+        uid: FirebaseFirestore.instance.collection("events").doc().id,
+        eventName: _eventName.text.trim(),
+        description: _description.text.trim(),
+        initialDateTime: auxiliarData.getInitialDateTime,
+        endDateTime: auxiliarData.getEndDateTime,
+        costEvent:
+            _costEvent.text.isEmpty ? 0 : double.parse(_costEvent.text.trim()),
+        transport: _transport.text.isEmpty ? "" : _transport.text.trim(),
+        actualEventType: auxiliarData.getActualEventType,
+        category: _category.text.trim(),
+        address: _location.text.trim(),
+        latitude: _initialLocation.latitude,
+        longitude: _initialLocation.longitude,
+        principalImage: principalImage[0],
+        secondaryImages: secondaryImages,
+        tags: tags,
+        votes: 0,
+        starts: 0,
+        createdBy: FirebaseAuth.instance.currentUser!.uid);
   }
 }
