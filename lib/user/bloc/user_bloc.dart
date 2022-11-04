@@ -145,8 +145,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         final _storage = FirebaseStorage.instance;
 
-        final imageSelected =
-            await ImagePicker().pickImage(source: ImageSource.gallery);
+        final imageSelected = await ImagePicker()
+            .pickImage(source: ImageSource.gallery, imageQuality: 50);
 
         if (imageSelected != null) {
           final pathImage = File(imageSelected.path);

@@ -16,8 +16,8 @@ class LoadImage {
       'Solo se puede agregar 4 imagenes secundarias.';
 
   Future<String> getPathImageSelected() async {
-    final imageSelected =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final imageSelected = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 50);
 
     if (imageSelected != null) {
       return imageSelected.path;
