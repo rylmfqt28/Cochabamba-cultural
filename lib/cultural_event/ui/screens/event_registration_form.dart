@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cochabambacultural/cultural_event/bloc/cultural_event_bloc.dart';
 import 'package:cochabambacultural/cultural_event/model/auxiliar_model/auxiliar_data.dart';
 import 'package:cochabambacultural/cultural_event/model/cultural_event_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/cultural_event/ui/widgets/cultural_event_form.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -45,6 +47,8 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
 
   @override
   Widget build(BuildContext context) {
+    final eventBloc = BlocProvider.of<CulturalEventBloc>(context);
+
     return CulturalEventForm(
         eventName: _eventName,
         description: _description,
@@ -63,11 +67,11 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
         secondaryImages: secondaryImages,
         tags: tags,
         labelButtonForm: 'Crear evento',
-        formEvent: () => _createEvent(),
+        formEvent: () => _createEvent(eventBloc, context),
         auxiliarData: auxiliarData);
   }
 
-  _createEvent() {
+  _createEvent(CulturalEventBloc eventBloc, BuildContext context) {
     CulturalEventModel newEvent = CulturalEventModel(
         uid: FirebaseFirestore.instance.collection("events").doc().id,
         eventName: _eventName.text.trim(),
@@ -88,5 +92,8 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
         votes: 0,
         starts: 0,
         createdBy: FirebaseAuth.instance.currentUser!.uid);
+
+    eventBloc
+        .add(CreatedCulturalEvent(culturalEvent: newEvent, context: context));
   }
 }

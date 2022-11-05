@@ -1,3 +1,4 @@
+import 'package:cochabambacultural/cultural_event/bloc/cultural_event_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -32,7 +33,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => UserBloc())],
+      providers: [
+        BlocProvider(create: (_) => UserBloc()),
+        BlocProvider(create: (_) => CulturalEventBloc())
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Cochabamba Cultural',

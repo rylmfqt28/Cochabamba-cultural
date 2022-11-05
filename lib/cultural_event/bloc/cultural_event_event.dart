@@ -4,7 +4,8 @@ part of 'cultural_event_bloc.dart';
 abstract class CulturalEventEvent {}
 
 class CreatedCulturalEvent extends CulturalEventEvent {
-  final CulturalEventModel event;
+  final CulturalEventModel culturalEvent;
+  final BuildContext context;
 
-  CreatedCulturalEvent({required this.event});
+  CreatedCulturalEvent({required this.culturalEvent, required this.context});
 }
