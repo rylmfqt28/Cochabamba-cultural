@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CulturalEventModel {
   String? uid;
   String? eventName;
@@ -43,8 +45,8 @@ class CulturalEventModel {
         uid: map["uid"],
         eventName: map["eventName"],
         description: map["description"],
-        initialDateTime: map["initialDateTime"],
-        endDateTime: map["endDateTime"],
+        initialDateTime: (map["initialDateTime"] as Timestamp).toDate(),
+        endDateTime: (map["endDateTime"] as Timestamp).toDate(),
         costEvent: map["costEvent"],
         transport: map["transport"],
         actualEventType: map["actualEventType"],
@@ -53,8 +55,10 @@ class CulturalEventModel {
         latitude: map["latitude"],
         longitude: map["longitude"],
         principalImage: map["principalImage"],
-        secondaryImages: map["secondaryImages"],
-        tags: map["tags"],
+        secondaryImages: (map["secondaryImages"] as List)
+            .map((image) => image as String)
+            .toList(),
+        tags: (map["tags"] as List).map((tag) => tag as String).toList(),
         votes: map["votes"],
         starts: map["starts"],
         createdBy: map["createdBy"]);
