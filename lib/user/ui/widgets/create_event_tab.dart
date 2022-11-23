@@ -1,3 +1,6 @@
+import 'package:cochabambacultural/cultural_event/model/cultural_event_model.dart';
+import 'package:cochabambacultural/cultural_event/repository/get_created_events.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
@@ -17,6 +20,20 @@ class CreateEventTab extends StatefulWidget {
 }
 
 class _CreateEventTabState extends State<CreateEventTab> {
+  List<CulturalEventModel> myEvents = [];
+
+  @override
+  void initState() {
+    _getEvents();
+    super.initState();
+  }
+
+  Future<void> _getEvents() async {
+    myEvents = await GetCreatedEvents()
+        .getMyEvents(FirebaseAuth.instance.currentUser!.uid);
+    print(myEvents[0].address);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorApp = AppColors();
