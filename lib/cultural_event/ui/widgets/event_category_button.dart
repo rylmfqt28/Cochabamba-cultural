@@ -21,19 +21,19 @@ class EventCategoryButton extends StatelessWidget {
     final Responsive responsive = Responsive.of(context);
 
     return Container(
-      width: responsive.wp(42),
+      width: responsive.wp(45),
       height: responsive.hp(6),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
             color: colorApp.shadowColor,
             blurRadius: 8.0,
-            offset: const Offset(0.0, 0.15),
+            offset: const Offset(0.0, 4),
             spreadRadius: -9)
       ]),
       child: MaterialButton(
           height: responsive.hp(6),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(iconEvent, size: 30, color: colorApp.primaryColor),
               Text(

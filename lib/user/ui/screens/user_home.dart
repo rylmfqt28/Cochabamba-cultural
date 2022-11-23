@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 
-import 'package:cochabambacultural/user/model/user_model.dart';
-
 import 'package:cochabambacultural/user/ui/widgets/home_tab.dart';
 import 'package:cochabambacultural/user/ui/widgets/search_event_tab.dart';
 import 'package:cochabambacultural/user/ui/widgets/create_event_tab.dart';
 import 'package:cochabambacultural/user/ui/widgets/favorites_event_tab.dart';
 import 'package:cochabambacultural/user/ui/widgets/user_profile_tab.dart';
+
+import 'package:cochabambacultural/ui/widgets/splash_widget.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -27,7 +27,6 @@ class UserHomeScreen extends StatefulWidget {
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel userSignin = UserModel();
 
   int index = 0;
 
@@ -43,7 +42,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       const Icon(Icons.favorite, size: 30),
       const Icon(Icons.person, size: 30)
     ];
-    //final userBloc = BlocProvider.of<UserBloc>(context);
 
     final tabs = [
       const HomeTab(),
@@ -55,29 +53,37 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
       if (state.existUser) {
-        return Container(
-          color: colorApp.primaryBackground,
-          child: SafeArea(
-            top: false,
-            child: ClipRect(
-              child: Scaffold(
-                backgroundColor: colorApp.primaryBackground,
-                extendBody: true,
-                body: tabs[index],
-                bottomNavigationBar: Theme(
-                  data: Theme.of(context).copyWith(
-                      iconTheme: IconThemeData(color: colorApp.iconPrimary)),
-                  child: CurvedNavigationBar(
-                    backgroundColor: Colors.transparent,
-                    height: responsive.hp(7.6),
-                    index: index,
-                    animationCurve: Curves.easeInOut,
-                    animationDuration: const Duration(milliseconds: 300),
-                    items: items,
-                    color: colorApp.primaryColor,
-                    onTap: (index) => setState(() {
-                      this.index = index;
-                    }),
+        return WillPopScope(
+          onWillPop: () async {
+            // if (Platform.isAndroid) {
+            //   SystemNavigator.pop();
+            // }
+            return false;
+          },
+          child: Container(
+            color: colorApp.primaryBackground,
+            child: SafeArea(
+              top: false,
+              child: ClipRect(
+                child: Scaffold(
+                  backgroundColor: colorApp.primaryBackground,
+                  extendBody: true,
+                  body: tabs[index],
+                  bottomNavigationBar: Theme(
+                    data: Theme.of(context).copyWith(
+                        iconTheme: IconThemeData(color: colorApp.iconPrimary)),
+                    child: CurvedNavigationBar(
+                      backgroundColor: Colors.transparent,
+                      height: responsive.hp(7.6),
+                      index: index,
+                      animationCurve: Curves.easeInOut,
+                      animationDuration: const Duration(milliseconds: 300),
+                      items: items,
+                      color: colorApp.primaryColor,
+                      onTap: (index) => setState(() {
+                        this.index = index;
+                      }),
+                    ),
                   ),
                 ),
               ),
@@ -85,9 +91,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           ),
         );
       } else {
-        return Scaffold(
-          backgroundColor: colorApp.primaryBackground,
-        );
+        return WillPopScope(
+            onWillPop: () async {
+              return false;
+            },
+            child: const SplashWidget());
       }
     });
   }

@@ -1,4 +1,3 @@
-/* (5) Tab user profile */
 import 'package:cochabambacultural/utils/snack_messages.dart';
 import 'package:flutter/material.dart';
 
@@ -93,7 +92,8 @@ class _UserProfileTabState extends State<UserProfileTab> {
                     FieldUpdateAccount(
                         nameField: 'Nombre:',
                         onPressed: () {
-                          _showDialog(context, state.user!.uid!);
+                          _showDialog(
+                              context, state.user!.uid!, state.user!.name!);
                         },
                         valueField: state.user!.name!),
                     SizedBox(height: responsive.hp(4.5)),
@@ -130,12 +130,12 @@ class _UserProfileTabState extends State<UserProfileTab> {
   }
 
   //modal update user data
-  _showDialog(BuildContext context, String uid) {
+  _showDialog(BuildContext context, String uid, String name) {
     final GlobalKey<FormState> _keyFormDialog = GlobalKey();
 
     final userBloc = BlocProvider.of<UserBloc>(context);
 
-    String _newName = '';
+    final _newName = TextEditingController(text: name);
 
     return showDialog(
         context: context,
@@ -153,15 +153,13 @@ class _UserProfileTabState extends State<UserProfileTab> {
                 isPassword: false,
                 inputValidation: (value) =>
                     validation.validationField(value, 'userName'),
-                onChangeInput: (value) {
-                  _newName = value;
-                },
+                controller: _newName,
                 labelButtonModal: 'Guardar',
                 onPressed: () async {
                   if (_keyFormDialog.currentState!.validate()) {
                     userBloc.add(UpdateNameUser(
                         uidUser: uid,
-                        newName: _newName.trim(),
+                        newName: _newName.text.trim(),
                         context: context));
                   }
                 },
@@ -173,7 +171,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
   _showDialogConfirmPassword(BuildContext context, String email) {
     final GlobalKey<FormState> _keyFormDialog = GlobalKey();
 
-    String _password = '';
+    final _password = TextEditingController();
 
     return showDialog(
         context: context,
@@ -195,13 +193,11 @@ class _UserProfileTabState extends State<UserProfileTab> {
                   }
                   return null;
                 },
-                onChangeInput: (value) {
-                  _password = value;
-                },
+                controller: _password,
                 labelButtonModal: 'Confirmar',
                 onPressed: () async {
                   if (_keyFormDialog.currentState!.validate()) {
-                    await _confirm(email, _password);
+                    await _confirm(email, _password.text);
                   }
                 },
               ),
@@ -231,7 +227,7 @@ class _UserProfileTabState extends State<UserProfileTab> {
 
     final userBloc = BlocProvider.of<UserBloc>(context);
 
-    String _newPassword = '';
+    final _newPassword = TextEditingController();
 
     return showDialog(
         context: context,
@@ -249,14 +245,12 @@ class _UserProfileTabState extends State<UserProfileTab> {
                 isPassword: true,
                 inputValidation: (value) =>
                     validation.validationField(value, 'passwordR"'),
-                onChangeInput: (value) {
-                  _newPassword = value;
-                },
+                controller: _newPassword,
                 labelButtonModal: 'Guardar',
                 onPressed: () async {
                   if (_keyFormDialog.currentState!.validate()) {
                     userBloc.add(UpdateUserPassword(
-                        newPassword: _newPassword, context: context));
+                        newPassword: _newPassword.text, context: context));
                   }
                 },
               ),

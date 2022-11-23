@@ -27,7 +27,7 @@ class CardEventWidget extends StatelessWidget {
       child: Card(
         color: colorApp.primaryBackground,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        elevation: 10,
+        elevation: 3.5,
         child: Column(
           children: [
             SizedBox(

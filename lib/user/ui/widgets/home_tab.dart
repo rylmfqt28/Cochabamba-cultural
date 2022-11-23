@@ -70,15 +70,11 @@ class _HomeTabState extends State<HomeTab> {
                           EventCategoryButton(
                               iconEvent: Icons.restaurant,
                               category: " Gastronomicos",
-                              event: () {
-                                print('ver gastronomicos');
-                              }),
+                              event: () {}),
                           EventCategoryButton(
                               iconEvent: Icons.music_note,
                               category: " Musicales",
-                              event: () {
-                                print("ver musicales");
-                              }),
+                              event: () {}),
                         ],
                       ),
                       SizedBox(height: responsive.hp(2)),
@@ -88,15 +84,11 @@ class _HomeTabState extends State<HomeTab> {
                           EventCategoryButton(
                               iconEvent: Icons.church,
                               category: " Religiosos",
-                              event: () {
-                                print('ver religiosos');
-                              }),
+                              event: () {}),
                           EventCategoryButton(
                               iconEvent: Icons.brush,
-                              category: " Artesanales",
-                              event: () {
-                                print("ver artesanales");
-                              }),
+                              category: " Artísticos",
+                              event: () {}),
                         ],
                       ),
                       SizedBox(height: responsive.hp(5)),
@@ -113,21 +105,21 @@ class _HomeTabState extends State<HomeTab> {
                             SizedBox(width: responsive.wp(2.5)),
                             const CardEventWidget(
                                 url:
-                                    'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                                    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
                                 eventTitle:
                                     'XVI Feria del pescado y aniversario de Villa Tunari.',
                                 eventDate: '30/04/2022'),
                             SizedBox(width: responsive.wp(4)),
                             const CardEventWidget(
                                 url:
-                                    'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                                    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
                                 eventTitle:
                                     'XXVIII Feria Apicola y sus derivados.',
                                 eventDate: '31/04/2022'),
                             SizedBox(width: responsive.wp(4)),
                             const CardEventWidget(
                                 url:
-                                    'https://img3.travelagenciesfinder.com/470/556/2355618434705569.jpg',
+                                    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
                                 eventTitle:
                                     'Feria artesanal por el dia del trabajo.',
                                 eventDate: '01/05/2022'),

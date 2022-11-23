@@ -3,22 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/utils/app_colors.dart';
 
-class InputTextWidget extends StatelessWidget {
+class InputTextAreaWidget extends StatelessWidget {
   final String labelInput;
   final String hintInput;
-  final TextInputType keyboardType;
-  final bool inputPassword;
   final String? Function(String? text)? inputValidation;
   final TextEditingController controllerText;
+  final int maxCharacters;
 
-  const InputTextWidget(
+  const InputTextAreaWidget(
       {Key? key,
       required this.labelInput,
       required this.hintInput,
-      this.keyboardType = TextInputType.text,
-      required this.inputPassword,
       required this.inputValidation,
-      required this.controllerText})
+      required this.controllerText,
+      required this.maxCharacters})
       : super(key: key);
 
   @override
@@ -28,9 +26,11 @@ class InputTextWidget extends StatelessWidget {
 
     return TextFormField(
       validator: inputValidation,
-      keyboardType: keyboardType,
-      obscureText: inputPassword,
+      keyboardType: TextInputType.multiline,
+      obscureText: false,
       controller: controllerText,
+      maxLength: maxCharacters,
+      maxLines: null,
       style: TextStyle(fontSize: responsive.dp(1.9)),
       decoration: InputDecoration(
         hintText: hintInput,

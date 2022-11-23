@@ -61,11 +61,36 @@ class TextFormatWidget extends StatelessWidget {
       );
     }
 
+    if (typeText == 'LabelTitleForm') {
+      return Text(
+        valueText,
+        textAlign: align,
+        maxLines: 3,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+            color: colorApp.primaryFont,
+            fontSize: responsive.dp(1.9),
+            fontWeight: FontWeight.bold),
+      );
+    }
+
+    if (typeText == 'LabelErrorForm') {
+      return Text(
+        valueText,
+        textAlign: align,
+        maxLines: 2,
+        softWrap: true,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(color: Colors.red, fontSize: responsive.dp(1.4)),
+      );
+    }
+
     // if typeText is equal to 'Normal'
     return Text(
       valueText,
       textAlign: align,
-      maxLines: 2,
+      maxLines: 3,
       softWrap: true,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
