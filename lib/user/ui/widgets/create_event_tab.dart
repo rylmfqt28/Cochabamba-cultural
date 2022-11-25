@@ -29,9 +29,12 @@ class _CreateEventTabState extends State<CreateEventTab> {
   }
 
   Future<void> _getEvents() async {
-    myEvents = await GetCreatedEvents()
+    List<CulturalEventModel> _actualEvents = await GetCreatedEvents()
         .getMyEvents(FirebaseAuth.instance.currentUser!.uid);
-    print(myEvents[0].address);
+
+    setState(() {
+      myEvents = _actualEvents;
+    });
   }
 
   @override
@@ -48,9 +51,9 @@ class _CreateEventTabState extends State<CreateEventTab> {
           ),
           child: Stack(
             children: [
-              ListView(
+              Column(
                 children: [
-                  SizedBox(height: responsive.hp(3)),
+                  SizedBox(height: responsive.hp(10)),
                   const TextFormatWidget(
                       valueText: 'Eventos creados',
                       align: TextAlign.left,
@@ -66,28 +69,20 @@ class _CreateEventTabState extends State<CreateEventTab> {
                         }),
                   ),
                   SizedBox(height: responsive.hp(3)),
-                  EvenRowWidget(
-                    url:
-                        'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-                    eventName:
-                        'XVI Feria del pescado y aniversario de Villa Tunari.',
-                    event: () {},
-                  ),
-                  SizedBox(height: responsive.hp(2)),
-                  EvenRowWidget(
-                    url:
-                        'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-                    eventName:
-                        'XVI Feria del pescado y aniversario de Villa Tunari.',
-                    event: () {},
-                  ),
-                  SizedBox(height: responsive.hp(2)),
-                  EvenRowWidget(
-                    url:
-                        'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-                    eventName:
-                        'XVI Feria del pescado y aniversario de Villa Tunari.',
-                    event: () {},
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.only(bottom: responsive.wp(2)),
+                      itemCount: myEvents.length,
+                      itemBuilder: (context, index) {
+                        return EvenRowWidget(
+                            url: myEvents[index].principalImage!,
+                            eventName: myEvents[index].eventName!,
+                            event: () {});
+                      },
+                    ),
                   ),
                 ],
               )
