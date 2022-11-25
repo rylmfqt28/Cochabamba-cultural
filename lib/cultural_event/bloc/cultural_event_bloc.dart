@@ -43,12 +43,13 @@ class CulturalEventBloc extends Bloc<CulturalEventEvent, CulturalEventState> {
                 .set(event.culturalEvent.toMap())
                 .then((value) {
               emit(CulturalEventSetState(newEvent: event.culturalEvent));
-              _successDialog("Evento creado con exito", event.context, 150);
+              _successDialog("Evento creado con exito", event.context, 190);
+              Navigator.of(event.context).pop();
             });
           });
         });
       } on FirebaseException catch (error) {
-        _errorMsg.showMessageException(error.code, event.context, 150);
+        _errorMsg.showMessageException(error.code, event.context, 190);
       }
     }));
   }
