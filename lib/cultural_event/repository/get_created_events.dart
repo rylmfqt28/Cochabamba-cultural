@@ -5,9 +5,10 @@ class GetCreatedEvents {
   final _collection = FirebaseFirestore.instance.collection("events");
 
   Future<List<CulturalEventModel>> getMyEvents(String uid) async {
-    QuerySnapshot _snapshot =
-        await _collection.where("createdBy", isEqualTo: uid).get();
-    //.orderBy("eventName", descending: false)
+    QuerySnapshot _snapshot = await _collection
+        .where("createdBy", isEqualTo: uid)
+        .orderBy("eventName", descending: false)
+        .get();
 
     List<CulturalEventModel> _myEvents = _snapshot.docs
         .map((event) => CulturalEventModel.fromMap(event.data()))
