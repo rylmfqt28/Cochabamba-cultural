@@ -53,6 +53,7 @@ class _EventEditFormState extends State<EventEditForm> {
     _setStateEventEditForm(eventState.event!, context);
 
     return CulturalEventForm(
+        titleForm: "Editar evento",
         eventName: _eventName,
         description: _description,
         costEvent: _costEvent,

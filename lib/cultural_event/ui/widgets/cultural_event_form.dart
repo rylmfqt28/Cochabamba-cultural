@@ -32,6 +32,7 @@ import 'package:latlong2/latlong.dart';
 import 'event_category_button.dart';
 
 class CulturalEventForm extends StatefulWidget {
+  final String titleForm;
   final TextEditingController eventName;
   final TextEditingController description;
   final TextEditingController costEvent;
@@ -63,6 +64,7 @@ class CulturalEventForm extends StatefulWidget {
 
   const CulturalEventForm(
       {Key? key,
+      required this.titleForm,
       required this.eventName,
       required this.description,
       required this.costEvent,
@@ -158,8 +160,8 @@ class _CulturalEventFormState extends State<CulturalEventForm> {
                                 SizedBox(
                                   width: responsive.wp(3.5),
                                 ),
-                                const TextFormatWidget(
-                                    valueText: 'Crear Evento',
+                                TextFormatWidget(
+                                    valueText: widget.titleForm,
                                     align: TextAlign.left,
                                     typeText: 'Title')
                               ],
