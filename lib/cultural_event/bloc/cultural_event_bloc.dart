@@ -43,12 +43,45 @@ class CulturalEventBloc extends Bloc<CulturalEventEvent, CulturalEventState> {
                 .set(event.culturalEvent.toMap())
                 .then((value) {
               emit(CulturalEventSetState(newEvent: event.culturalEvent));
-              _successDialog("Evento creado con exito", event.context, 150);
+              _successDialog("Evento creado con exito", event.context, 190);
+              Navigator.of(event.context).pop();
             });
           });
         });
       } on FirebaseException catch (error) {
-        _errorMsg.showMessageException(error.code, event.context, 150);
+        _errorMsg.showMessageException(error.code, event.context, 190);
+      }
+    }));
+
+    on<SetStateCulturalEvent>((event, emit) =>
+        emit(CulturalEventSetState(newEvent: event.culturalEvent)));
+
+    on<UpdateCulturalEvent>(((event, emit) async {
+      try {
+        await UploadImages()
+            .uploadPrincipalImage(
+                event.culturalEvent.principalImage!, event.culturalEvent.uid!)
+            .then((value) => {event.culturalEvent.principalImage = value})
+            .then((value) async {
+          await UploadImages()
+              .uploadSecondaryImages(event.culturalEvent.secondaryImages!,
+                  event.culturalEvent.uid!)
+              .then((value) => event.culturalEvent.secondaryImages = value)
+              .then((value) async {
+            await _fireStore
+                .collection("events")
+                .doc(event.culturalEvent.uid)
+                .set(event.culturalEvent.toMap())
+                .then((value) {
+              emit(CulturalEventSetState(newEvent: event.culturalEvent));
+              _successDialog(
+                  "Evento actualizado con exito", event.context, 190);
+              Navigator.of(event.context).pop();
+            });
+          });
+        });
+      } on FirebaseException catch (error) {
+        _errorMsg.showMessageException(error.code, event.context, 190);
       }
     }));
   }

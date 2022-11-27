@@ -50,6 +50,7 @@ class _EventRegistrationFormState extends State<EventRegistrationForm> {
     final eventBloc = BlocProvider.of<CulturalEventBloc>(context);
 
     return CulturalEventForm(
+        titleForm: "Crear evento",
         eventName: _eventName,
         description: _description,
         costEvent: _costEvent,

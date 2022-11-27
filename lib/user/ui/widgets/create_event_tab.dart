@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
 
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 
 import 'package:cochabambacultural/cultural_event/ui/widgets/event_category_button.dart';
-
 import 'package:cochabambacultural/cultural_event/ui/widgets/event_row_widget.dart';
+import 'package:cochabambacultural/cultural_event/bloc/cultural_event_bloc.dart';
+import 'package:cochabambacultural/cultural_event/model/cultural_event_model.dart';
+import 'package:cochabambacultural/cultural_event/repository/get_created_events.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateEventTab extends StatefulWidget {
   const CreateEventTab({Key? key}) : super(key: key);
@@ -17,10 +23,29 @@ class CreateEventTab extends StatefulWidget {
 }
 
 class _CreateEventTabState extends State<CreateEventTab> {
+  List<CulturalEventModel> myEvents = [];
+
+  @override
+  void initState() {
+    _getEvents();
+    super.initState();
+  }
+
+  Future<void> _getEvents() async {
+    List<CulturalEventModel> _actualEvents = await GetCreatedEvents()
+        .getMyEvents(FirebaseAuth.instance.currentUser!.uid);
+
+    setState(() {
+      myEvents = _actualEvents;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
+
+    final eventBloc = BlocProvider.of<CulturalEventBloc>(context);
 
     return Scaffold(
       backgroundColor: colorApp.primaryBackground,
@@ -31,9 +56,9 @@ class _CreateEventTabState extends State<CreateEventTab> {
           ),
           child: Stack(
             children: [
-              ListView(
+              Column(
                 children: [
-                  SizedBox(height: responsive.hp(3)),
+                  SizedBox(height: responsive.hp(10)),
                   const TextFormatWidget(
                       valueText: 'Eventos creados',
                       align: TextAlign.left,
@@ -49,28 +74,24 @@ class _CreateEventTabState extends State<CreateEventTab> {
                         }),
                   ),
                   SizedBox(height: responsive.hp(3)),
-                  EvenRowWidget(
-                    url:
-                        'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-                    eventName:
-                        'XVI Feria del pescado y aniversario de Villa Tunari.',
-                    event: () {},
-                  ),
-                  SizedBox(height: responsive.hp(2)),
-                  EvenRowWidget(
-                    url:
-                        'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-                    eventName:
-                        'XVI Feria del pescado y aniversario de Villa Tunari.',
-                    event: () {},
-                  ),
-                  SizedBox(height: responsive.hp(2)),
-                  EvenRowWidget(
-                    url:
-                        'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-                    eventName:
-                        'XVI Feria del pescado y aniversario de Villa Tunari.',
-                    event: () {},
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.only(bottom: responsive.wp(2)),
+                      itemCount: myEvents.length,
+                      itemBuilder: (context, index) {
+                        return EvenRowWidget(
+                            url: myEvents[index].principalImage!,
+                            eventName: myEvents[index].eventName!,
+                            event: () {
+                              eventBloc.add(SetStateCulturalEvent(
+                                  culturalEvent: myEvents[index]));
+                              Navigator.pushNamed(context, 'edit_event_screen');
+                            });
+                      },
+                    ),
                   ),
                 ],
               )
