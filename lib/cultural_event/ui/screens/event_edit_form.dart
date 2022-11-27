@@ -48,9 +48,9 @@ class _EventEditFormState extends State<EventEditForm> {
 
   @override
   Widget build(BuildContext context) {
-    final eventBloc = BlocProvider.of<CulturalEventBloc>(context).state;
+    final eventState = BlocProvider.of<CulturalEventBloc>(context).state;
 
-    _setStateEventEditForm(eventBloc.event!, context);
+    _setStateEventEditForm(eventState.event!, context);
 
     return CulturalEventForm(
         eventName: _eventName,
@@ -70,13 +70,15 @@ class _EventEditFormState extends State<EventEditForm> {
         secondaryImages: secondaryImages,
         tags: tags,
         labelButtonForm: "Guardar Cambios",
-        formEvent: () {},
+        formEvent: () => _updateEvent(
+            BlocProvider.of<CulturalEventBloc>(context),
+            eventState.event!,
+            context),
         auxiliarData: auxiliarData);
   }
 
   void _setStateEventEditForm(
       CulturalEventModel culturalEvent, BuildContext context) {
-    print("hora ${culturalEvent.initialDateTime!}");
     setState(() {
       _eventName.text = culturalEvent.eventName!;
       _description.text = culturalEvent.description!;
@@ -99,5 +101,32 @@ class _EventEditFormState extends State<EventEditForm> {
       secondaryImages = culturalEvent.secondaryImages!;
       tags = culturalEvent.tags!;
     });
+  }
+
+  _updateEvent(CulturalEventBloc eventBloc, CulturalEventModel culturalEvent,
+      BuildContext context) {
+    CulturalEventModel updateEvent = CulturalEventModel(
+        uid: culturalEvent.uid!,
+        eventName: _eventName.text.trim(),
+        description: _description.text.trim(),
+        initialDateTime: auxiliarData.getInitialDateTime,
+        endDateTime: auxiliarData.getEndDateTime,
+        costEvent:
+            _costEvent.text.isEmpty ? 0 : double.parse(_costEvent.text.trim()),
+        transport: _transport.text.isEmpty ? "" : _transport.text.trim(),
+        actualEventType: auxiliarData.getActualEventType,
+        category: _category.text.trim(),
+        address: _location.text.trim(),
+        latitude: _initialLocation.latitude,
+        longitude: _initialLocation.longitude,
+        principalImage: principalImage[0],
+        secondaryImages: secondaryImages,
+        tags: tags,
+        votes: culturalEvent.votes!,
+        starts: culturalEvent.starts!,
+        createdBy: culturalEvent.createdBy!);
+
+    eventBloc
+        .add(UpdateCulturalEvent(culturalEvent: updateEvent, context: context));
   }
 }

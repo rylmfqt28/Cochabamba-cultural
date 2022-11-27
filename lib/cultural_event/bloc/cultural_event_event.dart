@@ -15,3 +15,10 @@ class SetStateCulturalEvent extends CulturalEventEvent {
 
   SetStateCulturalEvent({required this.culturalEvent});
 }
+
+class UpdateCulturalEvent extends CulturalEventEvent {
+  final CulturalEventModel culturalEvent;
+  final BuildContext context;
+
+  UpdateCulturalEvent({required this.culturalEvent, required this.context});
+}

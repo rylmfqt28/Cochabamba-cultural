@@ -8,6 +8,10 @@ class UploadImages {
   Future<String> uploadPrincipalImage(String path, String uid) async {
     String _imagePrincipal = "";
 
+    if (path.contains("https://")) {
+      return path;
+    }
+
     final principalImage = File(path);
 
     await _storage
@@ -30,18 +34,22 @@ class UploadImages {
     int _index = 0;
 
     for (var path in imagesPath) {
-      File _newImage = File(path);
+      if (path.contains("https://")) {
+        _paths.add(path);
+      } else {
+        File _newImage = File(path);
 
-      await _storage
-          .ref()
-          .child('events/$uid/secondary/$_index')
-          .putFile(_newImage)
-          .then((TaskSnapshot taskSnapshot) async {
-        await taskSnapshot.ref.getDownloadURL().then((value) {
-          _paths.add(value);
-          _index++;
+        await _storage
+            .ref()
+            .child('events/$uid/secondary/$_index')
+            .putFile(_newImage)
+            .then((TaskSnapshot taskSnapshot) async {
+          await taskSnapshot.ref.getDownloadURL().then((value) {
+            _paths.add(value);
+            _index++;
+          });
         });
-      });
+      }
     }
 
     return _paths;
