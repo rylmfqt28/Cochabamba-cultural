@@ -10,6 +10,7 @@ import 'package:cochabambacultural/user/ui/screens/user_home.dart';
 
 import 'package:cochabambacultural/cultural_event/bloc/cultural_event_bloc.dart';
 import 'package:cochabambacultural/cultural_event/ui/screens/event_registration_form.dart';
+import 'package:cochabambacultural/cultural_event/ui/screens/event_edit_form.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -45,7 +46,8 @@ class MyApp extends StatelessWidget {
           'login_screen': (_) => const LoginScreen(),
           'user_register_screen': (_) => const UserRegisterScreen(),
           'user_home_screen': (_) => const UserHomeScreen(),
-          'create_event_screen': (_) => const EventRegistrationForm()
+          'create_event_screen': (_) => const EventRegistrationForm(),
+          'edit_event_screen': (_) => const EventEditForm()
         },
       ),
     );

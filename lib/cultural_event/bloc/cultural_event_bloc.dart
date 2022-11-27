@@ -52,6 +52,9 @@ class CulturalEventBloc extends Bloc<CulturalEventEvent, CulturalEventState> {
         _errorMsg.showMessageException(error.code, event.context, 190);
       }
     }));
+
+    on<SetStateCulturalEvent>((event, emit) =>
+        emit(CulturalEventSetState(newEvent: event.culturalEvent)));
   }
 
   _successDialog(String message, BuildContext context, double margin) {

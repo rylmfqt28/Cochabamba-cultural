@@ -9,3 +9,9 @@ class CreatedCulturalEvent extends CulturalEventEvent {
 
   CreatedCulturalEvent({required this.culturalEvent, required this.context});
 }
+
+class SetStateCulturalEvent extends CulturalEventEvent {
+  final CulturalEventModel culturalEvent;
+
+  SetStateCulturalEvent({required this.culturalEvent});
+}

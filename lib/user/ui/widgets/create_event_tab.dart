@@ -1,7 +1,6 @@
-import 'package:cochabambacultural/cultural_event/model/cultural_event_model.dart';
-import 'package:cochabambacultural/cultural_event/repository/get_created_events.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:cochabambacultural/utils/app_colors.dart';
 import 'package:cochabambacultural/utils/responsive.dart';
@@ -9,8 +8,12 @@ import 'package:cochabambacultural/utils/responsive.dart';
 import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 
 import 'package:cochabambacultural/cultural_event/ui/widgets/event_category_button.dart';
-
 import 'package:cochabambacultural/cultural_event/ui/widgets/event_row_widget.dart';
+import 'package:cochabambacultural/cultural_event/bloc/cultural_event_bloc.dart';
+import 'package:cochabambacultural/cultural_event/model/cultural_event_model.dart';
+import 'package:cochabambacultural/cultural_event/repository/get_created_events.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateEventTab extends StatefulWidget {
   const CreateEventTab({Key? key}) : super(key: key);
@@ -41,6 +44,8 @@ class _CreateEventTabState extends State<CreateEventTab> {
   Widget build(BuildContext context) {
     final colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
+
+    final eventBloc = BlocProvider.of<CulturalEventBloc>(context);
 
     return Scaffold(
       backgroundColor: colorApp.primaryBackground,
@@ -80,7 +85,11 @@ class _CreateEventTabState extends State<CreateEventTab> {
                         return EvenRowWidget(
                             url: myEvents[index].principalImage!,
                             eventName: myEvents[index].eventName!,
-                            event: () {});
+                            event: () {
+                              eventBloc.add(SetStateCulturalEvent(
+                                  culturalEvent: myEvents[index]));
+                              Navigator.pushNamed(context, 'edit_event_screen');
+                            });
                       },
                     ),
                   ),
