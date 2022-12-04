@@ -8,6 +8,8 @@ import 'package:cochabambacultural/ui/widgets/text_format_widget.dart';
 
 import 'package:cochabambacultural/cultural_event/ui/widgets/event_category_button.dart';
 import 'package:cochabambacultural/cultural_event/ui/widgets/card_event_widget.dart';
+import 'package:cochabambacultural/cultural_event/model/cultural_event_model.dart';
+import 'package:cochabambacultural/cultural_event/repository/upcoming_cultural_event.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
@@ -21,6 +23,23 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+  List<CulturalEventModel> upcomingEvents = [];
+
+  @override
+  void initState() {
+    _getUpcomingEvents();
+    super.initState();
+  }
+
+  Future<void> _getUpcomingEvents() async {
+    List<CulturalEventModel> _events =
+        await UpcomingCulturalEvent().getUpcomingCulturalEvents();
+
+    setState(() {
+      upcomingEvents = _events;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorApp = AppColors();
