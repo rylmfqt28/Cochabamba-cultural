@@ -13,6 +13,10 @@ import 'package:cochabambacultural/cultural_event/repository/upcoming_cultural_e
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
+import 'package:cochabambacultural/cultural_event/utils/get_string_date.dart';
+
+import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeTab extends StatefulWidget {
@@ -117,36 +121,35 @@ class _HomeTabState extends State<HomeTab> {
                           typeText: 'Subtitle'),
                       SizedBox(height: responsive.hp(3)),
                       SizedBox(
-                        height: responsive.hp(35.1),
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            SizedBox(width: responsive.wp(2.5)),
-                            const CardEventWidget(
-                                url:
-                                    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-                                eventTitle:
-                                    'XVI Feria del pescado y aniversario de Villa Tunari.',
-                                eventDate: '30/04/2022'),
-                            SizedBox(width: responsive.wp(4)),
-                            const CardEventWidget(
-                                url:
-                                    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-                                eventTitle:
-                                    'XXVIII Feria Apicola y sus derivados.',
-                                eventDate: '31/04/2022'),
-                            SizedBox(width: responsive.wp(4)),
-                            const CardEventWidget(
-                                url:
-                                    'https://firebasestorage.googleapis.com/v0/b/cochabamba-cultural.appspot.com/o/events%2Fimg-event-dev.jpg?alt=media&token=631d4aec-d4b1-44b1-8dfa-88a40bdbfc7f',
-                                eventTitle:
-                                    'Feria artesanal por el dia del trabajo.',
-                                eventDate: '01/05/2022'),
-                            SizedBox(width: responsive.wp(2.5)),
-                          ],
+                        height: responsive.hp(36),
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                              height: responsive.hp(35.1),
+                              initialPage: 0,
+                              viewportFraction: 0.7,
+                              enlargeCenterPage: true,
+                              enlargeStrategy: CenterPageEnlargeStrategy.height,
+                              enableInfiniteScroll: true,
+                              scrollDirection: Axis.horizontal),
+                          items: upcomingEvents.map((event) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 10.0, right: 10.0),
+                                  child: CardEventWidget(
+                                    url: event.principalImage!,
+                                    eventTitle: event.eventName!,
+                                    eventDate: GetStringDate()
+                                        .dateToDateFormatString(
+                                            event.initialDateTime!),
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
                         ),
                       ),
-                      SizedBox(height: responsive.hp(3)),
                     ],
                   ),
                 ],
