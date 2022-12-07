@@ -10,6 +10,7 @@ import 'package:cochabambacultural/cultural_event/ui/widgets/event_category_butt
 import 'package:cochabambacultural/cultural_event/ui/widgets/card_event_widget.dart';
 import 'package:cochabambacultural/cultural_event/model/cultural_event_model.dart';
 import 'package:cochabambacultural/cultural_event/repository/upcoming_cultural_event.dart';
+import 'package:cochabambacultural/cultural_event/bloc/cultural_event_bloc.dart';
 
 import 'package:cochabambacultural/user/bloc/user_bloc.dart';
 
@@ -48,6 +49,8 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     final colorApp = AppColors();
     final Responsive responsive = Responsive.of(context);
+
+    final eventBloc = BlocProvider.of<CulturalEventBloc>(context);
 
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
       return Scaffold(
@@ -143,6 +146,12 @@ class _HomeTabState extends State<HomeTab> {
                                     eventDate: GetStringDate()
                                         .dateToDateFormatString(
                                             event.initialDateTime!),
+                                    eventCard: () {
+                                      eventBloc.add(SetStateCulturalEvent(
+                                          culturalEvent: event));
+                                      // Navigator.pushNamed(
+                                      //     context, 'screen info event');
+                                    },
                                   ),
                                 );
                               },
