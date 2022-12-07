@@ -7,12 +7,14 @@ class CardEventWidget extends StatelessWidget {
   final String url;
   final String eventTitle;
   final String eventDate;
+  final Function eventCard;
 
   const CardEventWidget(
       {Key? key,
       required this.url,
       required this.eventTitle,
-      required this.eventDate})
+      required this.eventDate,
+      required this.eventCard})
       : super(key: key);
 
   @override
@@ -23,70 +25,72 @@ class CardEventWidget extends StatelessWidget {
     return ListView(
       scrollDirection: Axis.vertical,
       children: [
-        SizedBox(
-          height: responsive.hp(35),
-          width: responsive.wp(55),
-          //color: colorApp.successful,
-          child: Card(
-            color: colorApp.primaryBackground,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            elevation: 3.5,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: responsive.hp(22),
-                  width: responsive.wp(62),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        topRight: Radius.circular(10.0)),
-                    child: Image.network(
-                      url,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 6.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      eventTitle,
-                      maxLines: 3,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: colorApp.secundaryFont,
-                        fontSize: responsive.dp(1.7),
-                        fontWeight: FontWeight.bold,
+        InkWell(
+          onTap: () => eventCard(),
+          child: SizedBox(
+            height: responsive.hp(35),
+            width: responsive.wp(55),
+            child: Card(
+              color: colorApp.primaryBackground,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              elevation: 3.5,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: responsive.hp(22),
+                    width: responsive.wp(62),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          topRight: Radius.circular(10.0)),
+                      child: Image.network(
+                        url,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10.0, 0, 0.0, 0),
-                      child: Icon(Icons.calendar_month,
-                          color: colorApp.primaryColor, size: 20),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 0, 0.0, 0),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 6.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
                       child: Text(
-                        eventDate,
+                        eventTitle,
+                        maxLines: 3,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: colorApp.secundaryFont,
                           fontSize: responsive.dp(1.7),
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10.0, 0, 0.0, 0),
+                        child: Icon(Icons.calendar_month,
+                            color: colorApp.primaryColor, size: 20),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 0, 0.0, 0),
+                        child: Text(
+                          eventDate,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: colorApp.secundaryFont,
+                            fontSize: responsive.dp(1.7),
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
